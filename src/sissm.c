@@ -58,6 +58,7 @@
 // Plugins EXTERNAL
 //
 #include "pit001.h"
+#include "map_vote.h"
 #include "pirebooter.h"
 #include "pigreetings.h"
 #include "pigateway.h"
@@ -389,7 +390,8 @@ int sissmInitPlugins( void )
     // "Third Party" Plugins - for customizations
     //
     pit001InstallPlugin();                       // example template for plugin develoeprs
-
+    mapVoteInstallPlugin();    
+    
     return errCode;
 }
 

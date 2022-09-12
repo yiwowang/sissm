@@ -70,7 +70,7 @@ extern int   apiIsHotRestart( void );
 
 #define API_R_BUFSIZE                (4*1024)
 #define API_T_BUFSIZE                (4*1024)
-#define API_MAXSAY                       (80)       // Maximum string that can be printed by "say"
+#define API_MAXSAY                       (200)       // Maximum string that can be printed by "say"
 
 #define API_MUT_MAXLIST                  (64)
 #define API_MUT_MAXCHAR                  (80)

@@ -66,6 +66,8 @@ static struct {
 
     char connected[CFS_FETCH_MAX];                      // player connected suffix "xxx connected"
     char connectedAsAdmin[CFS_FETCH_MAX];            // admin connect suffix "yyy admin connected"
+    char connectedCustomUids[20][CFS_FETCH_MAX];      // space delimited GUID list of connect custom notice mask
+    char connectedCustomWords[20][CFS_FETCH_MAX];     // player connected custom suffix "xxx connected"
     char disconnected[CFS_FETCH_MAX];               // player disconnect suffix "xxx disconnected"
 
     char connectedPrefix[CFS_FETCH_MAX];                     // player name prefix tag, connecting
@@ -201,6 +203,20 @@ int pigreetingsInitConfig( void )
     strlcpy( pigreetingsConfig.connectedAsAdminPostfix, cfsFetchStr( cP, "pigreetings.connectedAsAdminPostfix", "\'" ), CFS_FETCH_MAX );
     strlcpy( pigreetingsConfig.disconnectedPrefix,      cfsFetchStr( cP, "pigreetings.disconnectedPrefix",      "\'" ), CFS_FETCH_MAX );
     strlcpy( pigreetingsConfig.disconnectedPostfix,     cfsFetchStr( cP, "pigreetings.disconnectedPostfix",     "\'" ), CFS_FETCH_MAX );
+    
+	int size = sizeof(pigreetingsConfig.connectedCustomUids) / sizeof(pigreetingsConfig.connectedCustomUids[0]);
+	int i;
+	for (i = 0; i < size; i++)
+	{
+		char item1[50];
+		snprintf(item1, 50, "pigreetings.connectedCustomUids[%d]", i);
+		strlcpy(pigreetingsConfig.connectedCustomUids[i], cfsFetchStr(cP, item1, ""), CFS_FETCH_MAX);
+
+		char item2[50];
+		snprintf(item2, 50, "pigreetings.connectedCustomWords[%d]", i);
+		strlcpy(pigreetingsConfig.connectedCustomWords[i], cfsFetchStr(cP, item2, ""), CFS_FETCH_MAX);
+
+	}
 
     // read round win and lose messages, set to "" to disable
     // 
@@ -299,7 +315,21 @@ int pigreetingsClientSynthAddCB( char *strIn )
     rosterParsePlayerSynthConn( strIn, 256, playerName, playerGUID, playerIP );
     if (!_isIncognito( playerGUID )) {
         if ( (apiTimeGet() - timeRestarted) > PIGREETINGS_RESTART_LOCKOUT_SEC ) {   // check if we are restarting
-       
+			int size = sizeof(pigreetingsConfig.connectedCustomUids) / sizeof(pigreetingsConfig.connectedCustomUids[0]);
+			int i;
+			for (i = 0; i < size; i++)
+			{
+				if (NULL != strstr(pigreetingsConfig.connectedCustomUids[i], playerGUID))
+				{
+					logPrintf(LOG_LEVEL_CRITICAL, "pigreetings", "SynAdd Client aaa %s %s %s %d", playerName, pigreetingsConfig.connectedCustomWords[i], pigreetingsConfig.connected, apiPlayersGetCount());
+					apiSay("%s %s %s [%d]",
+						playerName,
+						pigreetingsConfig.connectedCustomWords[i],
+						pigreetingsConfig.connected, apiPlayersGetCount());
+					return 0;
+				}
+			}
+
            if  ( apiIsAdmin( playerGUID ) && (0 != strlen( pigreetingsConfig.connectedAsAdmin)) ) 
                apiSay( "%s%s%s %s [%d]", 
                     pigreetingsConfig.connectedAsAdminPrefix,
@@ -313,6 +343,7 @@ int pigreetingsClientSynthAddCB( char *strIn )
                     pigreetingsConfig.connectedPostfix,
                     pigreetingsConfig.connected, apiPlayersGetCount() );
         }
+
         logPrintf( LOG_LEVEL_CRITICAL, "pigreetings", "SynAdd Client ::%s::%s::%s::", playerName, playerGUID, playerIP );
     }
     else {
