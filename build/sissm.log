@@ -1,0 +1,52 @@
+2022-09-25 00:55:00::sissm::--------------------------------------
+2022-09-25 00:55:00::sissm::SISSM v1.0.0.1 20220912-2200
+2022-09-25 00:55:00::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-09-25 00:55:00::api::BadWords list -1 words from file 
+2022-09-25 00:55:00::api::Maplist read 0 maps from file 
+2022-09-25 00:55:00::api::BPChar Translation Table cleared
+2022-09-25 00:55:00::map_vote::mapVoteInstallPlugin
+2022-09-25 00:55:46::sissm::--------------------------------------
+2022-09-25 00:55:46::sissm::SISSM v1.0.0.1 20220912-2200
+2022-09-25 00:55:46::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-09-25 00:55:46::api::BadWords list -1 words from file 
+2022-09-25 00:55:46::api::Maplist read 0 maps from file 
+2022-09-25 00:55:46::api::BPChar Translation Table cleared
+2022-09-25 00:55:46::map_vote::mapVoteInstallPlugin
+2022-09-25 00:57:38::sissm::--------------------------------------
+2022-09-25 00:57:38::sissm::SISSM v1.0.0.1 20220912-2200
+2022-09-25 00:57:38::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-09-25 00:57:38::api::BadWords list -1 words from file 
+2022-09-25 00:57:38::api::Maplist read 0 maps from file 
+2022-09-25 00:57:38::api::BPChar Translation Table cleared
+2022-09-25 00:57:38::map_vote::mapVoteInstallPlugin
+2022-09-25 00:58:20::sissm::--------------------------------------
+2022-09-25 00:58:20::sissm::SISSM v1.0.0.1 20220912-2200
+2022-09-25 00:58:20::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-09-25 00:58:20::api::BadWords list -1 words from file 
+2022-09-25 00:58:20::api::Maplist read 0 maps from file 
+2022-09-25 00:58:20::api::BPChar Translation Table cleared
+2022-09-25 00:58:20::map_vote::mapVoteInstallPlugin
+2022-09-25 00:58:35::sissm::Server ID: ::Unknown Server::
+2022-09-25 00:58:35::sissm::** Warning: Console '^C' may take several seconds to process
+2022-09-25 00:58:35::sissm::State - SM_STARTUP
+2022-09-25 00:58:35::sissm::State - SM_STARTUP
+2022-09-25 00:58:36::sissm::Trying to open game logfile ::Insurgency.log::
+2022-09-25 00:58:39::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:42::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:46::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:49::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:51::api::Listplayer retrieve failure on apiPollAlarmCB, playercount is 0
+2022-09-25 00:58:51::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:51::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:52::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:52::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:54::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:56::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-09-25 00:58:59::rdrv::Warning: RCON comms lost - re-opening with new channel
+2022-10-27 13:32:02::sissm::--------------------------------------
+2022-10-27 13:32:02::sissm::SISSM v1.0.0.1 20220912-2200
+2022-10-27 13:32:02::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-10-27 13:32:02::api::BadWords list -1 words from file 
+2022-10-27 13:32:02::api::Maplist read 0 maps from file 
+2022-10-27 13:32:02::api::BPChar Translation Table cleared
+2022-10-27 13:32:02::map_vote::mapVoteInstallPlugin
