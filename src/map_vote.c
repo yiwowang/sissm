@@ -38,6 +38,7 @@ static struct
 {
 
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
+	int lessPlayerCountNeedAllVote;
 } mapVoteConfig;
 
 #define MAP_COUNT 16
@@ -102,6 +103,7 @@ int mapVoteInitConfig(void)
 	// read "map_vote.pluginstate" variable from the .cfg file
 	mapVoteConfig.pluginState = (int)cfsFetchNum(cP, "map_vote.pluginState", 0.0); // disabled by default
 
+ mapVoteConfig.lessPlayerCountNeedAllVote = (int)cfsFetchNum(cP, "lessPlayerCountNeedAllVote", 3); 
 	cfsDestroy(cP);
 	return 0;
 }
@@ -264,17 +266,21 @@ int mapVotePeriodicCB(char* strIn)
 		}
 		// 参与玩家大于总玩家的1/3		}
 		int playersCount = apiPlayersGetCount();
-
+		if(playersCount<=mapVoteConfig.lessPlayerCountNeedAllVote&&votePlayerCount<playersCount){
+			    apiSay("投票失败:原因是玩家少于%d人时需要全票(%d/%d)",mapVoteConfig.lessPlayerCountNeedAllVote, votePlayerCount, playersCount);
+                         return 0;
+		}
+		
 		if (votePlayerCount < playersCount / 2.0)
 		{
 
-			apiSay("投票结束：参与投票的人数少于50%(%d/%d)", votePlayerCount, playersCount);
+			apiSay("投票失败:原因是参与投票的人数少于50%(%d/%d)", votePlayerCount, playersCount);
 			return 0;
 		}
 
 		if (maxIndex < 0)
 		{
-			apiSay("投票结束:无人投票");
+			apiSay("投票失败:无人投票");
 			return 0;
 		}
 
@@ -283,7 +289,7 @@ int mapVotePeriodicCB(char* strIn)
 		travelingMap->sec = voteResult[maxIndex].secNum > voteResult[maxIndex].insNum ? "Security" : "Insurgents";
 
 		logPrintf(LOG_LEVEL_INFO, "map_vote", "vote end; playersCount=%d  votePlayerCpunt=%d  maxIndex=%d,maxNum=%d day=%s,sec=%s map=%s", playersCount, votePlayerCount, maxIndex, maxNum, travelingMap->day, travelingMap->sec, mapTable[travelingMap->index].name1);
-		apiSay("投票结束：共%d个玩家参与, 投票最多地图:%s [%s] [%s](%d次) ", votePlayerCount, mapTable[travelingMap->index].name1, travelingMap->day, travelingMap->sec, maxNum);
+		apiSay("投票成功:共%d个玩家参与, 投票最多地图:%s [%s] [%s](%d次) ", votePlayerCount, mapTable[travelingMap->index].name1, travelingMap->day, travelingMap->sec, maxNum);
 	}
 
 	if (travelingMap->index >= 0 && useSeconds == 34)
