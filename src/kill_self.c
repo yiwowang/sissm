@@ -39,7 +39,7 @@ static struct
 
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
 	int lessPlayerCountNeedAllVote;
-} killSelfconfig;
+} killSelfConfig;
 
 #define ROOM_PLAYER_MAX_COUNT 50
 
@@ -63,7 +63,22 @@ int killSelfInitConfig(void)
 	cfsDestroy(cP);
 	return 0;
 }
+void getWordRange(char* input, char* start, char* end, char* output)
+{
+	char* w;
+	w = strstr(input, start);
+	if (w == NULL)
+	{
+		return;
+	}
 
+	char* w2;
+	if (NULL == (w2 = getWord(w, 0, end)))
+	{
+		return;
+	}
+	strlcpy(output, w2 + strlen(start), 100);
+}
 //  ==============================================================================================
 // InitCB
 //
@@ -88,7 +103,12 @@ int killSelfGameEndCB(char* strIn)
 	return 0;
 }
 
+int killSelfKilledCB(char* strIn)
+{
 
+	logPrintf(LOG_LEVEL_INFO, "kill_self", "killSelfKilled Event ::%s::", strIn);
+	return 0;
+}
 
 
 //  ==============================================================================================
@@ -113,6 +133,6 @@ int killSelfInstallPlugin(void)
 	//
 	eventsRegister(SISSM_EV_INIT, killSelfInitCB);
 	eventsRegister(SISSM_EV_GAME_END_NOW, killSelfGameEndCB);
-
+	eventsRegister(SISSM_EV_KILLED, killSelfKilledCB);
 	return 0;
 }
