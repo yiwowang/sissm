@@ -103,7 +103,7 @@ int mapVoteInitConfig(void)
 	// read "map_vote.pluginstate" variable from the .cfg file
 	mapVoteConfig.pluginState = (int)cfsFetchNum(cP, "map_vote.pluginState", 0.0); // disabled by default
 
- mapVoteConfig.lessPlayerCountNeedAllVote = (int)cfsFetchNum(cP, "lessPlayerCountNeedAllVote", 3); 
+	mapVoteConfig.lessPlayerCountNeedAllVote = (int)cfsFetchNum(cP, "map_vote.lessPlayerCountNeedAllVote", 3);
 	cfsDestroy(cP);
 	return 0;
 }
@@ -266,11 +266,11 @@ int mapVotePeriodicCB(char* strIn)
 		}
 		// 参与玩家大于总玩家的1/3		}
 		int playersCount = apiPlayersGetCount();
-		if(playersCount<=mapVoteConfig.lessPlayerCountNeedAllVote&&votePlayerCount<playersCount){
-			    apiSay("投票失败:原因是玩家少于%d人时需要全票(%d/%d)",mapVoteConfig.lessPlayerCountNeedAllVote, votePlayerCount, playersCount);
-                         return 0;
+		if (playersCount <= mapVoteConfig.lessPlayerCountNeedAllVote && votePlayerCount < playersCount) {
+			apiSay("投票失败:原因是玩家少于%d人时需要全票(%d/%d)", mapVoteConfig.lessPlayerCountNeedAllVote, votePlayerCount, playersCount);
+			return 0;
 		}
-		
+
 		if (votePlayerCount < playersCount / 2.0)
 		{
 

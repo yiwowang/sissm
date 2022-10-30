@@ -84,6 +84,7 @@ struct {
     { SISSM_EV_RCON,                27, SS_SUBSTR_RCON              },
     { SISSM_EV_MESHERR,             28, SS_SUBSTR_MESHERR           },
     { SISSM_EV_GAME_END_NOW,        29, SS_SUBSTR_GAME_END_NOW    },
+    { SISSM_EV_KILLED,              30, SS_SUBSTR_KILLED    },
     { -1,                           -1, "*"                   },
 
 };

@@ -59,6 +59,7 @@
 //
 #include "pit001.h"
 #include "map_vote.h"
+#include "kill_self.h"
 #include "pirebooter.h"
 #include "pigreetings.h"
 #include "pigateway.h"

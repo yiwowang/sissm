@@ -49,7 +49,7 @@
 #define SISSM_EV_RCON                       (27)
 #define SISSM_EV_MESHERR                    (28)
 #define SISSM_EV_GAME_END_NOW               (29)
-
+#define SISSM_EV_KILLED               (30)
 
 // Following substring in log file triggers an event
 //
@@ -81,6 +81,7 @@
 #define SS_SUBSTR_MAP_OBJECTIVE "LogObjectives: Verbose: Authority: Adding objective '"
 #define SS_SUBSTR_MESHERR       "LogGameMode: Verbose: RestartPlayerAt"
 #define SS_SUBSTR_GAME_END_NOW     "LogGameMode: Display: State: WaitingPostMatch -> GameOver"
+#define SS_SUBSTR_KILLED    "killed"
 
 
 extern int eventsInit( void );
