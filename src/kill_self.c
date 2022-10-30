@@ -29,7 +29,7 @@
 #include "api.h"
 #include "sissm.h"
 
-#include "map_vote.h"
+#include "kill_self.h"
 #include <ctype.h>
 //  ==============================================================================================
 //  Data definition
@@ -38,13 +38,18 @@ static struct
 {
 
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
-	int lessPlayerCountNeedAllVote;
+	int killSelfCount;
 } killSelfConfig;
 
 #define ROOM_PLAYER_MAX_COUNT 50
+struct KillSelfPlayer
+{
+	char* name;
+	int killSelfCount;
+};
 
-char players[ROOM_PLAYER_MAX_COUNT][32];
-
+struct KillSelfPlayer player [ROOM_PLAYER_MAX_COUNT];
+int playerIndex = -1;
 //  ==============================================================================================
 //  InitConfig
 //
@@ -98,15 +103,42 @@ int killSelfInitCB(char* strIn)
 //
 int killSelfGameEndCB(char* strIn)
 {
-
+	playerIndex = -1;
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "Game End Event ::%s::", strIn);
 	return 0;
 }
 
 int killSelfKilledCB(char* strIn)
 {
-
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "killSelfKilled Event ::%s::", strIn);
+	char[100] name1;
+	getWordRange(strIn, "Display:", "killed", name1);
+	char[100] name2;
+	getWordRange(strIn, "killed:", "with", name2);
+	logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", name1, name2);
+
+	if (strncmp(name1, name2)==0) {
+		int has = 0;
+		int i;
+		for (i = 0; i <= playerIndex; i++)
+		{
+			if (player[i] != NULL && strncmp(players[i].name, name1, strlen(name1)) == 0)
+			{
+				has = 1;
+				if (player[i].killSelfCount > killSelfConfig.killSelfCount) {
+					logPrintf(LOG_LEVEL_INFO, "kill_self", "limit");
+				}
+				break;
+			}
+		}
+
+		if (has == 0) {
+			++playerIndex;
+			player[playerIndex].name = name1;
+			player[playerIndex].killSelfCount = 1;
+		}
+		logPrintf(LOG_LEVEL_INFO, "kill_self", "has %d", has);
+	}
 	return 0;
 }
 

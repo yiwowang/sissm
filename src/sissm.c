@@ -392,7 +392,8 @@ int sissmInitPlugins( void )
     //
     pit001InstallPlugin();                       // example template for plugin develoeprs
     mapVoteInstallPlugin();    
-    
+    killSelfInstallPlugin();
+
     return errCode;
 }
 
