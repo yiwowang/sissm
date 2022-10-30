@@ -117,7 +117,7 @@ int killSelfKilledCB(char* strIn)
 	getWordRange(strIn, "killed:", "with", name2);
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", name1, name2);
 
-	if (strncmp(name1, name2)==0) {
+	if (strncmp(name1, name2, strlen(name1))==0) {
 		int has = 0;
 		int i;
 		for (i = 0; i <= playerIndex; i++)
