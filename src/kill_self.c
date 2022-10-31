@@ -38,7 +38,7 @@ static struct
 {
 
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
-	int killSelfCount;
+	int limitCountPerRound;
 } killSelfConfig;
 
 #define ROOM_PLAYER_MAX_COUNT 50
@@ -49,7 +49,7 @@ struct KillSelfPlayer
 };
 
 struct KillSelfPlayer player [ROOM_PLAYER_MAX_COUNT];
-int playerIndex = -1;
+int playerIndex1 = -1;
 //  ==============================================================================================
 //  InitConfig
 //
@@ -68,7 +68,7 @@ int killSelfInitConfig(void)
 	cfsDestroy(cP);
 	return 0;
 }
-void getWordRange(char* input, char* start, char* end, char* output)
+void getWordRange1(char* input, char* start, char* end, char* output)
 {
 	char* w;
 	w = strstr(input, start);
@@ -76,13 +76,15 @@ void getWordRange(char* input, char* start, char* end, char* output)
 	{
 		return;
 	}
-
 	char* w2;
-	if (NULL == (w2 = getWord(w, 0, end)))
+	w2 = strstr(w, end);
+	if (w2 == NULL)
 	{
 		return;
 	}
-	strlcpy(output, w2 + strlen(start), 100);
+
+
+	strlcpy(output, w + strlen(start), w2-w-strlen(start)+1);
 }
 //  ==============================================================================================
 // InitCB
@@ -103,7 +105,7 @@ int killSelfInitCB(char* strIn)
 //
 int killSelfGameEndCB(char* strIn)
 {
-	playerIndex = -1;
+	playerIndex1 = -1;
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "Game End Event ::%s::", strIn);
 	return 0;
 }
@@ -111,33 +113,60 @@ int killSelfGameEndCB(char* strIn)
 int killSelfKilledCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "killSelfKilled Event ::%s::", strIn);
-	char[100] name1;
-	getWordRange(strIn, "Display:", "killed", name1);
-	char[100] name2;
-	getWordRange(strIn, "killed:", "with", name2);
-	logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", name1, name2);
+		
+int has = 0;
+         char fullName1[100];
+         getWordRange1(strIn, "Display:", "killed", fullName1);
+         char fullName2[100];
+         getWordRange1(strIn, "killed", "with", fullName2);
+         logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", fullName1, fullName2);
 
-	if (strncmp(name1, name2, strlen(name1))==0) {
-		int has = 0;
+
+
+  char name1[100];
+ char uid1[40];
+ getWordRange1(fullName1," ","[",name1);
+  getWordRange1(fullName1,"[",",",uid1);
+
+
+   char name2[100];
+ char uid2[40];
+ getWordRange1(fullName2," ","[",name2);
+  getWordRange1(fullName2,"[",",",uid2);
+
+ logPrintf(LOG_LEVEL_INFO, "kill_self", "name1==%s==uid1==%s==%s==%s==", name1, uid1,name2,uid2);
+
 		int i;
-		for (i = 0; i <= playerIndex; i++)
+if ( strncmp(uid1, uid2, strlen(uid1)) == 0)
+{		
+for (i = 0; i <= playerIndex1; i++){
+		if ( strncmp(player[i].name, uid1, strlen(uid1)) == 0)
 		{
-			if (player[i] != NULL && strncmp(players[i].name, name1, strlen(name1)) == 0)
-			{
 				has = 1;
-				if (player[i].killSelfCount > killSelfConfig.killSelfCount) {
+					player[playerIndex1].killSelfCount++;
+				
+			if (player[i].killSelfCount > killSelfConfig.limitCountPerRound) {
 					logPrintf(LOG_LEVEL_INFO, "kill_self", "limit");
+
+
+					apiKickOrBan(0,uid1,"自杀次数超限");			
 				}
+			else{
+				apiSay("警告:[%s]已自杀%d次,超过%d次将被踢出",name1, player[playerIndex1].killSelfCount,killSelfConfig.limitCountPerRound);
+			}	
 				break;
-			}
 		}
+}
+
 
 		if (has == 0) {
-			++playerIndex;
-			player[playerIndex].name = name1;
-			player[playerIndex].killSelfCount = 1;
-		}
-		logPrintf(LOG_LEVEL_INFO, "kill_self", "has %d", has);
+			++playerIndex1;
+			player[playerIndex1].name = uid1;
+			player[playerIndex1].killSelfCount = 1;
+     apiSay("警告:[%s]已自杀%d次,超过%d次将被踢出",name1, player[playerIndex1].killSelfCount,killSelfConfig.limitCountPerRound);
+		
+}
+		logPrintf(LOG_LEVEL_INFO, "kill_self", "has %d,==%s==%s==", has,name1,uid1);
 	}
 	return 0;
 }
@@ -151,7 +180,31 @@ int killSelfKilledCB(char* strIn)
 //
 int killSelfInstallPlugin(void)
 {
+
+
+char * strIn="[2022.10.28-01.28.41:552][383]LogGameplayEvents: Display: 血战钢锯岭[76561198324874244, team 1] killed 血战钢锯岭[76561198324874244, team 1] with BP_Projectile_Molotov_C_2147480221";
+
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "killSelfInstallPlugin");
+         char fullName1[100];
+         getWordRange1(strIn, "Display:", "killed", fullName1);
+         char fullName2[100];
+         getWordRange1(strIn, "killed", "with", fullName2);
+         logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", fullName1, fullName2);
+
+
+
+  char name1[100];
+ char uid1[40];
+ getWordRange1(fullName1," ","[",name1);
+  getWordRange1(fullName1,"[",",",uid1);
+
+
+   char name2[100];
+ char uid2[40];
+ getWordRange1(fullName2," ","[",name2);
+  getWordRange1(fullName2,"[",",",uid2);
+
+ logPrintf(LOG_LEVEL_INFO, "kill_self", "name1==%s==uid1==%s==%s==%s==", name1, uid1,name2,uid2);
 
 	killSelfInitConfig();
 	// if plugin is disabled in the .cfg file then do not activate

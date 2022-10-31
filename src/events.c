@@ -197,6 +197,7 @@ int eventsUnRegister( int eventID, int (*callBack)( char * ))
 //
 int eventsDispatch( char *strBuffer )
 {
+logPrintf("xx", "kill_self", "eventsDispatch  %s",strBuffer);
     int i, j;
     int activeCallBackIndex = -1;
 
