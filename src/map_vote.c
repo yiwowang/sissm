@@ -84,9 +84,16 @@ struct
 	char* sec;
 } travelingMap[] = { -1, NULL, NULL };
 
+
+struct PlayerVoteName
+{
+	char* name;
+};
+
+struct PlayerVoteName votePlayers[ROOM_PLAYER_MAX_COUNT];
+
 int mapState = 0;
-char votePlayers[ROOM_PLAYER_MAX_COUNT][32];
-int playerIndex = 0;
+int playerIndex = -1;
 int useSeconds = 0;
 
 //  ==============================================================================================
@@ -199,12 +206,7 @@ void startVote()
 			voteResult[i].insNum = 0;
 		}
 
-		playerIndex = 0;
-		for (i = 0; i < ROOM_PLAYER_MAX_COUNT; i++)
-		{
-			votePlayers[i][0] = '\0';
-		}
-
+		playerIndex = -1;
 		useSeconds = 0;
 		mapState = 1;
 	}
@@ -251,7 +253,7 @@ int mapVotePeriodicCB(char* strIn)
 		int i;
 		int maxIndex = -1;
 		int maxNum = 0;
-		int votePlayerCount = playerIndex;
+		int votePlayerCount = playerIndex + 1;
 
 		for (i = 0; i < MAP_COUNT; i++)
 		{
@@ -427,9 +429,9 @@ int mapVoteChatCB(char* strIn)
 
 	int has = 0;
 	int i;
-	for (i = 0; i < ROOM_PLAYER_MAX_COUNT; i++)
+	for (i = 0; i <= playerIndex; i++)
 	{
-		if (votePlayers[i] != NULL && strncmp(votePlayers[i], name, strlen(name)) == 0)
+		if (strncmp(votePlayers[i].name, name, strlen(name)) == 0)
 		{
 			has = 1;
 			break;
@@ -484,12 +486,12 @@ int mapVoteChatCB(char* strIn)
 		}
 
 		// add name to array
-		strlcpy(votePlayers[playerIndex], name, 20);
-		apiSay("[%s]投票: [%s] [%s] [%s]", name, mapTable[mapIndex].name1, secStr, dayStr);
-		if (playerIndex < 11)
+		if (playerIndex < ROOM_PLAYER_MAX_COUNT - 1)
 		{
 			++playerIndex;
 		}
+		votePlayers[playerIndex].name = name;
+		apiSay("[%s]投票: [%s] [%s] [%s]", name, mapTable[mapIndex].name1, secStr, dayStr);
 	}
 	logPrintf(LOG_LEVEL_INFO, "map_vote", "Client chat vote mapIndex=%d sec=%d day=%d", mapIndex, mapSec, mapDay);
 
