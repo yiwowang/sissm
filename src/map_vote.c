@@ -39,6 +39,7 @@ static struct
 
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
 	int lessPlayerCountNeedAllVote;
+	char allowDuplicateVoteUid[200];
 } mapVoteConfig;
 
 #define MAP_COUNT 16
@@ -87,7 +88,8 @@ struct
 
 struct PlayerVoteName
 {
-	char* name;
+	char name[50];
+	char uid[30];
 };
 
 struct PlayerVoteName votePlayers[ROOM_PLAYER_MAX_COUNT];
@@ -109,8 +111,9 @@ int mapVoteInitConfig(void)
 
 	// read "map_vote.pluginstate" variable from the .cfg file
 	mapVoteConfig.pluginState = (int)cfsFetchNum(cP, "map_vote.pluginState", 0.0); // disabled by default
-
 	mapVoteConfig.lessPlayerCountNeedAllVote = (int)cfsFetchNum(cP, "map_vote.lessPlayerCountNeedAllVote", 3);
+	strlcpy(mapVoteConfig.allowDuplicateVoteUid, cfsFetchStr(cP, "map_vote.allowDuplicateVoteUid", ""), 200);
+
 	cfsDestroy(cP);
 	return 0;
 }
@@ -320,7 +323,8 @@ void getWordRight(char* input, char* start, char* output, int size)
 	strlcpy(output, w + strlen(start), size);
 }
 
-void getWordRange(char* input, char* start, char* end, char* output)
+
+void getWordRange2(char* input, char* start, char* end, char* output)
 {
 	char* w;
 	w = strstr(input, start);
@@ -328,14 +332,17 @@ void getWordRange(char* input, char* start, char* end, char* output)
 	{
 		return;
 	}
-
 	char* w2;
-	if (NULL == (w2 = getWord(w, 0, end)))
+	w2 = strstr(w, end);
+	if (w2 == NULL)
 	{
 		return;
 	}
-	strlcpy(output, w2 + strlen(start), 100);
+
+
+	strlcpy(output, w + strlen(start), w2 - w - strlen(start) + 1);
 }
+
 
 void parseText(char* inputText, int* output)
 {
@@ -424,22 +431,29 @@ int mapVoteChatCB(char* strIn)
 		return 0;
 	}
 
-	char name[100];
-	getWordRange(strIn, "Display:", "(", name);
+	char name[50];
+	char uid[30];
+	getWordRange2(strIn, "Display:", "(", name);
+	getWordRange2(strIn, "(", ")", uid);
+
+	int allowDuplicateVoteUid = 0;
+	if (strstr(mapVoteConfig.allowDuplicateVoteUid, uid) != NULL) {
+		allowDuplicateVoteUid = 1;
+	}
 
 	int has = 0;
 	int i;
 	for (i = 0; i <= playerIndex; i++)
 	{
-		if (strncmp(votePlayers[i].name, name, strlen(name)) == 0)
+		if (strcmp(votePlayers[i].uid, uid) == 0)
 		{
 			has = 1;
 			break;
 		}
 	}
 
-	logPrintf(LOG_LEVEL_INFO, "map_vote", "chat name=%s has=%d", name, has);
-	if (has == 1)
+	logPrintf(LOG_LEVEL_INFO, "map_vote", "chat name=%s has=%d allowDuplicateVoteUid=%d", uid, has, allowDuplicateVoteUid);
+	if (has == 1 && allowDuplicateVoteUid == 0)
 	{
 		return 0;
 	}
@@ -486,11 +500,17 @@ int mapVoteChatCB(char* strIn)
 		}
 
 		// add name to array
-		if (playerIndex < ROOM_PLAYER_MAX_COUNT - 1)
+		if (has == 0 && playerIndex < ROOM_PLAYER_MAX_COUNT - 1)
 		{
 			++playerIndex;
+			strlcpy(votePlayers[playerIndex].uid, uid, 30);
+			strlcpy(votePlayers[playerIndex].name, name, 50);
+
+			logPrintf(LOG_LEVEL_INFO, "map_vote", "list 0=%s", votePlayers[0].uid);
+			if (playerIndex > 0) {
+				logPrintf(LOG_LEVEL_INFO, "map_vote", "list 1=%s", votePlayers[1].uid);
+			}
 		}
-		votePlayers[playerIndex].name = name;
 		apiSay("[%s]投票: [%s] [%s] [%s]", name, mapTable[mapIndex].name1, secStr, dayStr);
 	}
 	logPrintf(LOG_LEVEL_INFO, "map_vote", "Client chat vote mapIndex=%d sec=%d day=%d", mapIndex, mapSec, mapDay);
