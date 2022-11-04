@@ -40,6 +40,7 @@ static struct
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
 	int lessPlayerCountNeedAllVote;
 	char allowDuplicateVoteUid[200];
+	int duplicateVoteAsNewPlayer;
 } mapVoteConfig;
 
 #define MAP_COUNT 16
@@ -113,7 +114,7 @@ int mapVoteInitConfig(void)
 	mapVoteConfig.pluginState = (int)cfsFetchNum(cP, "map_vote.pluginState", 0.0); // disabled by default
 	mapVoteConfig.lessPlayerCountNeedAllVote = (int)cfsFetchNum(cP, "map_vote.lessPlayerCountNeedAllVote", 3);
 	strlcpy(mapVoteConfig.allowDuplicateVoteUid, cfsFetchStr(cP, "map_vote.allowDuplicateVoteUid", ""), 200);
-
+	mapVoteConfig.duplicateVoteAsNewPlayer = (int)cfsFetchNum(cP, "map_vote.duplicateVoteAsNewPlayer", 1);
 	cfsDestroy(cP);
 	return 0;
 }
@@ -256,8 +257,7 @@ int mapVotePeriodicCB(char* strIn)
 		int i;
 		int maxIndex = -1;
 		int maxNum = 0;
-		int votePlayerCount = playerIndex + 1;
-
+		int allVoteNum = 0;
 		for (i = 0; i < MAP_COUNT; i++)
 		{
 			int currMapVoteNum = (voteResult[i].dayNum + voteResult[i].nightNum + voteResult[i].secNum + voteResult[i].insNum) / 2;
@@ -268,7 +268,18 @@ int mapVotePeriodicCB(char* strIn)
 				maxNum = currMapVoteNum;
 				maxIndex = i;
 			}
+			allVoteNum += currMapVoteNum;
 		}
+		int votePlayerCount = 0;
+		if (mapVoteConfig.duplicateVoteAsNewPlayer == 1) {
+			// 每一次的重复的投票,都充当新的一名参与玩家
+			votePlayerCount = allVoteNum;
+		}
+		else {
+			// 真实的参与投票的玩家
+			votePlayerCount = playerIndex + 1;
+		}
+
 		// 参与玩家大于总玩家的1/3		}
 		int playersCount = apiPlayersGetCount();
 		if (playersCount <= mapVoteConfig.lessPlayerCountNeedAllVote && votePlayerCount < playersCount) {
