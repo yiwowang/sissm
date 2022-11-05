@@ -31,6 +31,8 @@
 
 #include "map_vote.h"
 #include <ctype.h>
+#include <http.h>
+
 //  ==============================================================================================
 //  Data definition
 //
@@ -553,6 +555,6 @@ int mapVoteInstallPlugin(void)
 	eventsRegister(SISSM_EV_GAME_END_NOW, mapVoteGameEndCB);
 	eventsRegister(SISSM_EV_PERIODIC, mapVotePeriodicCB);
 	eventsRegister(SISSM_EV_CHAT, mapVoteChatCB);
-
+httpRequest();
 	return 0;
 }
