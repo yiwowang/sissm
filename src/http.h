@@ -1,2 +1,1 @@
-extern int httpRequest(void);
-
+extern int httpRequest();

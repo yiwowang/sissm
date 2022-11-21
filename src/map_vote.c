@@ -31,8 +31,7 @@
 
 #include "map_vote.h"
 #include <ctype.h>
-#include <http.h>
-
+#include "common_util.h"
 //  ==============================================================================================
 //  Data definition
 //
@@ -132,52 +131,6 @@ int mapVoteInitCB(char* strIn)
 	return 0;
 }
 
-void trim(char* str, char* output, int size)
-{
-	if (strlen(str) == 0)
-	{
-		return;
-	}
-	char* p = str;
-	char* p1;
-	if (p)
-	{
-		p1 = p + strlen(str) - 1;
-		while (*p && isspace(*p))
-			p++;
-		while (p1 > p && isspace(*p1))
-			*p1-- = '\0';
-	}
-	strlcpy(output, p, size);
-}
-
-// char * to int
-int strtoi(const char* str, int base)
-{
-	int res = 0, t;
-	const char* p;
-	for (p = str; *p; p++)
-	{
-		if (isdigit(*p))
-		{
-			t = *p - '0';
-		}
-		else if (isupper(*p))
-		{
-			t = *p - 'A' + 10;
-		}
-		else
-		{
-			return -1;
-		}
-		if (t >= base)
-			return -1;
-		res *= base;
-		res += t;
-	}
-	return res;
-}
-
 void mapVotePrintMap()
 {
 	char outStr[1024];
@@ -263,7 +216,6 @@ int mapVotePeriodicCB(char* strIn)
 		for (i = 0; i < MAP_COUNT; i++)
 		{
 			int currMapVoteNum = (voteResult[i].dayNum + voteResult[i].nightNum + voteResult[i].secNum + voteResult[i].insNum) / 2;
-			int j;
 
 			if (currMapVoteNum > maxNum)
 			{
@@ -324,37 +276,7 @@ int mapVotePeriodicCB(char* strIn)
 	return 0;
 }
 
-void getWordRight(char* input, char* start, char* output, int size)
-{
-	char* w;
-	w = strstr(input, start);
-	if (w == NULL)
-	{
-		return;
-	}
 
-	strlcpy(output, w + strlen(start), size);
-}
-
-
-void getWordRange2(char* input, char* start, char* end, char* output)
-{
-	char* w;
-	w = strstr(input, start);
-	if (w == NULL)
-	{
-		return;
-	}
-	char* w2;
-	w2 = strstr(w, end);
-	if (w2 == NULL)
-	{
-		return;
-	}
-
-
-	strlcpy(output, w + strlen(start), w2 - w - strlen(start) + 1);
-}
 
 
 void parseText(char* inputText, int* output)
@@ -363,7 +285,7 @@ void parseText(char* inputText, int* output)
 	char input[20];
 	strlcpy(input, inputText, 20);
 
-	int i;
+
 	int sec = 1;
 	int day = 1;
 	char number[3];
@@ -371,7 +293,7 @@ void parseText(char* inputText, int* output)
 
 	int len = strlen(input);
 
-	for (i = 0; i < strlen(input); i++)
+	for (unsigned int i = 0; i < strlen(input); i++)
 	{
 
 		if (input[i] == 'i')
@@ -446,8 +368,8 @@ int mapVoteChatCB(char* strIn)
 
 	char name[50];
 	char uid[30];
-	getWordRange2(strIn, "Display:", "(", name);
-	getWordRange2(strIn, "(", ")", uid);
+	getWordRange(strIn, "Display:", "(", name);
+	getWordRange(strIn, "(", ")", uid);
 
 	int allowDuplicateVoteUid = 0;
 	if (strstr(mapVoteConfig.allowDuplicateVoteUid, uid) != NULL) {
@@ -555,6 +477,5 @@ int mapVoteInstallPlugin(void)
 	eventsRegister(SISSM_EV_GAME_END_NOW, mapVoteGameEndCB);
 	eventsRegister(SISSM_EV_PERIODIC, mapVotePeriodicCB);
 	eventsRegister(SISSM_EV_CHAT, mapVoteChatCB);
-httpRequest();
 	return 0;
 }

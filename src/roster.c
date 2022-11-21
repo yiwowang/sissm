@@ -582,6 +582,19 @@ char *rosterLookupIPFromGUID( char *playerGUID )
     return( playerIP );
 }
 
+char* rosterLookupScoreFromGUID(char* playerGUID)
+{
+    static char score[256];
+    int i;
+    strclr(score);
+    for (i = 0; i < ROSTER_MAX; i++) {
+        if (0 == strcmp(masterRoster[i].steamID, playerGUID)) {
+            strlcpy(score, masterRoster[i].score, 256);
+            break;
+        }
+    }
+    return(score);
+}
 
 //  ==============================================================================================
 //  rosterLookupSteamIDFromName

@@ -31,16 +31,17 @@
 
 #include "sync_data.h"
 #include <ctype.h>
-#include <http.h>
-
+#include "http.h"
+#include "cJSON.h"
+#include "common_util.h"
 //  ==============================================================================================
 //  Data definition
 //
 static struct
 {
 	int pluginState; // always have this in .cfg file:  0=disabled 1=enabled
-	char * httpUrl;
-	int joinShowOldName;
+	char* httpUrl;
+	int serverId;
 } syncDataConfig;
 
 #define MAP_COUNT 16
@@ -50,30 +51,34 @@ struct KillWay {
 	char  weaponName[20];
 	int killCount;
 };
-struct PlayerData
+
+ struct PlayerData
 {
 	char name[30];// 玩家名字
 	char uid[20];// 玩家steamId
 	int score;// 玩家得分
-	KillWay killWay[10];// 
-	KillWay beKillWay[10];// 
-	int takeCount;
-	long joinTime;
-	long leaveTime;
-	int score;
-	char ip[15];
+	char ip[15];// ip
+	struct KillWay killWay[50];// 杀敌的武器类型和数量
+	struct KillWay beKillWay[50];// 被杀的武器类型和数量
+	int takeCount;// 站点数量
+	long joinTime;// 加入时间
+	long leaveTime;// 离开时间
 
-	char* oldName;
+	int killWayIndex;
+	int beKillWayIndex;
+	char* oldName;// 上次用的名字
 };
 
-struct PlayerData playerData[ROOM_PLAYER_MAX_COUNT];
-
-
+struct PlayerData  playerList[50];
+int playerDataIndex = -1;
+int gameStartTime;
+int gameRountIndex;
 struct RoundData
 {
-	int serverIndex;
-	int roundIndex;
-	int maxRoundCount;
+	int serverIndex;// 几服
+	long gameStartTime;//此轮开始时间
+	int roundIndex;// 第几局
+	int maxRoundCount;// 最大几局
 	long roundStartTime;
 	long roundEndTime;
 	int roundStartPlayerCount;
@@ -83,8 +88,98 @@ struct RoundData
 	char take[2];// 占领到哪个点了
 };
 struct RoundData roundData;
-int playerIndex = -1;
 
+
+void roundInit() {
+	for (int i = 0; i <= playerDataIndex; i++) {
+		playerList[i].score = 0;
+		playerList[i].joinTime = 0;
+		playerList[i].leaveTime = 0;
+		playerList[i].takeCount = 0;
+	}
+	playerDataIndex = -1;
+
+}
+
+struct PlayerData*  playerGet(char* uid) {
+	for (int i = 0; i <= playerDataIndex; i++) {
+		if (strcmp(playerList[i].uid, uid)==0) {
+			return &playerList[i];
+		}
+	}
+	return NULL;
+}
+
+struct PlayerData*  playerGetOrCreate(char* uid) {
+	struct PlayerData*  item = playerGet(uid);
+	if (item == NULL) {
+		item = &playerList[++playerDataIndex];
+		strcpy(item->uid, uid);
+		
+	}
+	return item;
+}
+
+int createRoundJson(char* strJson) {
+	cJSON* pRoot = cJSON_CreateObject();
+
+	cJSON* pRound = cJSON_CreateObject();
+	/*char serverIndex[20];
+	snprintf(serverIndex, 20, "%d", roundData.serverIndex);
+	scanf("%d", &serverIndex);*/
+	cJSON_AddNumberToObject(pRound, "serverIndex", roundData.serverIndex);
+	cJSON_AddNumberToObject(pRound, "roundIndex", roundData.roundIndex);
+	cJSON_AddNumberToObject(pRound, "maxRoundCount", roundData.maxRoundCount);
+	cJSON_AddNumberToObject(pRound, "roundStartTime", roundData.roundStartTime);
+	cJSON_AddNumberToObject(pRound, "roundEndTime", roundData.roundEndTime);
+	cJSON_AddNumberToObject(pRound, "roundStartPlayerCount", roundData.roundStartPlayerCount);
+	cJSON_AddNumberToObject(pRound, "roundEndPlayerCount", roundData.roundEndPlayerCount);
+	cJSON_AddStringToObject(pRound, "mapName", roundData.mapName);
+	cJSON_AddNumberToObject(pRound, "win", roundData.win);
+	cJSON_AddStringToObject(pRound, "take", roundData.take);
+	cJSON_AddItemToObject(pRoot, "roundData", pRound);
+
+	cJSON* pArray = cJSON_CreateArray();
+	int i;
+	for (i = 0; i <= playerDataIndex; i++) {
+		cJSON* pItem = cJSON_CreateObject();
+		cJSON_AddStringToObject(pItem, "name", playerList[i].name);
+		cJSON_AddStringToObject(pItem, "uid", playerList[i].uid);
+		cJSON_AddNumberToObject(pItem, "score", playerList[i].score);
+
+		cJSON* pKillWayArray = cJSON_CreateArray();
+		int j;
+		for (j = 0; j < playerList[j].killWayIndex; j++) {
+			cJSON* pKillWayItem = cJSON_CreateObject();
+			cJSON_AddStringToObject(pKillWayItem, "weaponName", playerList[i].killWay[j].weaponName);
+			cJSON_AddNumberToObject(pKillWayItem, "killCount", playerList[i].killWay[j].killCount);
+			cJSON_AddItemToArray(pKillWayArray, pKillWayItem);
+		}
+		cJSON_AddItemToObject(pItem, "killWay", pKillWayArray);
+
+		cJSON* pBeKillWayArray = cJSON_CreateArray();
+		for (j = 0; j < playerList[j].beKillWayIndex; j++) {
+			cJSON* pBeKillWayItem = cJSON_CreateObject();
+			cJSON_AddStringToObject(pBeKillWayItem, "weaponName", playerList[i].beKillWay[j].weaponName);
+			cJSON_AddNumberToObject(pBeKillWayItem, "killCount", playerList[i].beKillWay[j].killCount);
+			cJSON_AddItemToArray(pBeKillWayArray, pBeKillWayItem);
+		}
+		cJSON_AddItemToObject(pItem, "beKillWay", pBeKillWayArray);
+
+		cJSON_AddItemToArray(pArray, pItem);
+	}
+
+	cJSON_AddItemToObject(pRoot, "playerList", pArray);
+
+	char* szJSON = cJSON_Print(pRoot);//通过cJSON_Print获取cJSON结构体的字符串形式（注：存在\n\t）
+	//printf(szJSON);
+	strlcpy(strJson, szJSON, strlen(szJSON));
+
+	cJSON_Delete(pRoot);
+
+	free(szJSON);
+	return 0;
+}
 //  ==============================================================================================
 //  InitConfig
 //
@@ -97,10 +192,8 @@ int syncDataInitConfig(void)
 	cP = cfsCreate(sissmGetConfigPath());
 
 	// read "map_vote.pluginstate" variable from the .cfg file
-	mapVoteConfig.pluginState = (int)cfsFetchNum(cP, "map_vote.pluginState", 0.0); // disabled by default
-	mapVoteConfig.lessPlayerCountNeedAllVote = (int)cfsFetchNum(cP, "map_vote.lessPlayerCountNeedAllVote", 3);
-	strlcpy(mapVoteConfig.allowDuplicateVoteUid, cfsFetchStr(cP, "map_vote.allowDuplicateVoteUid", ""), 200);
-	mapVoteConfig.duplicateVoteAsNewPlayer = (int)cfsFetchNum(cP, "map_vote.duplicateVoteAsNewPlayer", 1);
+	syncDataConfig.pluginState = (int)cfsFetchNum(cP, "sync_data.pluginState", 0.0); // disabled by default
+	syncDataConfig.serverId = (int)cfsFetchNum(cP, "map_vote.lessPlayerCountNeedAllVote", 3);
 	cfsDestroy(cP);
 	return 0;
 }
@@ -112,6 +205,7 @@ int syncDataInitConfig(void)
 //
 int syncDataInitCB(char* strIn)
 {
+	roundInit();
 	logPrintf(LOG_LEVEL_INFO, "stncData", "Init Event ::%s::", strIn);
 	return 0;
 }
@@ -122,17 +216,20 @@ int syncDataClientAddCB(char* strIn)
 
 	rosterParsePlayerConn(strIn, 256, playerName, playerGUID, playerIP);
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Add Client ::%s::%s::%s::", playerName, playerGUID, playerIP);
-
-	if (apiPlayersGetCount() >= 8) {   // if the last connect player is #8 (last slot if 8 port server)
-		if (0 != strcmp(playerGUID, "76561000000000000")) {    // check if this is the server owner 
-			apiKickOrBan(0, playerGUID, "Sorry the last port reserved for server owner only");
-			apiSay("syncData: Player %s kicked server full", playerName);
-		}
-		apiSay("syncData: Welcome server owner %s", playerName);
-	}
-	else {
-		apiSay("syncData: Welcome %s", playerName);
-	}
+	struct PlayerData * player=playerGetOrCreate(playerGUID);
+	strcpy(player->name, playerName);
+	strcpy(player->ip, playerIP);
+	player->joinTime= apiTimeGet();
+	//if (apiPlayersGetCount() >= 8) {   // if the last connect player is #8 (last slot if 8 port server)
+	//	if (0 != strcmp(playerGUID, "76561000000000000")) {    // check if this is the server owner 
+	//		apiKickOrBan(0, playerGUID, "Sorry the last port reserved for server owner only");
+	//		apiSay("syncData: Player %s kicked server full", playerName);
+	//	}
+	//	apiSay("syncData: Welcome server owner %s", playerName);
+	//}
+	//else {
+	//	apiSay("syncData: Welcome %s", playerName);
+	//}
 
 	return 0;
 }
@@ -144,24 +241,18 @@ int syncDataClientDelCB(char* strIn)
 	rosterParsePlayerDisConn(strIn, 256, playerName, playerGUID, playerIP);
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Del Client ::%s::%s::%s::", playerName, playerGUID, playerIP);
 
-	apiSay("syncData: Good bye %s", playerName);
-
+	struct PlayerData * player = playerGetOrCreate(playerGUID);
+	strcpy(player->name, playerName);
+	strcpy(player->ip, playerIP);
+	player->leaveTime = apiTimeGet();
 	return 0;
 }
 int syncDataGameStartCB(char* strIn)
 {
-	char newCount[256];
-
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Game Start Event ::%s::", strIn);
 
-	apiGameModePropertySet("minimumenemies", "4");
-	apiGameModePropertySet("maximumenemies", "4");
-
-	strlcpy(newCount, apiGameModePropertyGet("minimumenemies"), 256);
-
 	// in-game announcement start of game
-	apiSay("syncData: %s -- 2 waves of %s bots", syncDataConfig.stringParameterExample, newCount);
-
+	gameStartTime = apiTimeGet();
 	return 0;
 }
 
@@ -181,7 +272,10 @@ int syncDataGameEndCB(char* strIn)
 int syncDataRoundStartCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Round Start Event ::%s::", strIn);
-	apiSay(syncDataConfig.stringParameterExample2); // in-game announcement start of round
+	roundInit();
+	roundData.gameStartTime = gameStartTime;
+	roundData.roundIndex = gameRountIndex++;
+	roundData.roundStartTime = apiTimeGet();
 	return 0;
 }
 
@@ -192,8 +286,16 @@ int syncDataRoundStartCB(char* strIn)
 //
 int syncDataRoundEndCB(char* strIn)
 {
+	roundData.roundEndTime = apiTimeGet();
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Round End Event ::%s::", strIn);
-	apiSay("syncData: End of Round");
+	/*list_each(playerList, value)
+	{
+	}*/
+	for (int i = 0; i < playerDataIndex; i++) {
+		playerList[i].score = strtoi(rosterLookupIPFromGUID(playerList[i].uid),10);
+	}
+
+	// 发送
 	return 0;
 }
 
@@ -235,7 +337,6 @@ int syncDataCapturedCB(char* strIn)
 	//
 	if (lastTimeCaptured + 10L < apiTimeGet()) {
 
-		apiSay(syncDataConfig.stringParameterExample3);
 		lastTimeCaptured = apiTimeGet();
 		// apiServerRestart();
 
@@ -256,24 +357,41 @@ int syncDataKilledCB(char* strIn)
 
 	int has = 0;
 	char fullName1[100];
-	getWordRange1(strIn, "Display:", "killed", fullName1);
+	getWordRange(strIn, "Display:", "killed", fullName1);
 	char fullName2[100];
-	getWordRange1(strIn, "killed", "with", fullName2);
+	getWordRange(strIn, "killed", "with", fullName2);
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", fullName1, fullName2);
 
 
 
 	char name1[100];
 	char uid1[40];
-	getWordRange1(fullName1, " ", "[", name1);
-	getWordRange1(fullName1, "[", ",", uid1);
+	getWordRange(fullName1, " ", "[", name1);
+	getWordRange(fullName1, "[", ",", uid1);
 
 
 	char name2[100];
 	char uid2[40];
-	getWordRange1(fullName2, " ", "[", name2);
-	getWordRange1(fullName2, "[", ",", uid2);
+	getWordRange(fullName2, " ", "[", name2);
+	getWordRange(fullName2, "[", ",", uid2);
+	if (strlen(uid1)==0) {
+		struct KillWay  way;
+		way.killCount = 0;
+		struct PlayerData* player = playerGet(uid2);
+		// 被杀死的方式
+		player->beKillWayIndex++;
+		player->beKillWay[player->beKillWayIndex] = way;
 
+	}
+	else {
+		struct KillWay  way;
+		struct PlayerData* player = playerGet(uid1);
+		way.killCount = 0;
+		// 杀死的方式
+		player->killWayIndex++;
+		player->killWay[player->killWayIndex] = way;
+	}
+	return 0;
 }
 //  ==============================================================================================
 //  ...
@@ -283,13 +401,31 @@ int syncDataKilledCB(char* strIn)
 //
 int syncDataInstallPlugin(void)
 {
-	logPrintf(LOG_LEVEL_INFO, "map_vote", "mapVoteInstallPlugin");
+	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataInstallPlugin");
 
 	syncDataInitConfig();
 	// if plugin is disabled in the .cfg file then do not activate
 	//
-	if (syncDataConfig.pluginState == 0)
-		return 0;
+	/*if (syncDataConfig.pluginState == 0)
+		return 0;*/
+	int a = httpRequest();
+
+	/*syncDataRoundStartCB(SS_SUBSTR_ROUND_START);
+	syncDataChatCB("[2022.06.16-18.07.05:877][751]LogChat: Display: 血战钢锯岭(76561198324874244) Global Chat: vite");
+	syncDataRoundEndCB(SS_SUBSTR_ROUND_END);*/
+
+	struct PlayerData* p=playerGetOrCreate("1234");
+	printf("=====uid %s\n", p->uid);
+	printf("=====playerDataIndex %d\n", playerDataIndex);
+	printf("=====playerData.uid %s\n", playerList[playerDataIndex].uid);
+
+	struct PlayerData* p1 = playerGetOrCreate("1234");
+	strcpy(p1->name,"张三");
+	printf("=====playerData.name %s\n", playerList[playerDataIndex].name);
+	char json[500];
+	createRoundJson(json);
+
+	printf("=====json %s\n", json);
 
 	// Install Event-driven CallBack hooks so the plugin gets
 	// notified for various happenings.  A complete list is here,
@@ -316,6 +452,5 @@ int syncDataInstallPlugin(void)
 	//eventsRegister(SISSM_EV_SESSIONLOG, syncDataSessionLog);
 	//eventsRegister(SISSM_EV_OBJECT_SYNTH, syncDataObjectSynth);
 	eventsRegister(SISSM_EV_KILLED, syncDataKilledCB);
-httpRequest();
 	return 0;
 }

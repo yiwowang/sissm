@@ -31,6 +31,7 @@
 
 #include "kill_self.h"
 #include <ctype.h>
+#include "common_util.h"
 //  ==============================================================================================
 //  Data definition
 //
@@ -68,24 +69,7 @@ int killSelfInitConfig(void)
 	cfsDestroy(cP);
 	return 0;
 }
-void getWordRange1(char* input, char* start, char* end, char* output)
-{
-	char* w;
-	w = strstr(input, start);
-	if (w == NULL)
-	{
-		return;
-	}
-	char* w2;
-	w2 = strstr(w, end);
-	if (w2 == NULL)
-	{
-		return;
-	}
 
-
-	strlcpy(output, w + strlen(start), w2 - w - strlen(start) + 1);
-}
 //  ==============================================================================================
 // InitCB
 //
@@ -116,23 +100,23 @@ int killSelfKilledCB(char* strIn)
 
 	int has = 0;
 	char fullName1[100];
-	getWordRange1(strIn, "Display:", "killed", fullName1);
+	getWordRange(strIn, "Display:", "killed", fullName1);
 	char fullName2[100];
-	getWordRange1(strIn, "killed", "with", fullName2);
+	getWordRange(strIn, "killed", "with", fullName2);
 	logPrintf(LOG_LEVEL_INFO, "kill_self", "name1::%s:: name2 %s", fullName1, fullName2);
 
 
 
 	char name1[100];
 	char uid1[40];
-	getWordRange1(fullName1, " ", "[", name1);
-	getWordRange1(fullName1, "[", ",", uid1);
+	getWordRange(fullName1, " ", "[", name1);
+	getWordRange(fullName1, "[", ",", uid1);
 
 
 	char name2[100];
 	char uid2[40];
-	getWordRange1(fullName2, " ", "[", name2);
-	getWordRange1(fullName2, "[", ",", uid2);
+	getWordRange(fullName2, " ", "[", name2);
+	getWordRange(fullName2, "[", ",", uid2);
 
 	//logPrintf(LOG_LEVEL_INFO, "kill_self", "name1==%s==uid1==%s==%s==%s==", name1, uid1, name2, uid2);
 
@@ -150,7 +134,8 @@ int killSelfKilledCB(char* strIn)
 					apiKickOrBan(0, uid1, "自杀次数超限");
 				}
 				else {
-					apiSay("警告:[%s]已自杀%d次,超过%d次将被踢出", name1, player[playerIndex1].killSelfCount, killSelfConfig.limitCountPerRound);
+					// fix encode add . end of
+					apiSay("警告:[%s]已自杀%d次,超过%d次将被踢出.", name1, player[playerIndex1].killSelfCount, killSelfConfig.limitCountPerRound);
 				}
 				break;
 			}
@@ -161,7 +146,7 @@ int killSelfKilledCB(char* strIn)
 			++playerIndex1;
 			player[playerIndex1].name = uid1;
 			player[playerIndex1].killSelfCount = 1;
-			apiSay("警告:[%s]已自杀%d次,超过%d次将被踢出", name1, player[playerIndex1].killSelfCount, killSelfConfig.limitCountPerRound);
+			apiSay("警告:[%s]已自杀%d次,超过%d次将被踢出.", name1, player[playerIndex1].killSelfCount, killSelfConfig.limitCountPerRound);
 
 		}
 	}
