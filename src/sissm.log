@@ -837,3 +837,719 @@
 2022-11-21 20:33:58::sissm::State - SM_STARTUP
 2022-11-21 20:33:59::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
 2022-11-21 20:33:59::sissm::######## SIGTERM Exit #######
+2022-11-21 22:03:26::sissm::--------------------------------------
+2022-11-21 22:03:26::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:03:26::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:03:26::api::BadWords list -1 words from file 
+2022-11-21 22:03:26::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:03:26::api::BPChar Translation Table cleared
+2022-11-21 22:03:27::map_vote::mapVoteInstallPlugin
+2022-11-21 22:03:27::kill_self::killSelfInstallPlugin
+2022-11-21 22:03:27::sync_data::syncDataInstallPlugin
+2022-11-21 22:03:27::sissm::Server ID: ::*::
+2022-11-21 22:03:27::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 22:03:27::sissm::State - SM_STARTUP
+2022-11-21 22:03:27::sissm::State - SM_STARTUP
+2022-11-21 22:03:28::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 22:03:28::sissm::######## SIGTERM Exit #######
+2022-11-21 22:38:36::sissm::--------------------------------------
+2022-11-21 22:38:36::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:38:36::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:38:36::api::BadWords list -1 words from file 
+2022-11-21 22:38:36::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:38:36::api::BPChar Translation Table cleared
+2022-11-21 22:38:36::map_vote::mapVoteInstallPlugin
+2022-11-21 22:38:36::kill_self::killSelfInstallPlugin
+2022-11-21 22:38:36::sync_data::syncDataInstallPlugin
+2022-11-21 22:40:45::sissm::--------------------------------------
+2022-11-21 22:40:45::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:40:45::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:40:45::api::BadWords list -1 words from file 
+2022-11-21 22:40:45::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:40:45::api::BPChar Translation Table cleared
+2022-11-21 22:40:46::map_vote::mapVoteInstallPlugin
+2022-11-21 22:40:46::kill_self::killSelfInstallPlugin
+2022-11-21 22:40:46::sync_data::syncDataInstallPlugin
+2022-11-21 22:40:46::sissm::Server ID: ::*::
+2022-11-21 22:40:46::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 22:40:46::sissm::State - SM_STARTUP
+2022-11-21 22:40:46::sissm::State - SM_STARTUP
+2022-11-21 22:40:47::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 22:40:47::sissm::######## SIGTERM Exit #######
+2022-11-21 22:41:18::sissm::--------------------------------------
+2022-11-21 22:41:18::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:41:18::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:41:18::api::BadWords list -1 words from file 
+2022-11-21 22:41:18::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:41:18::api::BPChar Translation Table cleared
+2022-11-21 22:41:19::map_vote::mapVoteInstallPlugin
+2022-11-21 22:41:19::kill_self::killSelfInstallPlugin
+2022-11-21 22:41:19::sync_data::syncDataInstallPlugin
+2022-11-21 22:43:41::sissm::--------------------------------------
+2022-11-21 22:43:41::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:43:41::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:43:41::api::BadWords list -1 words from file 
+2022-11-21 22:43:41::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:43:41::api::BPChar Translation Table cleared
+2022-11-21 22:43:41::map_vote::mapVoteInstallPlugin
+2022-11-21 22:43:41::kill_self::killSelfInstallPlugin
+2022-11-21 22:43:41::sync_data::syncDataInstallPlugin
+2022-11-21 22:43:46::sissm::Server ID: ::*::
+2022-11-21 22:43:46::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 22:43:46::sissm::State - SM_STARTUP
+2022-11-21 22:43:46::sissm::State - SM_STARTUP
+2022-11-21 22:43:47::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 22:43:47::sissm::######## SIGTERM Exit #######
+2022-11-21 22:45:50::sissm::--------------------------------------
+2022-11-21 22:45:50::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:45:50::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:45:50::api::BadWords list -1 words from file 
+2022-11-21 22:45:50::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:45:50::api::BPChar Translation Table cleared
+2022-11-21 22:45:50::map_vote::mapVoteInstallPlugin
+2022-11-21 22:45:51::kill_self::killSelfInstallPlugin
+2022-11-21 22:45:51::sync_data::syncDataInstallPlugin
+2022-11-21 22:45:53::sissm::--------------------------------------
+2022-11-21 22:45:53::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:45:53::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:45:53::api::BadWords list -1 words from file 
+2022-11-21 22:45:53::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:45:53::api::BPChar Translation Table cleared
+2022-11-21 22:45:54::map_vote::mapVoteInstallPlugin
+2022-11-21 22:45:54::kill_self::killSelfInstallPlugin
+2022-11-21 22:45:54::sync_data::syncDataInstallPlugin
+2022-11-21 22:46:42::sissm::--------------------------------------
+2022-11-21 22:46:42::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:46:42::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:46:42::api::BadWords list -1 words from file 
+2022-11-21 22:46:42::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:46:42::api::BPChar Translation Table cleared
+2022-11-21 22:46:42::map_vote::mapVoteInstallPlugin
+2022-11-21 22:46:42::kill_self::killSelfInstallPlugin
+2022-11-21 22:46:42::sync_data::syncDataInstallPlugin
+2022-11-21 22:54:58::sissm::--------------------------------------
+2022-11-21 22:54:58::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 22:54:58::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 22:54:58::api::BadWords list -1 words from file 
+2022-11-21 22:54:58::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 22:54:58::api::BPChar Translation Table cleared
+2022-11-21 22:54:58::map_vote::mapVoteInstallPlugin
+2022-11-21 22:54:58::kill_self::killSelfInstallPlugin
+2022-11-21 22:54:58::sync_data::syncDataInstallPlugin
+2022-11-21 23:10:03::sissm::--------------------------------------
+2022-11-21 23:10:03::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:10:03::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:10:03::api::BadWords list -1 words from file 
+2022-11-21 23:10:03::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:10:03::api::BPChar Translation Table cleared
+2022-11-21 23:10:04::map_vote::mapVoteInstallPlugin
+2022-11-21 23:10:04::kill_self::killSelfInstallPlugin
+2022-11-21 23:10:04::sync_data::syncDataInstallPlugin
+2022-11-21 23:22:48::sissm::--------------------------------------
+2022-11-21 23:22:48::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:22:48::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:22:48::api::BadWords list -1 words from file 
+2022-11-21 23:22:48::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:22:48::api::BPChar Translation Table cleared
+2022-11-21 23:22:49::map_vote::mapVoteInstallPlugin
+2022-11-21 23:22:49::kill_self::killSelfInstallPlugin
+2022-11-21 23:22:49::sync_data::syncDataInstallPlugin
+2022-11-21 23:22:49::sissm::Server ID: ::*::
+2022-11-21 23:22:49::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:22:49::sissm::State - SM_STARTUP
+2022-11-21 23:22:49::sissm::State - SM_STARTUP
+2022-11-21 23:22:50::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:22:50::sissm::######## SIGTERM Exit #######
+2022-11-21 23:23:38::sissm::--------------------------------------
+2022-11-21 23:23:38::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:23:38::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:23:38::api::BadWords list -1 words from file 
+2022-11-21 23:23:38::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:23:38::api::BPChar Translation Table cleared
+2022-11-21 23:23:39::map_vote::mapVoteInstallPlugin
+2022-11-21 23:23:39::kill_self::killSelfInstallPlugin
+2022-11-21 23:23:39::sync_data::syncDataInstallPlugin
+2022-11-21 23:25:05::sissm::--------------------------------------
+2022-11-21 23:25:05::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:25:05::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:25:05::api::BadWords list -1 words from file 
+2022-11-21 23:25:05::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:25:05::api::BPChar Translation Table cleared
+2022-11-21 23:25:05::map_vote::mapVoteInstallPlugin
+2022-11-21 23:25:05::kill_self::killSelfInstallPlugin
+2022-11-21 23:25:05::sync_data::syncDataInstallPlugin
+2022-11-21 23:25:06::sissm::Server ID: ::*::
+2022-11-21 23:25:06::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:25:06::sissm::State - SM_STARTUP
+2022-11-21 23:25:06::sissm::State - SM_STARTUP
+2022-11-21 23:25:07::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:25:07::sissm::######## SIGTERM Exit #######
+2022-11-21 23:25:25::sissm::--------------------------------------
+2022-11-21 23:25:25::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:25:25::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:25:25::api::BadWords list -1 words from file 
+2022-11-21 23:25:25::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:25:25::api::BPChar Translation Table cleared
+2022-11-21 23:25:26::map_vote::mapVoteInstallPlugin
+2022-11-21 23:25:26::kill_self::killSelfInstallPlugin
+2022-11-21 23:25:26::sync_data::syncDataInstallPlugin
+2022-11-21 23:26:16::sissm::--------------------------------------
+2022-11-21 23:26:16::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:26:16::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:26:16::api::BadWords list -1 words from file 
+2022-11-21 23:26:16::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:26:16::api::BPChar Translation Table cleared
+2022-11-21 23:26:16::map_vote::mapVoteInstallPlugin
+2022-11-21 23:26:16::kill_self::killSelfInstallPlugin
+2022-11-21 23:26:16::sync_data::syncDataInstallPlugin
+2022-11-21 23:26:16::sissm::Server ID: ::*::
+2022-11-21 23:26:16::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:26:16::sissm::State - SM_STARTUP
+2022-11-21 23:26:16::sissm::State - SM_STARTUP
+2022-11-21 23:26:17::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:26:17::sissm::######## SIGTERM Exit #######
+2022-11-21 23:27:27::sissm::--------------------------------------
+2022-11-21 23:27:27::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:27:27::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:27:27::api::BadWords list -1 words from file 
+2022-11-21 23:27:27::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:27:27::api::BPChar Translation Table cleared
+2022-11-21 23:27:28::map_vote::mapVoteInstallPlugin
+2022-11-21 23:27:28::kill_self::killSelfInstallPlugin
+2022-11-21 23:27:28::sync_data::syncDataInstallPlugin
+2022-11-21 23:27:28::sissm::Server ID: ::*::
+2022-11-21 23:27:28::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:27:28::sissm::State - SM_STARTUP
+2022-11-21 23:27:28::sissm::State - SM_STARTUP
+2022-11-21 23:27:29::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:27:29::sissm::######## SIGTERM Exit #######
+2022-11-21 23:30:20::sissm::--------------------------------------
+2022-11-21 23:30:20::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:30:20::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:30:20::api::BadWords list -1 words from file 
+2022-11-21 23:30:20::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:30:20::api::BPChar Translation Table cleared
+2022-11-21 23:30:20::map_vote::mapVoteInstallPlugin
+2022-11-21 23:30:20::kill_self::killSelfInstallPlugin
+2022-11-21 23:30:20::sync_data::syncDataInstallPlugin
+2022-11-21 23:33:16::sissm::--------------------------------------
+2022-11-21 23:33:16::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:33:16::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:33:16::api::BadWords list -1 words from file 
+2022-11-21 23:33:16::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:33:16::api::BPChar Translation Table cleared
+2022-11-21 23:33:16::map_vote::mapVoteInstallPlugin
+2022-11-21 23:33:16::kill_self::killSelfInstallPlugin
+2022-11-21 23:33:16::sync_data::syncDataInstallPlugin
+2022-11-21 23:33:26::sissm::--------------------------------------
+2022-11-21 23:33:26::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:33:26::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:33:26::api::BadWords list -1 words from file 
+2022-11-21 23:33:26::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:33:26::api::BPChar Translation Table cleared
+2022-11-21 23:33:27::map_vote::mapVoteInstallPlugin
+2022-11-21 23:33:27::kill_self::killSelfInstallPlugin
+2022-11-21 23:33:27::sync_data::syncDataInstallPlugin
+2022-11-21 23:34:24::sissm::--------------------------------------
+2022-11-21 23:34:24::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:34:24::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:34:24::api::BadWords list -1 words from file 
+2022-11-21 23:34:24::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:34:24::api::BPChar Translation Table cleared
+2022-11-21 23:34:24::map_vote::mapVoteInstallPlugin
+2022-11-21 23:34:24::kill_self::killSelfInstallPlugin
+2022-11-21 23:34:24::sync_data::syncDataInstallPlugin
+2022-11-21 23:34:29::sissm::Server ID: ::*::
+2022-11-21 23:34:29::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:34:29::sissm::State - SM_STARTUP
+2022-11-21 23:34:29::sissm::State - SM_STARTUP
+2022-11-21 23:34:30::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:34:30::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:34:30::stncData::Init Event ::~INIT~::
+2022-11-21 23:34:30::sissm::######## SIGTERM Exit #######
+2022-11-21 23:36:34::sissm::--------------------------------------
+2022-11-21 23:36:34::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:36:34::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:36:35::api::BadWords list -1 words from file 
+2022-11-21 23:36:35::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:36:35::api::BPChar Translation Table cleared
+2022-11-21 23:36:35::map_vote::mapVoteInstallPlugin
+2022-11-21 23:36:35::kill_self::killSelfInstallPlugin
+2022-11-21 23:36:35::sync_data::syncDataInstallPlugin
+2022-11-21 23:36:40::sissm::Server ID: ::*::
+2022-11-21 23:36:40::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:36:40::sissm::State - SM_STARTUP
+2022-11-21 23:36:40::sissm::State - SM_STARTUP
+2022-11-21 23:36:41::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:36:41::sissm::######## SIGTERM Exit #######
+2022-11-21 23:37:41::sissm::--------------------------------------
+2022-11-21 23:37:41::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:37:41::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:37:41::api::BadWords list -1 words from file 
+2022-11-21 23:37:41::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:37:41::api::BPChar Translation Table cleared
+2022-11-21 23:37:42::map_vote::mapVoteInstallPlugin
+2022-11-21 23:37:42::kill_self::killSelfInstallPlugin
+2022-11-21 23:37:42::sync_data::syncDataInstallPlugin
+2022-11-21 23:38:16::sissm::--------------------------------------
+2022-11-21 23:38:16::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:38:16::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:38:16::api::BadWords list -1 words from file 
+2022-11-21 23:38:16::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:38:16::api::BPChar Translation Table cleared
+2022-11-21 23:38:16::map_vote::mapVoteInstallPlugin
+2022-11-21 23:38:16::kill_self::killSelfInstallPlugin
+2022-11-21 23:38:16::sync_data::syncDataInstallPlugin
+2022-11-21 23:38:22::sissm::Server ID: ::*::
+2022-11-21 23:38:22::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:38:22::sissm::State - SM_STARTUP
+2022-11-21 23:38:22::sissm::State - SM_STARTUP
+2022-11-21 23:38:23::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:38:23::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:38:23::stncData::Init Event ::~INIT~::
+2022-11-21 23:38:23::sissm::######## SIGTERM Exit #######
+2022-11-21 23:40:09::sissm::--------------------------------------
+2022-11-21 23:40:09::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:40:09::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:40:09::api::BadWords list -1 words from file 
+2022-11-21 23:40:09::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:40:09::api::BPChar Translation Table cleared
+2022-11-21 23:40:09::map_vote::mapVoteInstallPlugin
+2022-11-21 23:40:09::kill_self::killSelfInstallPlugin
+2022-11-21 23:40:09::sync_data::syncDataInstallPlugin
+2022-11-21 23:40:14::sissm::Server ID: ::*::
+2022-11-21 23:40:14::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:40:14::sissm::State - SM_STARTUP
+2022-11-21 23:40:14::sissm::State - SM_STARTUP
+2022-11-21 23:40:15::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:40:15::sissm::######## SIGTERM Exit #######
+2022-11-21 23:42:41::sissm::--------------------------------------
+2022-11-21 23:42:41::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:42:41::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:42:41::api::BadWords list -1 words from file 
+2022-11-21 23:42:41::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:42:41::api::BPChar Translation Table cleared
+2022-11-21 23:42:42::map_vote::mapVoteInstallPlugin
+2022-11-21 23:42:42::kill_self::killSelfInstallPlugin
+2022-11-21 23:42:42::sync_data::syncDataInstallPlugin
+2022-11-21 23:42:47::sissm::Server ID: ::*::
+2022-11-21 23:42:47::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:42:47::sissm::State - SM_STARTUP
+2022-11-21 23:42:47::sissm::State - SM_STARTUP
+2022-11-21 23:42:48::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:42:48::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:42:48::stncData::Init Event ::~INIT~::
+2022-11-21 23:42:49::sissm::######## SIGTERM Exit #######
+2022-11-21 23:43:12::sissm::--------------------------------------
+2022-11-21 23:43:12::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:43:12::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:43:12::api::BadWords list -1 words from file 
+2022-11-21 23:43:12::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:43:12::api::BPChar Translation Table cleared
+2022-11-21 23:43:13::map_vote::mapVoteInstallPlugin
+2022-11-21 23:43:13::kill_self::killSelfInstallPlugin
+2022-11-21 23:43:13::sync_data::syncDataInstallPlugin
+2022-11-21 23:43:18::sissm::Server ID: ::*::
+2022-11-21 23:43:18::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:43:18::sissm::State - SM_STARTUP
+2022-11-21 23:43:18::sissm::State - SM_STARTUP
+2022-11-21 23:43:19::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:43:19::sissm::######## SIGTERM Exit #######
+2022-11-21 23:44:08::sissm::--------------------------------------
+2022-11-21 23:44:08::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:44:08::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:44:08::api::BadWords list -1 words from file 
+2022-11-21 23:44:08::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:44:08::api::BPChar Translation Table cleared
+2022-11-21 23:44:09::map_vote::mapVoteInstallPlugin
+2022-11-21 23:44:09::kill_self::killSelfInstallPlugin
+2022-11-21 23:44:09::sync_data::syncDataInstallPlugin
+2022-11-21 23:44:39::sissm::--------------------------------------
+2022-11-21 23:44:39::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:44:39::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:44:40::api::BadWords list -1 words from file 
+2022-11-21 23:44:40::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:44:40::api::BPChar Translation Table cleared
+2022-11-21 23:44:40::map_vote::mapVoteInstallPlugin
+2022-11-21 23:44:40::kill_self::killSelfInstallPlugin
+2022-11-21 23:44:40::sync_data::syncDataInstallPlugin
+2022-11-21 23:44:45::sissm::Server ID: ::*::
+2022-11-21 23:44:45::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:44:45::sissm::State - SM_STARTUP
+2022-11-21 23:44:45::sissm::State - SM_STARTUP
+2022-11-21 23:44:46::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:44:46::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:44:46::stncData::Init Event ::~INIT~::
+2022-11-21 23:44:46::sissm::######## SIGTERM Exit #######
+2022-11-21 23:46:22::sissm::--------------------------------------
+2022-11-21 23:46:22::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:46:22::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:46:22::api::BadWords list -1 words from file 
+2022-11-21 23:46:22::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:46:22::api::BPChar Translation Table cleared
+2022-11-21 23:46:22::map_vote::mapVoteInstallPlugin
+2022-11-21 23:46:22::kill_self::killSelfInstallPlugin
+2022-11-21 23:46:22::sync_data::syncDataInstallPlugin
+2022-11-21 23:46:27::sissm::Server ID: ::*::
+2022-11-21 23:46:27::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:46:27::sissm::State - SM_STARTUP
+2022-11-21 23:46:27::sissm::State - SM_STARTUP
+2022-11-21 23:46:28::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:46:28::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:46:28::stncData::Init Event ::~INIT~::
+2022-11-21 23:46:53::rdrv::Warning: unable to connect to host via TCP/IP
+2022-11-21 23:48:14::sissm::--------------------------------------
+2022-11-21 23:48:14::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:48:14::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:48:14::api::BadWords list -1 words from file 
+2022-11-21 23:48:14::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:48:14::api::BPChar Translation Table cleared
+2022-11-21 23:48:14::map_vote::mapVoteInstallPlugin
+2022-11-21 23:48:14::kill_self::killSelfInstallPlugin
+2022-11-21 23:48:14::sync_data::syncDataInstallPlugin
+2022-11-21 23:49:17::sissm::--------------------------------------
+2022-11-21 23:49:17::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:49:17::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:49:17::api::BadWords list -1 words from file 
+2022-11-21 23:49:17::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:49:17::api::BPChar Translation Table cleared
+2022-11-21 23:49:18::map_vote::mapVoteInstallPlugin
+2022-11-21 23:49:18::kill_self::killSelfInstallPlugin
+2022-11-21 23:49:18::sync_data::syncDataInstallPlugin
+2022-11-21 23:49:33::sissm::Server ID: ::*::
+2022-11-21 23:49:33::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:49:33::sissm::State - SM_STARTUP
+2022-11-21 23:49:33::sissm::State - SM_STARTUP
+2022-11-21 23:49:34::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:50:28::sissm::--------------------------------------
+2022-11-21 23:50:28::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:50:28::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:50:28::api::BadWords list -1 words from file 
+2022-11-21 23:50:28::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:50:28::api::BPChar Translation Table cleared
+2022-11-21 23:50:29::map_vote::mapVoteInstallPlugin
+2022-11-21 23:50:29::kill_self::killSelfInstallPlugin
+2022-11-21 23:50:29::sync_data::syncDataInstallPlugin
+2022-11-21 23:50:52::sissm::--------------------------------------
+2022-11-21 23:50:52::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:50:52::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:50:52::api::BadWords list -1 words from file 
+2022-11-21 23:50:52::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:50:52::api::BPChar Translation Table cleared
+2022-11-21 23:50:52::map_vote::mapVoteInstallPlugin
+2022-11-21 23:50:52::kill_self::killSelfInstallPlugin
+2022-11-21 23:50:52::sync_data::syncDataInstallPlugin
+2022-11-21 23:50:57::sissm::Server ID: ::*::
+2022-11-21 23:50:57::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:50:57::sissm::State - SM_STARTUP
+2022-11-21 23:50:57::sissm::State - SM_STARTUP
+2022-11-21 23:50:58::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:50:58::sissm::######## SIGTERM Exit #######
+2022-11-21 23:52:13::sissm::--------------------------------------
+2022-11-21 23:52:13::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:52:13::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:52:13::api::BadWords list -1 words from file 
+2022-11-21 23:52:13::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:52:13::api::BPChar Translation Table cleared
+2022-11-21 23:52:13::map_vote::mapVoteInstallPlugin
+2022-11-21 23:52:13::kill_self::killSelfInstallPlugin
+2022-11-21 23:52:13::sync_data::syncDataInstallPlugin
+2022-11-21 23:52:40::sissm::--------------------------------------
+2022-11-21 23:52:40::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:52:40::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:52:40::api::BadWords list -1 words from file 
+2022-11-21 23:52:40::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:52:40::api::BPChar Translation Table cleared
+2022-11-21 23:52:41::map_vote::mapVoteInstallPlugin
+2022-11-21 23:52:41::kill_self::killSelfInstallPlugin
+2022-11-21 23:52:41::sync_data::syncDataInstallPlugin
+2022-11-21 23:52:59::sissm::--------------------------------------
+2022-11-21 23:52:59::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:52:59::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:52:59::api::BadWords list -1 words from file 
+2022-11-21 23:52:59::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:52:59::api::BPChar Translation Table cleared
+2022-11-21 23:52:59::map_vote::mapVoteInstallPlugin
+2022-11-21 23:52:59::kill_self::killSelfInstallPlugin
+2022-11-21 23:52:59::sync_data::syncDataInstallPlugin
+2022-11-21 23:53:50::sissm::--------------------------------------
+2022-11-21 23:53:50::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:53:50::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:53:50::api::BadWords list -1 words from file 
+2022-11-21 23:53:50::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:53:50::api::BPChar Translation Table cleared
+2022-11-21 23:53:51::map_vote::mapVoteInstallPlugin
+2022-11-21 23:53:51::kill_self::killSelfInstallPlugin
+2022-11-21 23:53:51::sync_data::syncDataInstallPlugin
+2022-11-21 23:53:56::sissm::Server ID: ::*::
+2022-11-21 23:53:56::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:53:56::sissm::State - SM_STARTUP
+2022-11-21 23:53:56::sissm::State - SM_STARTUP
+2022-11-21 23:53:57::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:53:57::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:53:57::stncData::Init Event ::~INIT~::
+2022-11-21 23:53:57::sissm::######## SIGTERM Exit #######
+2022-11-21 23:54:49::sissm::--------------------------------------
+2022-11-21 23:54:49::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:54:49::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:54:49::api::BadWords list -1 words from file 
+2022-11-21 23:54:49::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:54:49::api::BPChar Translation Table cleared
+2022-11-21 23:54:50::map_vote::mapVoteInstallPlugin
+2022-11-21 23:54:50::kill_self::killSelfInstallPlugin
+2022-11-21 23:54:50::sync_data::syncDataInstallPlugin
+2022-11-21 23:55:12::sissm::--------------------------------------
+2022-11-21 23:55:12::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:55:12::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:55:12::api::BadWords list -1 words from file 
+2022-11-21 23:55:12::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:55:12::api::BPChar Translation Table cleared
+2022-11-21 23:55:12::map_vote::mapVoteInstallPlugin
+2022-11-21 23:55:12::kill_self::killSelfInstallPlugin
+2022-11-21 23:55:12::sync_data::syncDataInstallPlugin
+2022-11-21 23:55:31::sissm::Server ID: ::*::
+2022-11-21 23:55:31::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:55:31::sissm::State - SM_STARTUP
+2022-11-21 23:55:31::sissm::State - SM_STARTUP
+2022-11-21 23:55:32::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:55:53::rdrv::Warning: unable to connect to host via TCP/IP
+2022-11-21 23:56:24::sissm::--------------------------------------
+2022-11-21 23:56:24::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:56:24::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:56:24::api::BadWords list -1 words from file 
+2022-11-21 23:56:24::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:56:24::api::BPChar Translation Table cleared
+2022-11-21 23:56:24::map_vote::mapVoteInstallPlugin
+2022-11-21 23:56:24::kill_self::killSelfInstallPlugin
+2022-11-21 23:56:24::sync_data::syncDataInstallPlugin
+2022-11-21 23:56:51::sissm::--------------------------------------
+2022-11-21 23:56:51::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:56:51::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:56:51::api::BadWords list -1 words from file 
+2022-11-21 23:56:51::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:56:51::api::BPChar Translation Table cleared
+2022-11-21 23:56:52::map_vote::mapVoteInstallPlugin
+2022-11-21 23:56:52::kill_self::killSelfInstallPlugin
+2022-11-21 23:56:52::sync_data::syncDataInstallPlugin
+2022-11-21 23:56:57::sissm::Server ID: ::*::
+2022-11-21 23:56:57::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:56:57::sissm::State - SM_STARTUP
+2022-11-21 23:56:57::sissm::State - SM_STARTUP
+2022-11-21 23:56:58::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:56:58::sissm::######## SIGTERM Exit #######
+2022-11-21 23:57:37::sissm::--------------------------------------
+2022-11-21 23:57:37::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:57:37::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:57:37::api::BadWords list -1 words from file 
+2022-11-21 23:57:37::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:57:37::api::BPChar Translation Table cleared
+2022-11-21 23:57:37::map_vote::mapVoteInstallPlugin
+2022-11-21 23:57:37::kill_self::killSelfInstallPlugin
+2022-11-21 23:57:37::sync_data::syncDataInstallPlugin
+2022-11-21 23:57:42::sissm::Server ID: ::*::
+2022-11-21 23:57:42::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:57:42::sissm::State - SM_STARTUP
+2022-11-21 23:57:42::sissm::State - SM_STARTUP
+2022-11-21 23:57:43::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:57:43::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-21 23:57:43::stncData::Init Event ::~INIT~::
+2022-11-21 23:57:44::sissm::######## SIGTERM Exit #######
+2022-11-21 23:58:19::sissm::--------------------------------------
+2022-11-21 23:58:19::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-21 23:58:19::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-21 23:58:19::api::BadWords list -1 words from file 
+2022-11-21 23:58:19::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-21 23:58:19::api::BPChar Translation Table cleared
+2022-11-21 23:58:19::map_vote::mapVoteInstallPlugin
+2022-11-21 23:58:19::kill_self::killSelfInstallPlugin
+2022-11-21 23:58:19::sync_data::syncDataInstallPlugin
+2022-11-21 23:58:24::sissm::Server ID: ::*::
+2022-11-21 23:58:24::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-21 23:58:24::sissm::State - SM_STARTUP
+2022-11-21 23:58:24::sissm::State - SM_STARTUP
+2022-11-21 23:58:25::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-21 23:58:25::sissm::######## SIGTERM Exit #######
+2022-11-22 00:01:51::sissm::--------------------------------------
+2022-11-22 00:01:51::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:01:51::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:01:51::api::BadWords list -1 words from file 
+2022-11-22 00:01:51::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:01:51::api::BPChar Translation Table cleared
+2022-11-22 00:01:52::map_vote::mapVoteInstallPlugin
+2022-11-22 00:01:52::kill_self::killSelfInstallPlugin
+2022-11-22 00:01:52::sync_data::syncDataInstallPlugin
+2022-11-22 00:01:52::sissm::Server ID: ::*::
+2022-11-22 00:01:52::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:01:52::sissm::State - SM_STARTUP
+2022-11-22 00:01:52::sissm::State - SM_STARTUP
+2022-11-22 00:01:53::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:01:53::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-22 00:01:53::stncData::Init Event ::~INIT~::
+2022-11-22 00:01:53::sissm::######## SIGTERM Exit #######
+2022-11-22 00:03:24::sissm::--------------------------------------
+2022-11-22 00:03:24::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:03:24::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:03:24::api::BadWords list -1 words from file 
+2022-11-22 00:03:24::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:03:24::api::BPChar Translation Table cleared
+2022-11-22 00:03:24::map_vote::mapVoteInstallPlugin
+2022-11-22 00:03:24::kill_self::killSelfInstallPlugin
+2022-11-22 00:03:24::sync_data::syncDataInstallPlugin
+2022-11-22 00:03:24::sissm::Server ID: ::*::
+2022-11-22 00:03:24::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:03:24::sissm::State - SM_STARTUP
+2022-11-22 00:03:24::sissm::State - SM_STARTUP
+2022-11-22 00:03:25::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:03:25::sissm::######## SIGTERM Exit #######
+2022-11-22 00:04:18::sissm::--------------------------------------
+2022-11-22 00:04:18::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:04:18::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:04:18::api::BadWords list -1 words from file 
+2022-11-22 00:04:18::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:04:18::api::BPChar Translation Table cleared
+2022-11-22 00:04:19::map_vote::mapVoteInstallPlugin
+2022-11-22 00:04:19::kill_self::killSelfInstallPlugin
+2022-11-22 00:04:19::sync_data::syncDataInstallPlugin
+2022-11-22 00:04:19::sissm::Server ID: ::*::
+2022-11-22 00:04:19::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:04:19::sissm::State - SM_STARTUP
+2022-11-22 00:04:19::sissm::State - SM_STARTUP
+2022-11-22 00:04:20::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:04:20::sissm::######## SIGTERM Exit #######
+2022-11-22 00:05:35::sissm::--------------------------------------
+2022-11-22 00:05:35::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:05:35::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:05:35::api::BadWords list -1 words from file 
+2022-11-22 00:05:35::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:05:35::api::BPChar Translation Table cleared
+2022-11-22 00:05:36::map_vote::mapVoteInstallPlugin
+2022-11-22 00:05:36::kill_self::killSelfInstallPlugin
+2022-11-22 00:05:36::sync_data::syncDataInstallPlugin
+2022-11-22 00:05:36::sissm::Server ID: ::*::
+2022-11-22 00:05:36::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:05:36::sissm::State - SM_STARTUP
+2022-11-22 00:05:36::sissm::State - SM_STARTUP
+2022-11-22 00:05:37::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:05:37::sissm::######## SIGTERM Exit #######
+2022-11-22 00:06:19::sissm::--------------------------------------
+2022-11-22 00:06:19::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:06:19::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:06:19::api::BadWords list -1 words from file 
+2022-11-22 00:06:19::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:06:19::api::BPChar Translation Table cleared
+2022-11-22 00:06:20::map_vote::mapVoteInstallPlugin
+2022-11-22 00:06:20::kill_self::killSelfInstallPlugin
+2022-11-22 00:06:20::sync_data::syncDataInstallPlugin
+2022-11-22 00:06:20::sissm::Server ID: ::*::
+2022-11-22 00:06:20::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:06:20::sissm::State - SM_STARTUP
+2022-11-22 00:06:20::sissm::State - SM_STARTUP
+2022-11-22 00:06:21::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:06:21::sissm::######## SIGTERM Exit #######
+2022-11-22 00:06:31::sissm::--------------------------------------
+2022-11-22 00:06:31::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:06:31::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:06:31::api::BadWords list -1 words from file 
+2022-11-22 00:06:31::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:06:31::api::BPChar Translation Table cleared
+2022-11-22 00:06:31::map_vote::mapVoteInstallPlugin
+2022-11-22 00:06:31::kill_self::killSelfInstallPlugin
+2022-11-22 00:06:31::sync_data::syncDataInstallPlugin
+2022-11-22 00:06:31::sissm::Server ID: ::*::
+2022-11-22 00:06:31::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:06:31::sissm::State - SM_STARTUP
+2022-11-22 00:06:31::sissm::State - SM_STARTUP
+2022-11-22 00:06:32::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:06:32::sissm::######## SIGTERM Exit #######
+2022-11-22 00:06:55::sissm::--------------------------------------
+2022-11-22 00:06:55::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:06:55::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:06:55::api::BadWords list -1 words from file 
+2022-11-22 00:06:55::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:06:55::api::BPChar Translation Table cleared
+2022-11-22 00:06:55::map_vote::mapVoteInstallPlugin
+2022-11-22 00:06:55::kill_self::killSelfInstallPlugin
+2022-11-22 00:06:55::sync_data::syncDataInstallPlugin
+2022-11-22 00:06:55::sissm::Server ID: ::*::
+2022-11-22 00:06:55::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:06:55::sissm::State - SM_STARTUP
+2022-11-22 00:06:55::sissm::State - SM_STARTUP
+2022-11-22 00:06:56::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:06:56::sissm::######## SIGTERM Exit #######
+2022-11-22 00:07:19::sissm::--------------------------------------
+2022-11-22 00:07:19::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:07:19::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:07:19::api::BadWords list -1 words from file 
+2022-11-22 00:07:19::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:07:19::api::BPChar Translation Table cleared
+2022-11-22 00:07:20::map_vote::mapVoteInstallPlugin
+2022-11-22 00:07:20::kill_self::killSelfInstallPlugin
+2022-11-22 00:07:20::sync_data::syncDataInstallPlugin
+2022-11-22 00:07:20::sissm::Server ID: ::*::
+2022-11-22 00:07:20::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:07:20::sissm::State - SM_STARTUP
+2022-11-22 00:07:20::sissm::State - SM_STARTUP
+2022-11-22 00:07:21::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:07:21::sissm::######## SIGTERM Exit #######
+2022-11-22 00:15:00::sissm::--------------------------------------
+2022-11-22 00:15:00::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:15:00::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:15:00::api::BadWords list -1 words from file 
+2022-11-22 00:15:00::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:15:00::api::BPChar Translation Table cleared
+2022-11-22 00:15:01::map_vote::mapVoteInstallPlugin
+2022-11-22 00:15:01::kill_self::killSelfInstallPlugin
+2022-11-22 00:15:01::sync_data::syncDataInstallPlugin
+2022-11-22 00:15:01::sissm::Server ID: ::*::
+2022-11-22 00:15:01::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:15:01::sissm::State - SM_STARTUP
+2022-11-22 00:15:01::sissm::State - SM_STARTUP
+2022-11-22 00:15:02::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:15:02::sissm::######## SIGTERM Exit #######
+2022-11-22 00:15:28::sissm::--------------------------------------
+2022-11-22 00:15:28::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:15:28::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:15:28::api::BadWords list -1 words from file 
+2022-11-22 00:15:28::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:15:28::api::BPChar Translation Table cleared
+2022-11-22 00:15:29::map_vote::mapVoteInstallPlugin
+2022-11-22 00:15:29::kill_self::killSelfInstallPlugin
+2022-11-22 00:15:29::sync_data::syncDataInstallPlugin
+2022-11-22 00:15:29::sissm::Server ID: ::*::
+2022-11-22 00:15:29::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:15:29::sissm::State - SM_STARTUP
+2022-11-22 00:15:29::sissm::State - SM_STARTUP
+2022-11-22 00:15:30::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:15:30::sissm::######## SIGTERM Exit #######
+2022-11-22 00:16:29::sissm::--------------------------------------
+2022-11-22 00:16:29::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:16:29::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:16:29::api::BadWords list -1 words from file 
+2022-11-22 00:16:29::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:16:29::api::BPChar Translation Table cleared
+2022-11-22 00:16:29::map_vote::mapVoteInstallPlugin
+2022-11-22 00:16:29::kill_self::killSelfInstallPlugin
+2022-11-22 00:16:29::sync_data::syncDataInstallPlugin
+2022-11-22 00:16:29::sissm::Server ID: ::*::
+2022-11-22 00:16:29::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:16:29::sissm::State - SM_STARTUP
+2022-11-22 00:16:29::sissm::State - SM_STARTUP
+2022-11-22 00:16:30::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:16:30::sissm::State - SM_POLLING_INIT->TRACKING
+2022-11-22 00:16:30::stncData::Init Event ::~INIT~::
+2022-11-22 00:16:30::sissm::######## SIGTERM Exit #######
+2022-11-22 00:17:46::sissm::--------------------------------------
+2022-11-22 00:17:46::sissm::SISSM v1.0.0.1 20220912-2200
+2022-11-22 00:17:46::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2022-11-22 00:17:46::api::BadWords list -1 words from file 
+2022-11-22 00:17:46::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2022-11-22 00:17:46::api::BPChar Translation Table cleared
+2022-11-22 00:17:47::map_vote::mapVoteInstallPlugin
+2022-11-22 00:17:47::kill_self::killSelfInstallPlugin
+2022-11-22 00:17:47::sync_data::syncDataInstallPlugin
+2022-11-22 00:17:47::sissm::Server ID: ::*::
+2022-11-22 00:17:47::sissm::** Warning: Console '^C' may take several seconds to process
+2022-11-22 00:17:47::sissm::State - SM_STARTUP
+2022-11-22 00:17:47::sissm::State - SM_STARTUP
+2022-11-22 00:17:48::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2022-11-22 00:17:48::sissm::######## SIGTERM Exit #######

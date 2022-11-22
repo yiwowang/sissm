@@ -408,7 +408,15 @@ int syncDataInstallPlugin(void)
 	//
 	/*if (syncDataConfig.pluginState == 0)
 		return 0;*/
-	int a = httpRequest();
+
+
+	// todo «Î«ÛÃÓ–¥json
+	char responseBody[2048];
+	httpRequest(5000,2,"82.156.36.121","/","{}", responseBody);
+	// todo ∑µªÿΩ‚Œˆjson
+	printf("responseBody=\n%s", responseBody);
+
+
 
 	/*syncDataRoundStartCB(SS_SUBSTR_ROUND_START);
 	syncDataChatCB("[2022.06.16-18.07.05:877][751]LogChat: Display: —™’Ω∏÷æ‚¡Î(76561198324874244) Global Chat: vite");

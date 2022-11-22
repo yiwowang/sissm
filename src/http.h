@@ -1,1 +1,1 @@
-extern int httpRequest();
+int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, char* postData, char* responseBody);
