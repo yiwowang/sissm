@@ -288,13 +288,12 @@ int syncDataRoundEndCB(char* strIn)
 {
 	roundData.roundEndTime = apiTimeGet();
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Round End Event ::%s::", strIn);
-	/*list_each(playerList, value)
-	{
-	}*/
 	for (int i = 0; i < playerDataIndex; i++) {
 		playerList[i].score = strtoi(rosterLookupIPFromGUID(playerList[i].uid),10);
 	}
-
+	char  json[1024];
+	createRoundJson(json);
+	printf("syncDataRoundEndCB  json=%s", json);
 	// ·¢ËÍ
 	return 0;
 }
@@ -411,10 +410,11 @@ int syncDataInstallPlugin(void)
 
 
 	// todo ÇëÇóÌîÐ´json
-	char responseBody[2048];
-	httpRequest(5000,2,"82.156.36.121","/","{}", responseBody);
-	// todo ·µ»Ø½âÎöjson
-	printf("responseBody=\n%s", responseBody);
+
+	//char responseBody[2048];
+	//httpRequest(5000,2,"82.156.36.121","/","{}", responseBody);
+	//// todo ·µ»Ø½âÎöjson
+	//printf("responseBody=\n%s", responseBody);
 
 
 
@@ -422,7 +422,7 @@ int syncDataInstallPlugin(void)
 	syncDataChatCB("[2022.06.16-18.07.05:877][751]LogChat: Display: ÑªÕ½¸Ö¾âÁë(76561198324874244) Global Chat: vite");
 	syncDataRoundEndCB(SS_SUBSTR_ROUND_END);*/
 
-	struct PlayerData* p=playerGetOrCreate("1234");
+	/*struct PlayerData* p = playerGetOrCreate("1234");
 	printf("=====uid %s\n", p->uid);
 	printf("=====playerDataIndex %d\n", playerDataIndex);
 	printf("=====playerData.uid %s\n", playerList[playerDataIndex].uid);
@@ -432,8 +432,8 @@ int syncDataInstallPlugin(void)
 	printf("=====playerData.name %s\n", playerList[playerDataIndex].name);
 	char json[500];
 	createRoundJson(json);
-
-	printf("=====json %s\n", json);
+	*/
+	//printf("=====json %s\n", json);
 
 	// Install Event-driven CallBack hooks so the plugin gets
 	// notified for various happenings.  A complete list is here,
