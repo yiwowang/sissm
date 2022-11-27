@@ -71,7 +71,7 @@ struct PlayerData
 	struct KillWay killWay[300];
 	int killWayIndex;
 
-	struct KillWay deadWay[10];
+	struct KillWay deadWay[20];
 	int deadWayIndex;
 };
 
@@ -90,7 +90,7 @@ struct RoundData
 	int roundId;// 第几局
 	long roundStartTime;
 	long roundEndTime;
-	char mapName[20];
+	char mapName[50];
 	int win;
 	char  endReason[50];
 	char take[10];// 占领到哪个点了
@@ -306,8 +306,11 @@ int syncDataClientSynthDelCB(char* strIn)
 	rosterParsePlayerDisConn(strIn, 256, playerName, playerGUID, playerIP);
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Synthetic DEL Callback Name ::%s:: IP ::%s:: GUID ::%s::", playerName, playerIP, playerGUID);
 	struct PlayerData* player = playerGetOrCreate(playerGUID, playerName);
+if(player!=NULL){
+
 	player->leaveTime = apiTimeGet();
-	return 0;
+}	
+return 0;
 }
 
 
@@ -399,7 +402,7 @@ int syncDataRoundEnd(int round,int win,char * endReason)
 		getTimeStr(gameStartTime, "%d-%d-%d-%d-%d-%d", timeStr, sizeof(timeStr));
 
 		char fileName[100];
-		snprintf(fileName, 100, "%s\\%s-round-%d.txt", syncDataConfig.outputPath, timeStr, round);
+		snprintf(fileName, 100, "%s%s-round-%d.txt", syncDataConfig.outputPath, timeStr, round);
 		writeFile(fileName, json);
 	}
 	else {
