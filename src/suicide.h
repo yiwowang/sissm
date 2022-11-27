@@ -1,9 +1,9 @@
 //  ==============================================================================================
 //
-//  Module: map_vote
+//  Module: suicide
 //
 //  Description:
-//  limit kill self
+//  limit suicide
 //
 //  Original Author:
 //  Yeye   2022.09.12
@@ -17,5 +17,5 @@
 //
 //  ==============================================================================================
 
-extern int killSelfInstallPlugin(void);
+extern int suicideInstallPlugin(void);
 

@@ -293,7 +293,7 @@ void parseText(char* inputText, int* output)
 
 	int len = strlen(input);
 
-	for (unsigned int i = 0; i < strlen(input); i++)
+	for (int i = 0; i < strlen(input); i++)
 	{
 
 		if (input[i] == 'i')
@@ -334,7 +334,7 @@ void parseText(char* inputText, int* output)
 
 	number[numberIndex] = '\0';
 
-	int n = strtoi(number, 10) - 1;
+	int n = strtoi(number) - 1;
 
 	if (n < 0)
 	{
@@ -353,7 +353,7 @@ void parseText(char* inputText, int* output)
 int mapVoteChatCB(char* strIn)
 {
 
-	logPrintf(LOG_LEVEL_INFO, "map_vote", "Client chat ::%s::", strIn);
+	//logPrintf(LOG_LEVEL_INFO, "map_vote", "Client chat ::%s::", strIn);
 
 	if (NULL != strstr(strIn, "vote") || NULL != strstr(strIn, "map"))
 	{
@@ -393,10 +393,10 @@ int mapVoteChatCB(char* strIn)
 		return 0;
 	}
 
-	char textTemp[10], text[10];
-	getWordRight(strIn, " Chat:", textTemp, 10);
+	char textTemp[50], text[50];
+	getWordRight(strIn, " Chat:", textTemp);
 
-	trim(textTemp, text, 10);
+	trim(textTemp, text, sizeof(textTemp));
 	if (strlen(text) == 0)
 	{
 		return 0;

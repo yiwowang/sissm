@@ -1,4 +1,4 @@
-//  ==============================================================================================
+﻿//  ==============================================================================================
 //
 //  Module: EVENTS
 //
@@ -14,7 +14,7 @@
 //  ==============================================================================================
 
 
-#define SISSM_MAXEVENTS                     (32)
+#define SISSM_MAXEVENTS                     (34)
 #define SISSM_MAXPLUGINS                    (32)
 
 #define SISSM_EV_CHAT                       ( 0)    // this must be first for security reasons!!
@@ -49,7 +49,9 @@
 #define SISSM_EV_RCON                       (27)
 #define SISSM_EV_MESHERR                    (28)
 #define SISSM_EV_GAME_END_NOW               (29)
-#define SISSM_EV_KILLED               (30)
+#define SISSM_EV_KILLED                     (30)
+#define SISSM_EV_SS_TAKE_OBJECTIVE           (31)
+#define SISSM_EV_SS_ROUND_STATE_CHANGE           (32)
 
 // Following substring in log file triggers an event
 //
@@ -81,8 +83,13 @@
 #define SS_SUBSTR_MAP_OBJECTIVE "LogObjectives: Verbose: Authority: Adding objective '"
 #define SS_SUBSTR_MESHERR       "LogGameMode: Verbose: RestartPlayerAt"
 #define SS_SUBSTR_GAME_END_NOW     "LogGameMode: Display: State: WaitingPostMatch -> GameOver"
-#define SS_SUBSTR_KILLED    "killed"
 
+
+#define SS_SUBSTR_KILLED    " killed "
+
+#define SS_SUBSTR_TAKE_OBJECTIVE    "LogGameplayEvents: Display: Objective "
+
+#define SS_SUBSTR_ROUND_STATE_CHANGE    "LogGameplayEvents: Display: Round "
 
 extern int eventsInit( void );
 extern int eventsRegister( int eventID, int (*callBack)( char * ));

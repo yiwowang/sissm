@@ -29,7 +29,14 @@ int betriebssystem = 1;
 #include <sys/time.h>
 int betriebssystem = 2;
 #endif
+void closeSocket(int fd){
+#ifdef _WIN32
+_close(fd);
+#else
+close(fd);
+#endif
 
+}
 int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, char* postData, char* responseBody)
 {
 
@@ -55,7 +62,7 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 
 	if ((hp = gethostbyname(hostname)) == NULL)
 	{
-		_close(sockfd);
+		closeSocket(sockfd);
 		return -1;
 	}
 
@@ -106,7 +113,7 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 	if (ret < 0) {
 		printf("Send failed\n");
 		printf("%s\n", message);
-		_close(sockfd);
+		closeSocket(sockfd);
 		return -1;
 	}
 
@@ -141,7 +148,7 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 			else
 			{
 				printf("unknown error: %d\n", errno);
-				_close(sockfd);
+				closeSocket(sockfd);
 			}
 		}
 		else if (size_recv == 0)

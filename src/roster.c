@@ -1,4 +1,4 @@
-//  ==============================================================================================
+﻿//  ==============================================================================================
 //
 //  Module: ROSTER
 //
@@ -33,6 +33,18 @@
 static rconRoster_t masterRoster[ROSTER_MAX];
 static char rosterServerName[256], rosterMapName[256], rosterTravel[256], rosterSessionID[256];
 static char rosterObjective[256], rosterObjectiveType[256];
+int rosterSetTestData(int i, char* playerName, char* playerUid, char* playerIP, char* playerScore) {
+    strlcpy(masterRoster[i].playerName, playerName, sizeof(masterRoster[i].playerName));
+    strlcpy(masterRoster[i].steamID, playerUid, sizeof(masterRoster[i].steamID));
+    strlcpy(masterRoster[i].IPaddress, playerIP, sizeof(masterRoster[i].IPaddress));
+    strlcpy(masterRoster[i].score, playerScore, sizeof(masterRoster[i].score));
+    printf("rosterSetTestData masterRoster[i].steamID=%s=%s==\n", masterRoster[i].steamID, masterRoster[i].playerName);
+    return 0;
+}
+
+ rconRoster_t* getMasterRoster(int index) {
+    return &masterRoster[index];
+}
 
 //  ==============================================================================================
 //  rosterIsValidGUID

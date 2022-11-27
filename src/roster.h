@@ -26,7 +26,8 @@ typedef struct {
     char score[ROSTER_FIELD_MAX];
 
 } rconRoster_t;
-
+extern int   rosterSetTestData(int i,char* playerName,char*playerUid,char * playerIP,char * playerScore);
+extern rconRoster_t* getMasterRoster(int index);
 extern int   rosterIsValidGUID( char *testGUID );
 extern int   rosterFindFirstID(  char *lineIn, char symOpen, char symClose, char *foundID, int maxString  );
 extern void  rosterSetMapName( char *mapName );

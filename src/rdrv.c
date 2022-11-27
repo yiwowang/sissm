@@ -353,6 +353,8 @@ int rdrvXmtRcv( rdrvObj *rPtr, int msgType, char *rconCmd, char *rconResp )
 // 
 static int _rdrvCommand( rdrvObj *rPtr, int msgType, char *rconCmd, char *rconResp, int *bytesRead )
 {
+
+  //  return 2;
     int n, exitFlag = 0, retryCount = 0, errCode = 0;
 
     *bytesRead = 0;

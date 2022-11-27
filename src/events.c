@@ -85,6 +85,8 @@ struct {
     { SISSM_EV_MESHERR,             28, SS_SUBSTR_MESHERR           },
     { SISSM_EV_GAME_END_NOW,        29, SS_SUBSTR_GAME_END_NOW    },
     { SISSM_EV_KILLED,              30, SS_SUBSTR_KILLED    },
+     { SISSM_EV_SS_TAKE_OBJECTIVE,             31, SS_SUBSTR_TAKE_OBJECTIVE    },
+     { SISSM_EV_SS_ROUND_STATE_CHANGE,             32, SS_SUBSTR_ROUND_STATE_CHANGE    },
     { -1,                           -1, "*"                   },
 
 };
@@ -137,8 +139,8 @@ int eventsRegister( int eventID, int (*callBack)( char * ))
     //
     if ( callBackIndex != -1 ) {
         for ( j=0; j<SISSM_MAXPLUGINS ; j++ ) {
-            if ( eventsCallbackFunctions[callBackIndex][j] == NULL) {
-                eventsCallbackFunctions[callBackIndex][j] = callBack;
+            if ( eventsCallbackFunctions[j][callBackIndex] == NULL) {
+                eventsCallbackFunctions[j][callBackIndex] = callBack;
                 errCode = 0;
                 break;
             }
@@ -175,8 +177,8 @@ int eventsUnRegister( int eventID, int (*callBack)( char * ))
     //
     if ( callBackIndex != -1 ) {
         for ( j=0; j<SISSM_MAXPLUGINS ; j++ ) {
-            if ( eventsCallbackFunctions[callBackIndex][j] == callBack) {
-                eventsCallbackFunctions[callBackIndex][j] = NULL;
+            if ( eventsCallbackFunctions[j][callBackIndex] == callBack) {
+                eventsCallbackFunctions[j][callBackIndex] = NULL;
                 errCode = 0;
             }
         }
@@ -211,8 +213,8 @@ int eventsDispatch( char *strBuffer )
             activeCallBackIndex = eventTable[i].callBacktableIndex;
             if ( activeCallBackIndex >= 0 ) {
                 for (j=0; j<SISSM_MAXPLUGINS; j++) {
-                    if ( NULL != eventsCallbackFunctions[activeCallBackIndex][j] ) {
-                         (*eventsCallbackFunctions[activeCallBackIndex][j])( strBuffer );
+                    if ( NULL != eventsCallbackFunctions[j][activeCallBackIndex] ) {
+                         (*eventsCallbackFunctions[j][activeCallBackIndex])( strBuffer );
                     }
                 }
             }

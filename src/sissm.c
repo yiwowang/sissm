@@ -59,7 +59,7 @@
 //
 #include "pit001.h"
 #include "map_vote.h"
-#include "kill_self.h"
+#include "suicide.h"
 #include "sync_data.h"
 #include "pirebooter.h"
 #include "pigreetings.h"
@@ -393,7 +393,7 @@ int sissmInitPlugins( void )
     //
     pit001InstallPlugin();                       // example template for plugin develoeprs
     mapVoteInstallPlugin();    
-    killSelfInstallPlugin();
+    suicideInstallPlugin();
     syncDataInstallPlugin();
     return errCode;
 }
