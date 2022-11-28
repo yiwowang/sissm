@@ -321,7 +321,7 @@ int pigreetingsClientSynthAddCB( char *strIn )
 			{
 				if (NULL != strstr(pigreetingsConfig.connectedCustomUids[i], playerGUID))
 				{
-					logPrintf(LOG_LEVEL_CRITICAL, "pigreetings", "SynAdd Client aaa %s %s %s %d", playerName, pigreetingsConfig.connectedCustomWords[i], pigreetingsConfig.connected, apiPlayersGetCount());
+					logPrintf(LOG_LEVEL_CRITICAL, "pigreetings", "SynAdd Client %s %s %s %d", playerName, pigreetingsConfig.connectedCustomWords[i], pigreetingsConfig.connected, apiPlayersGetCount());
 					apiSay("%s %s %s [%d]",
 						playerName,
 						pigreetingsConfig.connectedCustomWords[i],

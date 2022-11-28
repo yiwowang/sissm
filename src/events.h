@@ -69,7 +69,7 @@
 #define SS_SUBSTR_WINLOSE      "LogGameMode: Display: Round Over: Team"
 #define SS_SUBSTR_TRAVEL       "LogGameMode: ProcessServerTravel:"
 #define SS_SUBSTR_SESSIONLOG   "HttpStartUploadingFinished. SessionName:"
-#define SS_SUBSTR_DESTROY      "was destroyed for team"
+#define SS_SUBSTR_DESTROY      "see SS_SUBSTR_TAKE_OBJECTIVE"//"was destroyed for team" 
 #define SS_SUBSTR_RCON         "LogRcon:"
 
 #define SS_SUBSTR_BP_PLAYER_CONN        " RestartPlayerAtPlayerStart "

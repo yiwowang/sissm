@@ -137,7 +137,7 @@ struct PlayerData* playerGet(char* uid) {
 }
 
 struct PlayerData* playerGetOrCreate(char* uid, char* name) {
-	if (strlen(uid) <= 10) {
+	if (!isValidUid(uid)) {
 		return NULL;
 	}
 	struct PlayerData* item = playerGet(uid);
@@ -523,7 +523,9 @@ int syncDataKilledCB(char* strIn)
 	for (int i = 0; i <= killInfo->playerIndex; i++) {
 		char* playerUid = killInfo->playerUid[i];
 		char* playerName = killInfo->playerName[i];
-
+		if (!isValidUid(playerUid)) {
+			continue;
+		}
 
 		struct PlayerData* player = playerGetOrCreate(playerUid, playerName);
 		int suicide = strcmp(playerUid, killInfo->deadUid) == 0 ? 1 : 0;
@@ -687,7 +689,7 @@ int syncDataInstallPlugin(void)
 	if (syncDataConfig.pluginState == 0) {
 		return 0;
 	}
-
+	
 	/*eventsRegister(SISSM_EV_CLIENT_ADD, syncDataClientAddCB);
 eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
 	eventsRegister(SISSM_EV_INIT, syncDataInitCB);
@@ -713,15 +715,13 @@ eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
 	//eventsRegister(SISSM_EV_OBJECT_SYNTH, syncDataObjectSynth);
 	eventsRegister(SISSM_EV_KILLED, syncDataKilledCB);
 	eventsRegister(SISSM_EV_SS_TAKE_OBJECTIVE, syncDataTakeObjectiveCB);
-
 	//int j = 0;
 	//rosterSetTestData(0, "PRC-Ranger™", "76561199022218080", "1.1.1.1","100");
 	//rosterSetTestData(1, "灰灰·烬", "76561198846188569", "1.1.1.1", "100");
 
 	//eventsDispatch("[2022.11.22-15.06.56:596][ 17]LogNet: Join succeeded: 灰灰·烬");
 	//eventsDispatch("[2022.11.22-15.06.56:596][ 17]LogNet: Join succeeded: PRC-Ranger™");
-
-
+ // readLogFile("C:\\3F-no-take-Insurgency.log");
  //readLogFile("C:\\3F-sync_data_Insurgency.log");
 	//readLogFile("C:\\3F-Insurgency-backup-2022.11.22-22.59.56.log");
 	//ReadFile("C:\\Users\\Administrator\\Desktop\\服务器\\sissm_src\\test-log.txt");
