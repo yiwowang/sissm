@@ -649,7 +649,7 @@ int syncDataChatCB(char* strIn)
 		return 0;
 	}
 
-	char chatStr[60];
+	char chatStr[300];
 	getWordRight(strIn,"LogChat: Display: ", chatStr);
 
 	if (strstr(chatStr, "(") == NULL|| strstr(chatStr, ")") == NULL || strstr(chatStr, ": ") == NULL) {
