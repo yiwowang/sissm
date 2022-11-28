@@ -91,9 +91,10 @@ struct RoundData
 	long roundStartTime;
 	long roundEndTime;
 	char mapName[50];
+	int camp;// 阵营 1=政府军
 	int win;
 	char  endReason[50];
-	char take[10];// 占领到哪个点了
+	char takePosition[10];// 占领到哪个点了
 };
 struct RoundData roundData;
 
@@ -134,7 +135,7 @@ struct PlayerData* playerGet(char* uid) {
 	return NULL;
 }
 
-struct PlayerData* playerGetOrCreate(char* uid,char * name) {
+struct PlayerData* playerGetOrCreate(char* uid, char* name) {
 	if (strlen(uid) <= 10) {
 		return NULL;
 	}
@@ -151,7 +152,7 @@ struct PlayerData* playerGetOrCreate(char* uid,char * name) {
 void syncPlayerData() {
 	for (int i = 0; i < ROSTER_MAX; i++) {
 		rconRoster_t* p = getMasterRoster(i);
-		if (p==NULL||strlen(p->steamID) <= 0) {
+		if (p == NULL || strlen(p->steamID) <= 0) {
 			break;
 		}
 
@@ -166,11 +167,11 @@ void syncPlayerData() {
 }
 
 
-int createRoundJson(char* strJson,int size,int format) {
+int createRoundJson(char* strJson, int size, int format) {
 	cJSON* pRoot = cJSON_CreateObject();
 
 	cJSON* pRound = cJSON_CreateObject();
-	
+
 	cJSON_AddNumberToObject(pRound, "serverId", roundData.serverId);
 	cJSON_AddNumberToObject(pRound, "gameIsFull", roundData.gameIsFull);
 	cJSON_AddNumberToObject(pRound, "gameStartTime", roundData.gameStartTime);
@@ -180,9 +181,10 @@ int createRoundJson(char* strJson,int size,int format) {
 	cJSON_AddNumberToObject(pRound, "roundStartTime", roundData.roundStartTime);
 	cJSON_AddNumberToObject(pRound, "roundEndTime", roundData.roundEndTime);
 	cJSON_AddStringToObject(pRound, "mapName", roundData.mapName);
+	cJSON_AddNumberToObject(pRound, "camp", roundData.camp);
 	cJSON_AddNumberToObject(pRound, "win", roundData.win);
 	cJSON_AddStringToObject(pRound, "endReason", roundData.endReason);
-	cJSON_AddStringToObject(pRound, "take", roundData.take);
+	cJSON_AddStringToObject(pRound, "takePosition", roundData.takePosition);
 	cJSON_AddItemToObject(pRoot, "roundData", pRound);
 
 	cJSON* pArray = cJSON_CreateArray();
@@ -249,7 +251,7 @@ int createRoundJson(char* strJson,int size,int format) {
 		free(szJSON);
 		cJSON_Delete(pRoot);
 	}
-	
+
 	return 0;
 }
 
@@ -268,7 +270,7 @@ int syncDataInitConfig(void)
 	syncDataConfig.serverId = (int)cfsFetchNum(cP, "sync_data.serverId", 0);
 	strlcpy(syncDataConfig.httpUrl, cfsFetchStr(cP, "sync_data.httpUrl", ""), CFS_FETCH_MAX);
 	strlcpy(syncDataConfig.outputPath, cfsFetchStr(cP, "sync_data.outputPath", ""), CFS_FETCH_MAX);
-	
+
 	cfsDestroy(cP);
 	return 0;
 }
@@ -306,19 +308,20 @@ int syncDataClientSynthDelCB(char* strIn)
 	rosterParsePlayerDisConn(strIn, 256, playerName, playerGUID, playerIP);
 	logPrintf(LOG_LEVEL_INFO, "syncData", "Synthetic DEL Callback Name ::%s:: IP ::%s:: GUID ::%s::", playerName, playerIP, playerGUID);
 	struct PlayerData* player = playerGetOrCreate(playerGUID, playerName);
-if(player!=NULL){
+	if (player != NULL) {
 
-	player->leaveTime = apiTimeGet();
-}	
-return 0;
+		player->leaveTime = apiTimeGet();
+	}
+	return 0;
 }
 
 
 void initGameStart() {
 	gameStartTime = apiTimeGet();
 
-	char* strRoundLimit = apiGameModePropertyGet("RountLimit");
+	char* strRoundLimit = apiGameModePropertyGet("RoundLimit");
 	if (strlen(strRoundLimit) > 0) {
+		printf("strRoundLimit=====%s====\n", strRoundLimit);
 		gameRountLimit = strtoi(strRoundLimit);
 	}
 
@@ -328,7 +331,10 @@ void initGameStart() {
 		if (strstr(mapName, "/Game/Maps/") != NULL) {
 			getWordRight(mapName, "/Game/Maps/", roundData.mapName);
 		}
-		else{
+		else if (strstr(mapName, "_Checkpoint") != NULL) {
+			getWordLeft(mapName, "_Checkpoint", roundData.mapName);
+		}
+		else {
 			strlcpy(roundData.mapName, mapName, sizeof(roundData.mapName));
 		}
 	}
@@ -385,18 +391,19 @@ int syncDataRoundStart(int round)
 //  syncDataRoundEnd
 //
 //
-int syncDataRoundEnd(int round,int win,char * endReason)
+int syncDataRoundEnd(int round, int win, char* endReason)
 {
 	roundData.roundEndTime = apiTimeGet();
 	roundData.win = win;
+	roundData.camp = rosterGetCoopSide() == 0 ? 1 : 2;
 	strlcpy(roundData.endReason, endReason, sizeof(roundData.endReason));
 
 	syncPlayerData();
 
 	char  json[20 * 1024];
-	createRoundJson(json, sizeof(json), 1);
+	createRoundJson(json, sizeof(json), 0);
 	logPrintf(LOG_LEVEL_INFO, "syncData", "syncDataRoundEndCB  json:\n%s", json);
-	
+
 	if (exists(syncDataConfig.outputPath)) {
 		char timeStr[50];
 		getTimeStr(gameStartTime, "%d-%d-%d-%d-%d-%d", timeStr, sizeof(timeStr));
@@ -408,13 +415,24 @@ int syncDataRoundEnd(int round,int win,char * endReason)
 	else {
 		logPrintf(LOG_LEVEL_INFO, "syncData", "syncDataRoundEndCB outputPath not exists:%s", syncDataConfig.outputPath);
 	}
-	
+
+	if (strlen(syncDataConfig.httpUrl) > 0) {
+		logPrintf(LOG_LEVEL_INFO, "syncData", "httpRequest sending...");
+		char responseBody[10 * 1024];
+		httpRequest(5000, 2, "82.156.36.121", "/api.php", json, responseBody);
+		logPrintf(LOG_LEVEL_INFO, "syncData", "httpRequest responseBody=%s\n");
+	}
+	else {
+		logPrintf(LOG_LEVEL_INFO, "syncData", "syncDataRoundEndCB syncDataConfig.httpUrl empty:%s", syncDataConfig.httpUrl);
+	}
+
+
 
 	roundData.roundId = -1;
 	roundData.roundStartTime = -1;
-	roundData.roundEndTime =-1;
+	roundData.roundEndTime = -1;
 	roundData.win = -1;
-	strclr(roundData.take);
+	strclr(roundData.takePosition);
 	strclr(roundData.endReason);
 
 	// 发送
@@ -429,7 +447,7 @@ int syncDataRoundStateChangeCB(char* strIn)
 		// LogGameplayEvents: Display: Round 4 started
 		char round[10];
 		getWordRange(strIn, " Round ", " started", round);
-		
+
 		syncDataRoundStart(strtoi(round));
 	}
 	else {
@@ -472,6 +490,9 @@ int syncDataChatCB(char* strIn)
 * 统计击杀武器和次数，以及被杀武器和数量
 */
 void countKillWay(struct KillWay  killWayArray[], int* killWayIndex, char* weaponName) {
+	if (strlen(weaponName) <= 0) {
+		return;
+	}
 	char finalWeaponName[50];
 	if (strstr(weaponName, "Checkpoint") != NULL) {
 		strlcpy(finalWeaponName, "Checkpoint", sizeof(finalWeaponName));
@@ -514,7 +535,7 @@ int syncDataKilledCB(char* strIn)
 			}
 			else if (i == 0) {
 				player->killCount++;
-				countKillWay(&player-> killWay, &player-> killWayIndex, killInfo->weaponName);
+				countKillWay(&player->killWay, &player->killWayIndex, killInfo->weaponName);
 			}
 			else {
 				player->assistCount++;
@@ -537,7 +558,8 @@ int syncDataTakeObjectiveCB(char* strIn)
 	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataTakeObjectiveCB Event ::%s::", strIn);
 	char point[10];
 	char rightStr[300];
-
+	strclr(point);
+	strclr(rightStr);
 
 	if (strstr(strIn, " was destroyed for team ") != NULL) {
 		getWordRange(strIn, "Display: Objective ", " owned by team ", point);
@@ -551,8 +573,8 @@ int syncDataTakeObjectiveCB(char* strIn)
 	if (strlen(point) <= 0 || strlen(rightStr) <= 0) {
 		return 0;
 	}
-	strlcpy(roundData.take, point, sizeof(roundData.take));
-	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataTakeObjectiveCB========%d===%s==%s===", strlen(point), point, roundData.take);
+	strlcpy(roundData.takePosition, point, sizeof(roundData.takePosition));
+	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataTakeObjectiveCB========%d===%s==%s===", strlen(point), point, roundData.takePosition);
 
 
 	char playerStr[200];
@@ -599,7 +621,7 @@ void readLogFile(char* path)
 		char* p = fgets(buf, sizeof(buf), fp);
 		if (p != NULL)
 		{
-			strcat(buf,"\0");
+			strcat(buf, "\0");
 			eventsDispatch(buf);
 			/*printf("buf = %s\n", buf);
 			printf("%s\n", p);*/
@@ -626,9 +648,13 @@ int syncDataInstallPlugin(void)
 	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataInstallPlugin");
 
 	syncDataInitConfig();
-	
+	if (syncDataConfig.pluginState == 0) {
+		return 0;
+	}
+
+
 	/*eventsRegister(SISSM_EV_CLIENT_ADD, syncDataClientAddCB);
-	eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
+eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
 	eventsRegister(SISSM_EV_INIT, syncDataInitCB);
 	//eventsRegister(SISSM_EV_RESTART, syncDataRestartCB);
 	//eventsRegister(SISSM_EV_MAPCHANGE, syncDataMapChangeCB);
@@ -661,80 +687,79 @@ int syncDataInstallPlugin(void)
 	//eventsDispatch("[2022.11.22-15.06.56:596][ 17]LogNet: Join succeeded: PRC-Ranger™");
 
 
+	// readLogFile("C:\\3F-sync_data_Insurgency.log");
 	//readLogFile("C:\\3F-Insurgency-backup-2022.11.22-22.59.56.log");
-//ReadFile("C:\\Users\\Administrator\\Desktop\\服务器\\sissm_src\\test-log.txt");
-	//printf("========================playerList 0 =%s=%s=\n", playerList[0].name, playerList[0].uid);
-	//printf("========================playerList 1 =%s=%s=\n", playerList[1].name, playerList[1].uid);
-	//printf("========================playerDataIndex =%d\n", playerDataIndex);
-	
-	//// 1.一个玩家杀敌
-	//char* log1 = "[2022.11.22 - 15.37.12:202][655]LogGameplayEvents: Display: Moonkidz[76561198049466120, team 1] killed Rifleman[INVALID, team 0] with BP_Firearm_M16A4_C_2147230188";
-	//// 2.AI+玩家杀敌
-	//char* log2 = "[2022.11.22-15.36.12:452][655]LogGameplayEvents: Display: Rifleman[INVALID, team 0] killed Moonkidz[76561198049466120, team 1] with BP_Firearm_M16A4_C_2147246503";
-	//// 3.自杀
-	//char* log3 = "[2022.11.22-15.36.34:422][894]LogGameplayEvents: Display: 璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です[76561198971631233, team 1] killed 璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です[76561198971631233, team 1] with BP_Character_Player_C_2147479854";
-	//// 4.AI杀敌
-	//char* log4 = "[2022.11.22-15.38.27:110][484]LogGameplayEvents: Display: Rifleman[INVALID, team 0] killed 头脑风暴[76561198091709844, team 1] with BP_Firearm_M4A1_C_2147228688";
-	//// 5.多个玩家杀敌
-	//char* log5 = "[2022.11.22-15.38.30:497][603]LogGameplayEvents: Display: PRC-Ranger™[76561199022218080, team 1] + Moonkidz[76561198049466120, team 1] killed Breacher[INVALID, team 0] with BP_Firearm_M60_C_2147230290";
-	//// 6.爆破爆炸杀敌
-	//char* log6 = "[2022.11.22-15.53.33:624][310]LogGameplayEvents: Display: 嘤嘤复嘤嘤[76561198119316406, team 0] killed Rifleman[INVALID, team 1] with ODCheckpoint_D\n";
-	//char* log7 = "[2022.11.22-15.38.27:110][484]LogGameplayEvents: Display: PRC-Ranger™[76561199022218080, team 1] killed Rifleman[INVALID, team 1] with BP_Firearm_M4A1_C_2147228688";
-	//// 玩家加入
-	//char* playerGUID = "76561199022218080";
-	//char* playerName = "PRC-Ranger™";
-	//struct PlayerData* player = playerGetOrCreate(playerGUID);
-	//strlcpy(player->name, playerName, sizeof(player->name));
+	//ReadFile("C:\\Users\\Administrator\\Desktop\\服务器\\sissm_src\\test-log.txt");
+		//printf("========================playerList 0 =%s=%s=\n", playerList[0].name, playerList[0].uid);
+		//printf("========================playerList 1 =%s=%s=\n", playerList[1].name, playerList[1].uid);
+		//printf("========================playerDataIndex =%d\n", playerDataIndex);
 
-	//struct PlayerData* player2 = playerGetOrCreate("76561198971631233");
-	//strlcpy(player2->name, "璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です", sizeof(player2->name));
+		//// 1.一个玩家杀敌
+		//char* log1 = "[2022.11.22 - 15.37.12:202][655]LogGameplayEvents: Display: Moonkidz[76561198049466120, team 1] killed Rifleman[INVALID, team 0] with BP_Firearm_M16A4_C_2147230188";
+		//// 2.AI+玩家杀敌
+		//char* log2 = "[2022.11.22-15.36.12:452][655]LogGameplayEvents: Display: Rifleman[INVALID, team 0] killed Moonkidz[76561198049466120, team 1] with BP_Firearm_M16A4_C_2147246503";
+		//// 3.自杀
+		//char* log3 = "[2022.11.22-15.36.34:422][894]LogGameplayEvents: Display: 璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です[76561198971631233, team 1] killed 璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です[76561198971631233, team 1] with BP_Character_Player_C_2147479854";
+		//// 4.AI杀敌
+		//char* log4 = "[2022.11.22-15.38.27:110][484]LogGameplayEvents: Display: Rifleman[INVALID, team 0] killed 头脑风暴[76561198091709844, team 1] with BP_Firearm_M4A1_C_2147228688";
+		//// 5.多个玩家杀敌
+		//char* log5 = "[2022.11.22-15.38.30:497][603]LogGameplayEvents: Display: PRC-Ranger™[76561199022218080, team 1] + Moonkidz[76561198049466120, team 1] killed Breacher[INVALID, team 0] with BP_Firearm_M60_C_2147230290";
+		//// 6.爆破爆炸杀敌
+		//char* log6 = "[2022.11.22-15.53.33:624][310]LogGameplayEvents: Display: 嘤嘤复嘤嘤[76561198119316406, team 0] killed Rifleman[INVALID, team 1] with ODCheckpoint_D\n";
+		//char* log7 = "[2022.11.22-15.38.27:110][484]LogGameplayEvents: Display: PRC-Ranger™[76561199022218080, team 1] killed Rifleman[INVALID, team 1] with BP_Firearm_M4A1_C_2147228688";
+		//// 玩家加入
+		//char* playerGUID = "76561199022218080";
+		//char* playerName = "PRC-Ranger™";
+		//struct PlayerData* player = playerGetOrCreate(playerGUID);
+		//strlcpy(player->name, playerName, sizeof(player->name));
 
-
-	//eventsDispatch(log1);
-	//eventsDispatch(log2);
-	//eventsDispatch(log3);
-	//eventsDispatch(log4);
-	//eventsDispatch(log5);
-	//eventsDispatch(log7);
+		//struct PlayerData* player2 = playerGetOrCreate("76561198971631233");
+		//strlcpy(player2->name, "璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です", sizeof(player2->name));
 
 
-	//// 1.爆破完成，其中Objective 0，0表示A点，以此类推
-	//char* log20 = "[2022.11.22 - 16.56.30:228][783]LogGameplayEvents: Display: Objective 0 owned by team 1 was destroyed for team 0 by 嘤嘤复嘤嘤[76561198119316406], PRC - Ranger™[76561199022218080].";
-	//// 2.占点完成
-	//char* log21 = "[2022.11.22 - 15.18.43:017][790]LogGameplayEvents: Display: Objective 1 was captured for team 1 from team 0 by 璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です[76561198971631233], 血战钢锯岭[76561198324874244], prtFrater[76561198360887006], ZJ1ah0[76561198230516704], 灰灰·烬[76561198846188569], littlewhite20[76561198215306701], CCA[76561198243423130].";
-	//// 3.被AI夺回
-	//char* log22 = "[2022.11.22-15.35.40:591][832]LogGameplayEvents: Display: Objective 0 owned by team 0 was reset from 36% by Rifleman[INVALID], Rifleman[INVALID], Rifleman[INVALID], Rifleman[INVALID], Rifleman[INVALID].";
-
-	//eventsDispatch(log20);
-	//eventsDispatch(log21);
-	//eventsDispatch(log22);
+		//eventsDispatch(log1);
+		//eventsDispatch(log2);
+		//eventsDispatch(log3);
+		//eventsDispatch(log4);
+		//eventsDispatch(log5);
+		//eventsDispatch(log7);
 
 
-	//char* log40 = "[2022.11.22-16.03.37:490][136]LogGameMode: Display: Round Over: Team 1 won (win reason: Elimination)";
-	////syncDataWinLose(log40);
-	//eventsDispatch(log40);
+		//// 1.爆破完成，其中Objective 0，0表示A点，以此类推
+		//char* log20 = "[2022.11.22 - 16.56.30:228][783]LogGameplayEvents: Display: Objective 0 owned by team 1 was destroyed for team 0 by 嘤嘤复嘤嘤[76561198119316406], PRC - Ranger™[76561199022218080].";
+		//// 2.占点完成
+		//char* log21 = "[2022.11.22 - 15.18.43:017][790]LogGameplayEvents: Display: Objective 1 was captured for team 1 from team 0 by 璃月最強伝説と斩尽の牛杂!玉衡☆刻晴です[76561198971631233], 血战钢锯岭[76561198324874244], prtFrater[76561198360887006], ZJ1ah0[76561198230516704], 灰灰·烬[76561198846188569], littlewhite20[76561198215306701], CCA[76561198243423130].";
+		//// 3.被AI夺回
+		//char* log22 = "[2022.11.22-15.35.40:591][832]LogGameplayEvents: Display: Objective 0 owned by team 0 was reset from 36% by Rifleman[INVALID], Rifleman[INVALID], Rifleman[INVALID], Rifleman[INVALID], Rifleman[INVALID].";
+
+		//eventsDispatch(log20);
+		//eventsDispatch(log21);
+		//eventsDispatch(log22);
 
 
-	/*char json[1000];
-	createRoundJson(json);
-
-	printf("json=%s\n", json);*/
-
-	// if plugin is disabled in the .cfg file then do not activate
-	//
-	/*if (syncDataConfig.pluginState == 0)
-		return 0;*/
+		//char* log40 = "[2022.11.22-16.03.37:490][136]LogGameMode: Display: Round Over: Team 1 won (win reason: Elimination)";
+		////syncDataWinLose(log40);
+		//eventsDispatch(log40);
 
 
-		// todo 请求填写json
+		/*char json[1000];
+		createRoundJson(json);
 
-		//char responseBody[2048];
-		//httpRequest(5000,2,"82.156.36.121","/","{}", responseBody);
-		//// todo 返回解析json
-		//printf("responseBody=\n%s", responseBody);
+		printf("json=%s\n", json);*/
+
+		// if plugin is disabled in the .cfg file then do not activate
+		//
+		/*if (syncDataConfig.pluginState == 0)
+			return 0;*/
 
 
+			// todo 请求填写json
 
+		//char* requestBody= "{\"roundData\":{\"serverId\":2,\"gameIsFull\":1,\"gameStartTime\":1669540543,\"gameRountLimit\":-1,\"roundId\":6,\"roundStartTime\":1669542487,\"roundEndTime\":1669542656,\"mapName\":\"Hideout_Checkpoint_Security\",\"win\":2,\"endReason\":\"Elimination\",\"takePosition\":\"1\"},\"playerList\":[{\"name\":\"血战钢锯岭\",\"uid\":\"76561198324874244\",\"score\":1705,\"killCount\":9,\"deadCount\":1,\"assistCount\":0,\"suicideCount\":0,\"takeCount\":0,\"joinTime\":1669542487,\"leaveTime\":0,\"ip\":\"123.123.47.80\",\"killWay\":{\"BP_Firearm_AUG\":7,\"BP_Projectile_Molotov\":1,\"BP_Firearm_PF940\":1},\"deadWay\":{\"BP_Firearm_Mosin\":1}},{\"name\":\"真主\",\"uid\":\"76561198257228155\",\"score\":2305,\"killCount\":3,\"deadCount\":1,\"assistCount\":1,\"suicideCount\":0,\"takeCount\":0,\"joinTime\":1669542487,\"leaveTime\":0,\"ip\":\"219.143.129.19\",\"killWay\":{\"BP_Firearm_M16A4\":3},\"deadWay\":{\"BP_Firearm_M16A4\":1}},{\"name\":\"青春Yuuki会梦到柯提羊\",\"uid\":\"76561198404297820\",\"score\":0,\"killCount\":0,\"deadCount\":0,\"assistCount\":0,\"suicideCount\":0,\"takeCount\":0,\"joinTime\":1669542605,\"leaveTime\":0,\"ip\":\"171.113.172.63\"}]}";
+		//char responseBody[10 * 1024];
+		//httpRequest(5000, 2, "82.156.36.121", "/api.php", requestBody, responseBody);
+		////// todo 返回解析json
+		//printf("responseBody=%s\n", responseBody);
 
 
 

@@ -45,7 +45,7 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 	struct hostent* hp;
 	char ip[20] = { 0 };
 	int sockfd;
-	char message[1024];
+	char message[10*1024];
 	int size_recv, total_size = 0;
 	int len;
 	char slen[32];
@@ -122,7 +122,7 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 	setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, (char*)&timeout, sizeof(int));
 	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(int));
 
-	char response[2048];
+	char response[10*1024];
 	while (1)
 	{
 
@@ -173,7 +173,13 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 		if (NULL != json) {
 			strcpy(responseBody, json + 4);
 		}
+		else {
+			printf("error format %s\n", response);
+		}
 	}
-	//_close(sockfd);
+	else {
+		printf("error %s\n", response);
+	}
+	// closeSocket(sockfd);
 	return 0;
 }
