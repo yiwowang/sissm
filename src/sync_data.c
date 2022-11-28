@@ -420,7 +420,7 @@ int syncDataRoundEnd(int round, int win, char* endReason)
 		logPrintf(LOG_LEVEL_INFO, "syncData", "httpRequest sending...");
 		char responseBody[10 * 1024];
 		httpRequest(5000, 2, "82.156.36.121", "/api.php", json, responseBody);
-		logPrintf(LOG_LEVEL_INFO, "syncData", "httpRequest responseBody=%s\n");
+		logPrintf(LOG_LEVEL_INFO, "syncData", "httpRequest responseBody=%s\n", responseBody);
 	}
 	else {
 		logPrintf(LOG_LEVEL_INFO, "syncData", "syncDataRoundEndCB syncDataConfig.httpUrl empty:%s", syncDataConfig.httpUrl);
