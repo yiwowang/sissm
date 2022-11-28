@@ -102,7 +102,8 @@ struct RoundData roundData;
 
 struct ChatData {
 	char uid[20];
-	char msg[200];
+	char name[30];// 不用存
+	char msg[100];
 	long time;
 };
 
@@ -186,10 +187,9 @@ int createRoundJson(char* strJson, int size, int format) {
 	cJSON_AddStringToObject(pRound, "endReason", roundData.endReason);
 	cJSON_AddStringToObject(pRound, "takePosition", roundData.takePosition);
 	cJSON_AddItemToObject(pRoot, "roundData", pRound);
-
-	cJSON* pArray = cJSON_CreateArray();
-	int i;
-	for (i = 0; i <= playerDataIndex; i++) {
+	// playerList
+	cJSON* pPlayerArray = cJSON_CreateArray();
+	for (int i = 0; i <= playerDataIndex; i++) {
 		cJSON* pItem = cJSON_CreateObject();
 		cJSON_AddStringToObject(pItem, "name", playerList[i].name);
 		cJSON_AddStringToObject(pItem, "uid", playerList[i].uid);
@@ -215,29 +215,27 @@ int createRoundJson(char* strJson, int size, int format) {
 		}
 		cJSON_AddItemToObject(pItem, "deadWay", pDeadWay);
 
-		/*cJSON* killWayArray = cJSON_CreateArray();
-		for (int j = 0; j <= playerList[i].killWayIndex; j++) {
-			cJSON* killWayItem = cJSON_CreateObject();
-				cJSON_AddStringToObject(killWayItem, "name", playerList[i].killWay[j].name);
-				cJSON_AddNumberToObject(killWayItem, "count", playerList[i].killWay[j].count);
-				cJSON_AddItemToArray(killWayArray, killWayItem);
-		}
-		cJSON_AddItemToObject(pItem, "killWay", killWayArray);
 
-		cJSON* deadWayArray = cJSON_CreateArray();
-		for (int j = 0; j <= playerList[i].deadWayIndex; j++) {
-			cJSON* deadWayItem = cJSON_CreateObject();
-			cJSON_AddStringToObject(deadWayItem, "name", playerList[i].deadWay[j].name);
-			cJSON_AddNumberToObject(deadWayItem, "count", playerList[i].deadWay[j].count);
-			cJSON_AddItemToArray(deadWayArray, deadWayItem);
-		}
-		cJSON_AddItemToObject(pItem, "deadWay", deadWayArray);*/
-
-
-		cJSON_AddItemToArray(pArray, pItem);
+		cJSON_AddItemToArray(pPlayerArray, pItem);
 	}
 
-	cJSON_AddItemToObject(pRoot, "playerList", pArray);
+	cJSON_AddItemToObject(pRoot, "playerList", pPlayerArray);
+
+
+
+
+	cJSON* pChatArray = cJSON_CreateArray();
+	for (int i = 0; i <= chatDataIndex; i++) {
+		cJSON* pItem = cJSON_CreateObject();
+		cJSON_AddStringToObject(pItem, "uid", chatList[i].uid);
+		// 后续不用传name
+		cJSON_AddStringToObject(pItem, "name", chatList[i].name);
+		cJSON_AddStringToObject(pItem, "msg", chatList[i].msg);
+		cJSON_AddNumberToObject(pItem, "time", chatList[i].time);
+		cJSON_AddItemToArray(pChatArray, pItem);
+	}
+
+	cJSON_AddItemToObject(pRoot, "chatList", pChatArray);
 
 	if (format) {
 		char* szJSON = cJSON_Print(pRoot);
@@ -435,6 +433,13 @@ int syncDataRoundEnd(int round, int win, char* endReason)
 	strclr(roundData.takePosition);
 	strclr(roundData.endReason);
 
+	for (int i = 0; i < chatDataIndex; i++) {
+		strclr(chatList[i].uid);
+		strclr(chatList[i].name);
+		strclr(chatList[i].msg);
+		chatList[i].time = 0;
+	}
+	chatDataIndex = -1;
 	// 发送
 	return 0;
 }
@@ -477,13 +482,6 @@ int syncDataRoundStateChangeCB(char* strIn)
 	return 0;
 }
 
-
-
-int syncDataChatCB(char* strIn)
-{
-	//logPrintf(LOG_LEVEL_INFO, "syncData", "Client chat ::%s::", strIn);
-	return 0;
-}
 
 
 /*
@@ -637,6 +635,44 @@ void readLogFile(char* path)
 	}
 }
 
+
+int syncDataChatCB(char* strIn)
+{
+	// [2022.11.27 - 09.17.47:750] [695] LogChat: Display: 真主(76561198257228155) Global Chat : 2f
+	// [2022.11.22-15.50.58:109][717]LogChat: Display: 12324YEYE(76561198097876746) Team 0 Chat: --help
+	// [2022.11.22-17.11.04:888][250]LogChat: Display: AAAAA(76561198320645347) Team 1 Chat: 6
+	//logPrintf(LOG_LEVEL_INFO, "syncData", "Client chat ::%s::", strIn);
+	if (strstr(strIn,"LogChat: Display: ")==NULL) {
+		logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataChatCB Error1 %s", strIn);
+		return 0;
+	}
+
+	char chatStr[60];
+	getWordRight(strIn,"LogChat: Display: ", chatStr);
+
+	if (strstr(chatStr, "(") == NULL|| strstr(chatStr, ")") == NULL || strstr(chatStr, ": ") == NULL) {
+		logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataChatCB Error1 %s", strIn);
+		return 0;
+	}
+
+	char playerName[30];
+	getWordLeft(chatStr, "(", playerName);
+	char playerUid[20];
+	getWordRange(chatStr, "(",")", playerUid);
+	char msg[100];
+	getWordRight(chatStr, ": ", msg);
+	//printf("playerName=%s=   playerUid=%s=msg=%s=\n", playerName, playerUid, msg);
+	struct ChatData* item = &chatList[++chatDataIndex];
+	strlcpy(item->uid, playerUid, sizeof(item->uid));
+	strlcpy(item->name, playerName, sizeof(item->name));
+	strlcpy(item->msg, msg, sizeof(item->msg));
+	item->time = apiTimeGet();
+
+	return 0;
+}
+
+
+
 //  ==============================================================================================
 //  ...
 //
@@ -651,7 +687,6 @@ int syncDataInstallPlugin(void)
 	if (syncDataConfig.pluginState == 0) {
 		return 0;
 	}
-
 
 	/*eventsRegister(SISSM_EV_CLIENT_ADD, syncDataClientAddCB);
 eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
@@ -687,7 +722,7 @@ eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
 	//eventsDispatch("[2022.11.22-15.06.56:596][ 17]LogNet: Join succeeded: PRC-Ranger™");
 
 
-	// readLogFile("C:\\3F-sync_data_Insurgency.log");
+ //readLogFile("C:\\3F-sync_data_Insurgency.log");
 	//readLogFile("C:\\3F-Insurgency-backup-2022.11.22-22.59.56.log");
 	//ReadFile("C:\\Users\\Administrator\\Desktop\\服务器\\sissm_src\\test-log.txt");
 		//printf("========================playerList 0 =%s=%s=\n", playerList[0].name, playerList[0].uid);
