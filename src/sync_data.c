@@ -56,7 +56,7 @@ struct KillWay {
 
 struct PlayerData
 {
-	char name[30];// 玩家名字
+	char name[50];// 玩家名字
 	char uid[20];// 玩家steamId
 	int score;// 玩家得分
 	char ip[15];// ip
@@ -102,7 +102,7 @@ struct RoundData roundData;
 
 struct ChatData {
 	char uid[20];
-	char name[30];// 不用存
+	char name[50];// 不用存
 	char msg[100];
 	long time;
 };
@@ -557,7 +557,7 @@ int syncDataTakeObjectiveCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataTakeObjectiveCB Event ::%s::", strIn);
 	char point[10];
-	char rightStr[300];
+	char rightStr[500];
 	strclr(point);
 	strclr(rightStr);
 
@@ -577,7 +577,7 @@ int syncDataTakeObjectiveCB(char* strIn)
 	logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataTakeObjectiveCB========%d===%s==%s===", strlen(point), point, roundData.takePosition);
 
 
-	char playerStr[200];
+	char playerStr[300];
 	getWordRight(rightStr, " by ", playerStr);
 
 
@@ -643,24 +643,24 @@ int syncDataChatCB(char* strIn)
 	// [2022.11.27 - 09.17.47:750] [695] LogChat: Display: 真主(76561198257228155) Global Chat : 2f
 	// [2022.11.22-15.50.58:109][717]LogChat: Display: 12324YEYE(76561198097876746) Team 0 Chat: --help
 	// [2022.11.22-17.11.04:888][250]LogChat: Display: AAAAA(76561198320645347) Team 1 Chat: 6
-	//logPrintf(LOG_LEVEL_INFO, "syncData", "Client chat ::%s::", strIn);
+//	logPrintf(LOG_LEVEL_INFO, "syncData", "Client chat ::%s::", strIn);
 	if (strstr(strIn,"LogChat: Display: ")==NULL) {
 		logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataChatCB Error1 %s", strIn);
 		return 0;
 	}
-
 	char chatStr[300];
 	getWordRight(strIn,"LogChat: Display: ", chatStr);
-
 	if (strstr(chatStr, "(") == NULL|| strstr(chatStr, ")") == NULL || strstr(chatStr, ": ") == NULL) {
 		logPrintf(LOG_LEVEL_INFO, "sync_data", "syncDataChatCB Error1 %s", strIn);
 		return 0;
 	}
 
-	char playerName[30];
+	char playerName[50];
 	getWordLeft(chatStr, "(", playerName);
+
 	char playerUid[20];
 	getWordRange(chatStr, "(",")", playerUid);
+
 	char msg[100];
 	getWordRight(chatStr, ": ", msg);
 	//printf("playerName=%s=   playerUid=%s=msg=%s=\n", playerName, playerUid, msg);
@@ -669,7 +669,6 @@ int syncDataChatCB(char* strIn)
 	strlcpy(item->name, playerName, sizeof(item->name));
 	strlcpy(item->msg, msg, sizeof(item->msg));
 	item->time = apiTimeGet();
-
 	return 0;
 }
 
@@ -721,7 +720,7 @@ eventsRegister(SISSM_EV_CLIENT_DE, syncDataClientDelCB);*/
 
 	//eventsDispatch("[2022.11.22-15.06.56:596][ 17]LogNet: Join succeeded: 灰灰·烬");
 	//eventsDispatch("[2022.11.22-15.06.56:596][ 17]LogNet: Join succeeded: PRC-Ranger™");
- // readLogFile("C:\\3F-no-take-Insurgency.log");
+//readLogFile("C:\\crash-11-30.log");
  //readLogFile("C:\\3F-sync_data_Insurgency.log");
 	//readLogFile("C:\\3F-Insurgency-backup-2022.11.22-22.59.56.log");
 	//ReadFile("C:\\Users\\Administrator\\Desktop\\服务器\\sissm_src\\test-log.txt");

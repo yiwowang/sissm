@@ -117,7 +117,7 @@ void getWordRightRange(char* input, char* startOffset, char* start, char* end, c
 		return;
 	}
 	if (startOffset!=NULL&&strstr(input, startOffset) != NULL) {
-		char temp[300];
+		char temp[500];
 		getWordRight(input, startOffset, temp);
 		getWordRange(temp, start, end, output);
 	}
@@ -200,7 +200,7 @@ int strtoi(const char* str)
 int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 {
 	killInfo->playerIndex = -1;
-	char str1[300];
+	char str1[500];
 	getWordRight(strIn, "Display: ", str1);
 	//用来接收返回数据的数组。这里的数组元素只要设置的比分割后的子字符串个数大就好了。
 	char* arr1[10] = { 0 };
