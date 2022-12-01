@@ -27,9 +27,7 @@
 #include "time.h"
 
 #include "common_util.h"
-int isDebug() {
-	return 1;
-}
+
 int isValidUid(char* uid) {
 	return strlen(uid) > 10;
 }

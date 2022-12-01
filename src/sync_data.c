@@ -73,6 +73,8 @@ struct PlayerData
 
 	struct KillWay deadWay[20];
 	int deadWayIndex;
+
+	int isAlive;
 };
 
 struct PlayerData  playerList[50];
@@ -110,7 +112,8 @@ struct ChatData {
 struct ChatData  chatList[500];
 int chatDataIndex = -1;
 
-void roundInit() {
+
+void roundReset() {
 	for (int i = 0; i <= playerDataIndex; i++) {
 		playerList[i].score = 0;
 		playerList[i].killCount = 0;
@@ -119,12 +122,31 @@ void roundInit() {
 		playerList[i].suicideCount = 0;
 		playerList[i].killWayIndex = -1;
 		playerList[i].deadWayIndex = -1;
+		playerList[i].takeCount = 0;
+
+		strclr(playerList[i].name);
+		strclr(playerList[i].uid);
+		strclr(playerList[i].ip);
 		playerList[i].joinTime = 0;
 		playerList[i].leaveTime = 0;
-		playerList[i].takeCount = 0;
 	}
 	playerDataIndex = -1;
 
+
+	roundData.roundId = -1;
+	roundData.roundStartTime = -1;
+	roundData.roundEndTime = -1;
+	roundData.win = -1;
+	strclr(roundData.takePosition);
+	strclr(roundData.endReason);
+
+	for (int i = 0; i < chatDataIndex; i++) {
+		strclr(chatList[i].uid);
+		strclr(chatList[i].name);
+		strclr(chatList[i].msg);
+		chatList[i].time = 0;
+	}
+	chatDataIndex = -1;
 }
 
 struct PlayerData* playerGet(char* uid) {
@@ -151,6 +173,12 @@ struct PlayerData* playerGetOrCreate(char* uid, char* name) {
 }
 
 void syncPlayerData() {
+	// 先全部标记为离开
+	for (int i = 0; i <= playerDataIndex; i++) {
+		playerList[i].isAlive = 0;
+	}
+
+	// 标记活着的
 	for (int i = 0; i < ROSTER_MAX; i++) {
 		rconRoster_t* p = getMasterRoster(i);
 		if (p == NULL || strlen(p->steamID) <= 0) {
@@ -164,6 +192,16 @@ void syncPlayerData() {
 		strlcpy(player->name, p->playerName, sizeof(player->name));
 		strlcpy(player->ip, p->IPaddress, sizeof(player->ip));
 		player->score = strtoi(p->score);
+
+		player->isAlive = 1;
+		player->leaveTime = 0;
+	}
+
+	// 为离开的设置离开时间
+	for (int i = 0; i <= playerDataIndex; i++) {
+		if (playerList[i].isAlive == 0 && playerList[i].leaveTime <= 0) {
+			playerList[i].leaveTime = apiTimeGet();
+		}
 	}
 }
 
@@ -281,7 +319,7 @@ int syncDataInitConfig(void)
 int syncDataInitCB(char* strIn)
 {
 
-	roundInit();
+	roundReset();
 	logPrintf(LOG_LEVEL_INFO, "stncData", "Init Event ::%s::", strIn);
 	return 0;
 }
@@ -290,26 +328,12 @@ int syncDataInitCB(char* strIn)
 int syncDataClientSynthAddCB(char* strIn)
 {
 	syncPlayerData();
-
-	static char playerName[256], playerGUID[256], playerIP[256];
-
-	rosterParsePlayerSynthConn(strIn, 256, playerName, playerGUID, playerIP);
-	logPrintf(LOG_LEVEL_INFO, "syncData", "Synthetic ADD Callback Name ::%s:: IP ::%s:: GUID ::%s::", playerName, playerIP, playerGUID);
 	return 0;
 }
 
 int syncDataClientSynthDelCB(char* strIn)
 {
-
-	char playerName[256], playerGUID[256], playerIP[256];
-
-	rosterParsePlayerDisConn(strIn, 256, playerName, playerGUID, playerIP);
-	logPrintf(LOG_LEVEL_INFO, "syncData", "Synthetic DEL Callback Name ::%s:: IP ::%s:: GUID ::%s::", playerName, playerIP, playerGUID);
-	struct PlayerData* player = playerGetOrCreate(playerGUID, playerName);
-	if (player != NULL) {
-
-		player->leaveTime = apiTimeGet();
-	}
+	syncPlayerData();
 	return 0;
 }
 
@@ -336,6 +360,7 @@ void initGameStart() {
 			strlcpy(roundData.mapName, mapName, sizeof(roundData.mapName));
 		}
 	}
+
 }
 
 int syncDataGameStartCB(char* strIn)
@@ -358,6 +383,7 @@ int syncDataGameEndCB(char* strIn)
 	logPrintf(LOG_LEVEL_INFO, "map_vote", "Game End Event ::%s::", strIn);
 	gameStartTime = 0;
 	gameIsFull = 0;
+
 	return 0;
 }
 
@@ -367,7 +393,7 @@ int syncDataGameEndCB(char* strIn)
 //
 int syncDataRoundStart(int round)
 {
-	roundInit();
+	roundReset();
 
 	syncPlayerData();
 
@@ -424,23 +450,7 @@ int syncDataRoundEnd(int round, int win, char* endReason)
 		logPrintf(LOG_LEVEL_INFO, "syncData", "syncDataRoundEndCB syncDataConfig.httpUrl empty:%s", syncDataConfig.httpUrl);
 	}
 
-
-
-	roundData.roundId = -1;
-	roundData.roundStartTime = -1;
-	roundData.roundEndTime = -1;
-	roundData.win = -1;
-	strclr(roundData.takePosition);
-	strclr(roundData.endReason);
-
-	for (int i = 0; i < chatDataIndex; i++) {
-		strclr(chatList[i].uid);
-		strclr(chatList[i].name);
-		strclr(chatList[i].msg);
-		chatList[i].time = 0;
-	}
-	chatDataIndex = -1;
-	// 发送
+	roundReset();
 	return 0;
 }
 
