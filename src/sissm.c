@@ -395,6 +395,7 @@ int sissmInitPlugins( void )
     mapVoteInstallPlugin();    
     suicideInstallPlugin();
     syncDataInstallPlugin();
+    pluginInstallPlugin();
     return errCode;
 }
 

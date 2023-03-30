@@ -6,14 +6,15 @@ SRC_DIRS ?= ./src
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
-
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -std=gnu99
 
+LIBS=-pthread
+
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CC) $(OBJS) -rdynamic -o $@ $(LDFLAGS)
+	$(CC) $(OBJS) -rdynamic -o $@ $(LDFLAGS) $(LIBS)
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s
