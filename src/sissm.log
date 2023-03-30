@@ -1,0 +1,95 @@
+2023-03-31 01:04:42::sissm::--------------------------------------
+2023-03-31 01:04:42::sissm::SISSM v1.2.0-DEV 20220929-1920
+2023-03-31 01:04:42::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2023-03-31 01:04:42::api::BadWords list -1 words from file 
+2023-03-31 01:04:42::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2023-03-31 01:04:42::api::BPChar Translation Table cleared
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::0::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::1::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::2::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::3::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::4::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::5::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::6::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::7::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::8::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::9::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::10::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::11::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::12::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::13::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::14::::
+2023-03-31 01:04:43::pidynbots::Reading GameMode BotOffset Table: ::15::::
+2023-03-31 01:04:43::map_vote::mapVoteInstallPlugin
+2023-03-31 01:04:43::suicide::suicideInstallPlugin
+2023-03-31 01:04:43::sync_data::syncDataInstallPlugin
+2023-03-31 01:04:43::plugin::pluginInstallPlugin
+2023-03-31 01:04:43::sissm::Server ID: ::*::
+2023-03-31 01:04:43::sissm::** Warning: Console '^C' may take several seconds to process
+2023-03-31 01:04:43::sissm::State - SM_STARTUP
+2023-03-31 01:04:43::sissm::State - SM_STARTUP
+2023-03-31 01:04:44::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2023-03-31 01:04:44::sissm::State - SM_POLLING_INIT->TRACKING
+2023-03-31 01:04:44::map_vote::Init Event ::~INIT~::
+2023-03-31 01:05:13::rdrv::Warning: unable to connect to host via TCP/IP
+2023-03-31 01:07:08::sissm::--------------------------------------
+2023-03-31 01:07:08::sissm::SISSM v1.2.0-DEV 20220929-1920
+2023-03-31 01:07:08::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2023-03-31 01:07:09::api::BadWords list -1 words from file 
+2023-03-31 01:07:09::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2023-03-31 01:07:09::api::BPChar Translation Table cleared
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::0::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::1::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::2::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::3::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::4::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::5::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::6::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::7::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::8::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::9::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::10::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::11::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::12::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::13::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::14::::
+2023-03-31 01:07:09::pidynbots::Reading GameMode BotOffset Table: ::15::::
+2023-03-31 01:07:09::map_vote::mapVoteInstallPlugin
+2023-03-31 01:07:09::suicide::suicideInstallPlugin
+2023-03-31 01:07:09::sync_data::syncDataInstallPlugin
+2023-03-31 01:07:09::plugin::pluginInstallPlugin
+2023-03-31 01:07:09::sissm::Server ID: ::*::
+2023-03-31 01:07:09::sissm::** Warning: Console '^C' may take several seconds to process
+2023-03-31 01:07:09::sissm::State - SM_STARTUP
+2023-03-31 01:07:09::sissm::State - SM_STARTUP
+2023-03-31 01:07:10::sissm::Tracking game logfile ::C:\Users\Administrator\Desktop\game.log::
+2023-03-31 01:07:10::sissm::State - SM_POLLING_INIT->TRACKING
+2023-03-31 01:07:10::map_vote::Init Event ::~INIT~::
+2023-03-31 01:07:12::sissm::######## SIGTERM Exit #######
+2023-03-31 01:07:23::sissm::--------------------------------------
+2023-03-31 01:07:23::sissm::SISSM v1.2.0-DEV 20220929-1920
+2023-03-31 01:07:23::sissm::(C) 2019 JS Schroeder, released under the MIT License
+2023-03-31 01:07:23::api::BadWords list -1 words from file 
+2023-03-31 01:07:23::api::Maplist read 0 maps from file /home/steam/server/Insurgency/Config/Server/Mapcycle.txt
+2023-03-31 01:07:23::api::BPChar Translation Table cleared
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::0::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::1::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::2::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::3::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::4::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::5::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::6::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::7::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::8::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::9::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::10::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::11::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::12::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::13::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::14::::
+2023-03-31 01:07:23::pidynbots::Reading GameMode BotOffset Table: ::15::::
+2023-03-31 01:07:23::map_vote::mapVoteInstallPlugin
+2023-03-31 01:07:23::suicide::suicideInstallPlugin
+2023-03-31 01:07:23::sync_data::syncDataInstallPlugin
+2023-03-31 01:07:23::plugin::pluginInstallPlugin
+2023-03-31 01:07:54::rdrv::Warning: unable to connect to host via TCP/IP

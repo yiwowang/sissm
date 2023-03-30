@@ -41,7 +41,6 @@
 #include "common_util.h"
 #include "socket_plugin.h"
 
-
 //  ==============================================================================================
 //  Data definition 
 //
@@ -93,6 +92,7 @@ int pluginInitConfig(void)
 #define SOCKET int
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
+#include <signal.h>
 #else                     // Windows
 #include <winsock2.h>
 #include "winport.h"
@@ -457,6 +457,12 @@ void closeSocket1() {
 }
 int startScoket()
 {
+#ifndef _WIN32
+	sigset_t setSig;
+	sigemptyset(&setSig);
+	sigaddset(&setSig, SIGPIPE);
+	sigprocmask(SIG_BLOCK, &setSig, NULL);
+#endif
 
 	struct sockaddr_in server;
 	char message[100], server_reply[2000];
