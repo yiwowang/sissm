@@ -45,17 +45,16 @@
 //  ==============================================================================================
 //  Data definition 
 //
+#define EVENT_COUNT                    (20)
 static struct {
 
 	int  pluginState;                      // always have this in .cfg file:  0=disabled 1=enabled
 
-	char stringParameterExample[CFS_FETCH_MAX];
-	char stringParameterExample2[CFS_FETCH_MAX];
-	char stringParameterExample3[CFS_FETCH_MAX];
-	int  numericParameterExample;
+	char matchEventString[EVENT_COUNT][100];
 
 } pluginConfig;
 
+int matchEventMaxIndex = -1;
 
 //  ==============================================================================================
 //  pluginInitConfig
@@ -70,14 +69,18 @@ int pluginInitConfig(void)
 
 	// read "plugin.pluginstate" variable from the .cfg file
 	pluginConfig.pluginState = (int)cfsFetchNum(cP, "socket_plugin.pluginState", 0.0);  // disabled by default
-	printf("pluginInitConfig %d \n", pluginConfig.pluginState);
-	cfsDestroy(cP);
-
-	if (pluginConfig.pluginState!=1) {
-		return 0;
+	int i;
+	for (i = 0; i < EVENT_COUNT; i++) {
+		char key[50];
+		snprintf(key, 50, "socket_plugin.matchEventString[%d]", i);
+		strclr(pluginConfig.matchEventString[i]);
+		strlcpy(pluginConfig.matchEventString[i], cfsFetchStr(cP, key, ""), CFS_FETCH_MAX);
+		if (strlen(pluginConfig.matchEventString[i]) > 0) {
+			logPrintf(LOG_LEVEL_INFO, "plugin", "socket_plugin.matchEventString[%d] = %s", i, pluginConfig.matchEventString[i]);
+			matchEventMaxIndex = i;
+		}
 	}
-	startThread();
-
+	cfsDestroy(cP);
 	return 0;
 }
 
@@ -98,9 +101,10 @@ int pluginInitConfig(void)
 #include "windows.h" 
 #endif
 
+
 SOCKET sockfd;
 int aliveSockect = 0;
-int socketConnected=0;
+int socketConnected = 0;
 int needReConnect = 0;
 char resultData[1000];
 char resultMsg[50];
@@ -124,11 +128,11 @@ void* thread_func(void* arg)
 
 
 void sendSocket(char* data) {
-if(socketConnected==0){
- printf("socket no connected.send failed\n");
-                 return;
+	if (socketConnected == 0) {
+		printf("socket no connected.send failed\n");
+		return;
 
-}
+	}
 	if (strlen(data) == 0) {
 		printf("send faild:data is empty\n");
 		return;
@@ -185,16 +189,16 @@ int startThread() {
 		return 1;
 	}
 	sleep(10);
-        sendEvent("clientAdd", "log from sissm", "");
+	sendEvent("clientAdd", "log from sissm", "");
 
-//	if (pthread_join(thread, NULL) != 0)
-//	{
-//	   printf("pthread_join failed\n");
-//	    return 1;
-//	}
+	//	if (pthread_join(thread, NULL) != 0)
+	//	{
+	//	   printf("pthread_join failed\n");
+	//	    return 1;
+	//	}
 
 #endif
-return 0;
+	return 0;
 
 }
 
@@ -354,7 +358,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 			int secIns = strtoi(paramsArray[2]);
 			int dayNight = strtoi(paramsArray[3]);
 			char* mutatorsList = paramsArray[4];
-			return apiMapChange(mapName, gameMode, secIns, dayNight, mutatorsList);
+			return apiMapChange(mapName, gameMode, secIns, dayNight, mutatorsList, 0);
 		}
 	}
 
@@ -475,7 +479,7 @@ int startScoket()
 				sleep(5);
 				continue;
 			}
-			socketConnected=1;
+			socketConnected = 1;
 			needReConnect = 0;
 			printf("Connected\n");
 
@@ -484,15 +488,15 @@ int startScoket()
 				if (recv(sockfd, server_reply, 2000, 0) < 0)
 				{
 					printf("recv failed\n");
-socketConnected=0;				
-	break;
+					socketConnected = 0;
+					break;
 				}
 
 				replyMsg(server_reply);
 
 
 				if (needReConnect == 1) {
-socketConnected=0;
+					socketConnected = 0;
 					break;
 				}
 			}
@@ -523,23 +527,11 @@ int pluginClientAddCB(char* strIn)
 	char playerName[256], playerGUID[256], playerIP[256];
 
 	rosterParsePlayerConn(strIn, 256, playerName, playerGUID, playerIP);
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Add Client ::%s::%s::%s::", playerName, playerGUID, playerIP);
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
 
-	sendEvent("clientAddCB", strIn, otherJson);
-	//   if ( apiPlayersGetCount() >= 8 ) {   // if the last connect player is #8 (last slot if 8 port server)
-	//       if ( 0 != strcmp(playerGUID, "76561000000000000" )) {    // check if this is the server owner 
-	   //    apiKickOrBan( 0, playerGUID, "Sorry the last port reserved for server owner only" );
-	//           apiSay ( "plugin: Player %s kicked server full", playerName );
-	   //}
-	//       apiSay ( "plugin: Welcome server owner %s", playerName );
-	//   }
-	//   else {
-	//       apiSay ( "plugin: Welcome %s", playerName );
-	//   }
-
-	//   return 0;
+	sendEvent("clientAdd", strIn, otherJson);
+	return 0;
 }
 
 //  ==============================================================================================
@@ -554,10 +546,8 @@ int pluginClientDelCB(char* strIn)
 	char playerName[256], playerGUID[256], playerIP[256];
 
 	rosterParsePlayerDisConn(strIn, 256, playerName, playerGUID, playerIP);
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Del Client ::%s::%s::%s::", playerName, playerGUID, playerIP);
-
 	//apiSay ( "plugin: Good bye %s", playerName );
-	sendEvent("clientDelCB", strIn, NULL);
+	sendEvent("clientDel", strIn, NULL);
 	return 0;
 }
 
@@ -568,10 +558,8 @@ int pluginClientDelCB(char* strIn)
 //
 int pluginInitCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Init Event ::%s::", strIn);
-
-
-	sendEvent("initCB", strIn, NULL);
+	logPrintf(LOG_LEVEL_INFO, "plugin", "pluginInitCB ::%s::", strIn);
+	sendEvent("init", strIn, NULL);
 	return 0;
 }
 
@@ -584,7 +572,7 @@ int pluginInitCB(char* strIn)
 int pluginRestartCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "plugin", "Restart Event ::%s::", strIn);
-	sendEvent("restartCB", strIn, NULL);
+	sendEvent("restart", strIn, NULL);
 	return 0;
 }
 
@@ -599,8 +587,6 @@ int pluginMapChangeCB(char* strIn)
 
 	logPrintf(LOG_LEVEL_INFO, "plugin", "Map Change Event ::%s::", strIn);
 	rosterParseMapname(strIn, 256, mapName);
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Map name ::%s::", mapName);
-
 
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"mapName\":\"%s\"", mapName);
@@ -617,8 +603,6 @@ int pluginGameStartCB(char* strIn)
 {
 	char newCount[256];
 
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Game Start Event ::%s::", strIn);
-
 	apiGameModePropertySet("minimumenemies", "4");
 	apiGameModePropertySet("maximumenemies", "4");
 
@@ -626,7 +610,7 @@ int pluginGameStartCB(char* strIn)
 
 	// in-game announcement start of game
 	//apiSay( "plugin: %s -- 2 waves of %s bots", pluginConfig.stringParameterExample, newCount );  
-	sendEvent("gameStartCB", strIn, NULL);
+	sendEvent("gameStart", strIn, NULL);
 	return 0;
 }
 
@@ -637,9 +621,7 @@ int pluginGameStartCB(char* strIn)
 //
 int pluginGameEndCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Game End Event ::%s::", strIn);
-	//apiSay( "plugin: End of game" );
-	sendEvent("gameEndCB", strIn, NULL);
+	sendEvent("gameEnd", strIn, NULL);
 	return 0;
 }
 
@@ -650,9 +632,7 @@ int pluginGameEndCB(char* strIn)
 //
 int pluginRoundStartCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Round Start Event ::%s::", strIn);
-	//apiSay( pluginConfig.stringParameterExample2 ); // in-game announcement start of round
-	sendEvent("roundStartCB", strIn, NULL);
+	sendEvent("roundStart", strIn, NULL);
 	return 0;
 }
 
@@ -665,7 +645,7 @@ int pluginRoundEndCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "plugin", "Round End Event ::%s::", strIn);
 	//apiSay( "plugin: End of Round" );
-	sendEvent("roundEndCB", strIn, NULL);
+	sendEvent("roundEnd", strIn, NULL);
 	return 0;
 }
 
@@ -679,18 +659,14 @@ int pluginRoundEndCB(char* strIn)
 int pluginCapturedCB(char* strIn)
 {
 	static unsigned long int lastTimeCaptured = 0L;
-	// logPrintf( LOG_LEVEL_INFO, "plugin", "Captured Objective Event ::%s::", strIn );
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Captured Objective Event");
-
 	// system generates multiple 'captured' report, so it is necessary
 	// to add a 10-second window filter to make sure only one gets fired off.
 	//
 	if (lastTimeCaptured + 10L < apiTimeGet()) {
 
-		//apiSay( pluginConfig.stringParameterExample3 );
 		lastTimeCaptured = apiTimeGet();
 		// apiServerRestart();
-		sendEvent("capturedCB", strIn, NULL);
+		sendEvent("captured", strIn, NULL);
 	}
 
 
@@ -705,7 +681,6 @@ int pluginCapturedCB(char* strIn)
 //
 int pluginPeriodicCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_DEBUG, "plugin", "Periodic Callback ::%s::", strIn);
 	return 0;
 }
 
@@ -718,8 +693,7 @@ int pluginPeriodicCB(char* strIn)
 //
 int pluginShutdownCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_DEBUG, "plugin", "Shutdown Callback ::%s::", strIn);
-	sendEvent("shutdownCB", strIn, NULL);
+	sendEvent("shutdown", strIn, NULL);
 	return 0;
 }
 
@@ -737,12 +711,10 @@ int pluginClientSynthDelCB(char* strIn)
 	static char playerName[256], playerGUID[256], playerIP[256];
 
 	rosterParsePlayerSynthDisConn(strIn, 256, playerName, playerGUID, playerIP);
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Synthetic DEL Callback Name ::%s:: IP ::%s:: GUID ::%s::", playerName, playerIP, playerGUID);
-	//apiSay( "plugin: Disconnect %s", playerName );
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
 
-	sendEvent("clientSynthDelCB", strIn, otherJson);
+	sendEvent("clientSynthDel", strIn, otherJson);
 	return 0;
 }
 
@@ -760,13 +732,11 @@ int pluginClientSynthAddCB(char* strIn)
 	static char playerName[256], playerGUID[256], playerIP[256];
 
 	rosterParsePlayerSynthConn(strIn, 256, playerName, playerGUID, playerIP);
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Synthetic ADD Callback Name ::%s:: IP ::%s:: GUID ::%s::", playerName, playerIP, playerGUID);
-	//apiSay( "plugin: Connected %s", playerName );
 
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
 
-	sendEvent("clientSynthAddCB", strIn, otherJson);
+	sendEvent("clientSynthAdd", strIn, otherJson);
 
 	return 0;
 }
@@ -779,7 +749,7 @@ int pluginClientSynthAddCB(char* strIn)
 int pluginChatCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "plugin", "Client chat ::%s::", strIn);
-	sendEvent("chatCB", strIn, NULL);
+	sendEvent("chat", strIn, NULL);
 	return 0;
 }
 
@@ -793,7 +763,7 @@ int pluginChatCB(char* strIn)
 int pluginSigtermCB(char* strIn)
 {
 	logPrintf(LOG_LEVEL_INFO, "plugin", "SISSM Termination CB");
-	sendEvent("sigtermCB", strIn, NULL);
+	sendEvent("sigterm", strIn, NULL);
 	return 0;
 }
 
@@ -873,7 +843,7 @@ int pluginSessionLog(char* strIn)
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"sessionID\":\"%s\"", sessionID);
 
-	sendEvent("sessionLog", strIn, otherJson);
+	sendEvent("session", strIn, otherJson);
 	return 0;
 }
 
@@ -912,7 +882,23 @@ int pluginRoundStateChange(char* strIn)
 	sendEvent("roundStateChange", strIn, "");
 	return 0;
 }
+int pluginEveryLog(char* strIn)
+{
+	if (matchEventMaxIndex == -1) {
+		return;
+	}
+	int i;
+	for (i = 0; i <= matchEventMaxIndex; i++) {
+		if (strlen(pluginConfig.matchEventString[i]) > 0) {
+			if (NULL != strstr(strIn, pluginConfig.matchEventString[i])) {
+				sendEvent("everyLog", strIn, "");
+				break;
+			}
+		}
+	}
 
+	return 0;
+}
 //  ==============================================================================================
 //  ...
 //
@@ -921,6 +907,7 @@ int pluginRoundStateChange(char* strIn)
 //
 int pluginInstallPlugin(void)
 {
+	logPrintf(LOG_LEVEL_INFO, "plugin", "pluginInstallPlugin");
 	// Read the plugin-specific variables from the .cfg file 
 	// 
 	pluginInitConfig();
@@ -957,6 +944,11 @@ int pluginInstallPlugin(void)
 	eventsRegister(SISSM_EV_KILLED, pluginKilled);
 	eventsRegister(SISSM_EV_SS_TAKE_OBJECTIVE, pluginTakeObject);
 	eventsRegister(SISSM_EV_SS_ROUND_STATE_CHANGE, pluginRoundStateChange);
+	eventsRegister(-1, pluginEveryLog);
+
+	// start sockect thread
+	startThread();
+
 	return 0;
 }
 

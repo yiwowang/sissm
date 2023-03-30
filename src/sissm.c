@@ -61,6 +61,7 @@
 #include "map_vote.h"
 #include "suicide.h"
 #include "sync_data.h"
+#include "socket_plugin.h"
 #include "pirebooter.h"
 #include "pigreetings.h"
 #include "pigateway.h"
