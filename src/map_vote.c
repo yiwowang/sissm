@@ -68,7 +68,8 @@ struct
 	{"Summit", "Mountain"},
 	{"PowerPlant", "PowerPlant"},
 	{"Tell", "Tell"},
-	{"Tideway", "Buhriz"} };
+	{"Tideway", "Buhriz"},
+{"LastLight", "LastLight"} };
 
 struct VoteResult
 {
