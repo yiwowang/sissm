@@ -1,5 +1,5 @@
- #!/usr/bin/env python
- # -*- coding: utf-8 -*
+# !/usr/bin/env python
+# -*- coding: utf-8 -*
 
 import random
 import socket
@@ -36,7 +36,7 @@ class SocketWorker:
                 data["requestId"] = key
                 self.resultMap[key] = {"condition": condition, "result": ""}
                 self.socketObj.send((json.dumps(data)).encode("UTF-8"))
-                print("发送："+str(data))
+                print("发送：" + str(data))
                 condition.wait(timeout=10)
                 result = self.resultMap.pop(key)["result"]
             condition.release()
@@ -55,40 +55,41 @@ class SocketWorker:
         print("收到返回:" + str(ret))
 
     def socketLoop(self):
-            s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        while self.loopStart:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             # 绑定服务器地址和端口
             s.bind(ADDR)
             # 启动服务监听
             s.listen(MAX_LISTEN)
             print('等待用户接入。。。。。。。。。。。。')
-            while self.loopStart:
-                    # 等待客户端连接请求,获取connSock
-                    conn, addr = s.accept()
-                    self.socketObj = conn
+            # 等待客户端连接请求,获取connSock
+            conn, addr = s.accept()
+            self.socketObj = conn
 
-                    print('警告，远端客户:{} 接入系统！！！'.format(addr))
-                    conn.setblocking(True)
-                    while self.loopStart:
-                        # 接收返回数据
-                        outData = conn.recv(BUFFSIZE)
-                        msg = outData.decode("UTF-8")
-                        if "\n" in msg:
-                            arr = msg.split("\n")
-                            for msg in arr:
-                                if len(msg) == 0:
-                                    continue
-                                print('返回数据信息：{!r}'.format(msg))
-                                try:
-                                    jsonObject = json.loads(msg)
-                                except Exception as e:
-                                    print("e:"+str(e))
-                                if "requestId" in jsonObject:
-                                    sendKey = jsonObject["requestId"]
-                                    value = self.resultMap[sendKey]
-                                    condition = value["condition"]
-                                    if condition.acquire():
-                                        value["result"] = jsonObject
-                                        condition.notify()
-                                    condition.release()
-                                else:
-                                    self.threadPool.submit(self.dispatchEvent, jsonObject)
+            print('警告，远端客户:{} 接入系统！！！'.format(addr))
+            conn.setblocking(False)
+            while self.loopStart:
+                # 接收返回数据
+                outData = conn.recv(BUFFSIZE)
+                msg = outData.decode("UTF-8")
+                if "\n" in msg:
+                    arr = msg.split("\n")
+                    for msg in arr:
+                        if len(msg) == 0:
+                            continue
+                        print('返回数据信息：{!r}'.format(msg))
+                        try:
+                            jsonObject = json.loads(msg, strict=False)
+                        except Exception as e:
+                            print("e:" + str(e))
+                            continue
+                        if "requestId" in jsonObject:
+                            sendKey = jsonObject["requestId"]
+                            value = self.resultMap[sendKey]
+                            condition = value["condition"]
+                            if condition.acquire():
+                                value["result"] = jsonObject
+                                condition.notify()
+                            condition.release()
+                        else:
+                            self.threadPool.submit(self.dispatchEvent, jsonObject)

@@ -123,7 +123,6 @@ class EventDispatcher:
 
     def dispatch(self, log, jsonObject):
         for cb in self.callbackList:
-            print("dispatch cb="+str(cb))
             eventType = jsonObject["event_type"]
             if eventType == "clientAdd":
                 cb.clientAdd(log, PlayerBean().parse(jsonObject))
