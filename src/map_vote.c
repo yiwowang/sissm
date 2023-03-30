@@ -44,7 +44,7 @@ static struct
 	int duplicateVoteAsNewPlayer;
 } mapVoteConfig;
 
-#define MAP_COUNT 16
+#define MAP_COUNT 17
 #define ROOM_PLAYER_MAX_COUNT 50
 
 struct
