@@ -14,7 +14,7 @@
 //  ==============================================================================================
 
 
-#define SISSM_MAXEVENTS                     (34)
+#define SISSM_MAXEVENTS                     (35)
 #define SISSM_MAXPLUGINS                    (32)
 
 #define SISSM_EV_CHAT                       ( 0)    // this must be first for security reasons!!
@@ -52,6 +52,7 @@
 #define SISSM_EV_KILLED                     (30)
 #define SISSM_EV_SS_TAKE_OBJECTIVE           (31)
 #define SISSM_EV_SS_ROUND_STATE_CHANGE           (32)
+#define SISSM_EV_EVERY_EVENT           (33)
 
 // Following substring in log file triggers an event
 //
@@ -90,6 +91,8 @@
 #define SS_SUBSTR_TAKE_OBJECTIVE    "LogGameplayEvents: Display: Objective "
 
 #define SS_SUBSTR_ROUND_STATE_CHANGE    "LogGameplayEvents: Display: Round "
+
+#define SS_SUBSTR_EVERY_EVENT    "all_event"
 
 extern int eventsInit( void );
 extern int eventsRegister( int eventID, int (*callBack)( char * ));

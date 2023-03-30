@@ -87,6 +87,7 @@ struct {
     { SISSM_EV_KILLED,              30, SS_SUBSTR_KILLED    },
      { SISSM_EV_SS_TAKE_OBJECTIVE,             31, SS_SUBSTR_TAKE_OBJECTIVE    },
      { SISSM_EV_SS_ROUND_STATE_CHANGE,             32, SS_SUBSTR_ROUND_STATE_CHANGE    },
+     { SISSM_EV_EVERY_EVENT,             33, SS_SUBSTR_EVERY_EVENT    },
     { -1,                           -1, "*"                   },
 
 };
@@ -207,10 +208,10 @@ int eventsDispatch( char *strBuffer )
         if ( 0 == strlen( eventTable[i].eventString )) 
             continue; 
         if ( 0 == strcmp( eventTable[i].eventString, "*" )) 
-            break;
+			break;
 
-        if ( NULL != strstr( strBuffer, eventTable[i].eventString ) ) {
-            activeCallBackIndex = eventTable[i].callBacktableIndex;
+		if (NULL != strstr(strBuffer, eventTable[i].eventString) || eventTable[i].eventID == SISSM_EV_EVERY_EVENT) {
+			activeCallBackIndex = eventTable[i].callBacktableIndex;
             if ( activeCallBackIndex >= 0 ) {
                 for (j=0; j<SISSM_MAXPLUGINS; j++) {
                     if ( NULL != eventsCallbackFunctions[j][activeCallBackIndex] ) {
