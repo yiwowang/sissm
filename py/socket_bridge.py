@@ -67,7 +67,7 @@ class SocketWorker:
             self.socketObj = conn
 
             print('警告，远端客户:{} 接入系统！！！'.format(addr))
-            conn.setblocking(False)
+            conn.setblocking(True)
             while self.loopStart:
                 # 接收返回数据
                 outData = conn.recv(BUFFSIZE)

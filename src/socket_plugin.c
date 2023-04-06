@@ -586,11 +586,7 @@ int pluginMapChangeCB(char* strIn)
 	char mapName[256];
 
 	logPrintf(LOG_LEVEL_INFO, "plugin", "Map Change Event ::%s::", strIn);
-	rosterParseMapname(strIn, 256, mapName);
-
-	char otherJson[100];
-	snprintf(otherJson, 100, ", \"mapName\":\"%s\"", mapName);
-	sendEvent("mapChange", strIn, otherJson);
+	sendEvent("mapChange", strIn, NULL);
 	return 0;
 }
 
