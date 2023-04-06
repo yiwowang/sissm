@@ -583,8 +583,6 @@ int pluginRestartCB(char* strIn)
 //
 int pluginMapChangeCB(char* strIn)
 {
-	char mapName[256];
-
 	logPrintf(LOG_LEVEL_INFO, "plugin", "Map Change Event ::%s::", strIn);
 	sendEvent("mapChange", strIn, NULL);
 	return 0;
@@ -802,23 +800,7 @@ int pluginWinLose(char* strIn)
 //
 int pluginTravel(char* strIn)
 {
-	char* mapName, * scenario, * mutator;
-	int humanSide;
-
-	mapName = rosterGetMapName();
-	scenario = rosterGetScenario();
-	mutator = rosterGetMutator();
-	humanSide = rosterGetCoopSide();
-
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Change map to ::%s:: Scenario ::%s:: Mutator ::%s:: Human ::%d::",
-		mapName, scenario, mutator, humanSide);
-	//apiSay( "plugin: Test Map-Scenario %s::%s::%s::%d::", mapName, scenario, mutator, humanSide );
-
-
-	char otherJson[100];
-	snprintf(otherJson, 100, ", \"mapName\":\"%s\",\"scenario\":\"%s\",\"mutator\":\"%s\",\"humanSide\":\"%s\"", mapName, scenario, mutator, humanSide);
-
-	sendEvent("travel", strIn, otherJson);
+	sendEvent("travel", strIn, NULL);
 
 	return 0;
 }
@@ -880,13 +862,18 @@ int pluginRoundStateChange(char* strIn)
 }
 int pluginEveryLog(char* strIn)
 {
-	if (matchEventMaxIndex == -1) {
+	
+logPrintf(LOG_LEVEL_INFO, "plugin", "===start EVERY==== ::%s::   ::%d::", strIn, matchEventMaxIndex);
+
+if (matchEventMaxIndex == -1) {
 		return;
 	}
 	int i;
 	for (i = 0; i <= matchEventMaxIndex; i++) {
 		if (strlen(pluginConfig.matchEventString[i]) > 0) {
-			if (NULL != strstr(strIn, pluginConfig.matchEventString[i])) {
+			
+logPrintf(LOG_LEVEL_INFO, "plugin", "EVERY==== ::%s::   ::%s::", strIn, pluginConfig.matchEventString[i]);
+if (NULL != strstr(strIn, pluginConfig.matchEventString[i])) {
 				sendEvent("everyLog", strIn, "");
 				break;
 			}
@@ -940,7 +927,7 @@ int pluginInstallPlugin(void)
 	eventsRegister(SISSM_EV_KILLED, pluginKilled);
 	eventsRegister(SISSM_EV_SS_TAKE_OBJECTIVE, pluginTakeObject);
 	eventsRegister(SISSM_EV_SS_ROUND_STATE_CHANGE, pluginRoundStateChange);
-	eventsRegister(-1, pluginEveryLog);
+	eventsRegister(SISSM_EV_EVERY_EVENT, pluginEveryLog);
 
 	// start sockect thread
 	startThread();

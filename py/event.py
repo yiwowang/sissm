@@ -95,7 +95,7 @@ class EventCallback:
     def sigterm(self, log):
         pass
 
-    def winLose(self, log, win):
+    def winLose(self, log):
         pass
 
     def travel(self, log, mapName, scenario, mutator, humanSide):
@@ -107,6 +107,8 @@ class EventCallback:
     def objectSynth(self, log):
         pass
 
+    def everyLog(self, log):
+	pass
 
 class EventDispatcher:
     callbackList = []
@@ -160,6 +162,8 @@ class EventDispatcher:
                 cb.sessionLog(log)
             elif eventType == "objectSynth":
                 cb.objectSynth(log)
+	    elif eventType == "everyLog":
+                cb.everyLog(log)
 
 
 eventDispatcher = EventDispatcher()

@@ -10,6 +10,11 @@ from time import ctime
 import traceback
 from concurrent.futures import ThreadPoolExecutor
 from event import *
+import sys  
+reload(sys)  
+sys.setdefaultencoding('utf8') 
+
+
 
 HOST = '127.0.0.1'
 PORT = 8000
