@@ -146,17 +146,32 @@ void sendSocket(char* data) {
 	}
 }
 
+char *trimStr(char *str)
+{
+        char *p = str;
+        char *p1;
+        if(p)
+        {
+                p1 = p + strlen(str) - 1;
+                while(*p && isspace(*p)) p++;
+                while(p1 > p && isspace(*p1)) *p1-- = '\0';
+        }
+        return p;
+}
+
 void sendEvent(char* eventType, char* log, char* otherJson) {
 
 	if (otherJson == NULL) {
 		otherJson = "";
-	}
-	int logLen = strlen(log);
+	
+}
+char * newLog=trimStr(log);
+	int logLen = strlen(newLog);
 	int otherJsonLen = strlen(otherJson);
 	int len = 50 + logLen + otherJsonLen;
 	char json[500];
 
-	snprintf(json, 500, "{\"event_type\":\"%s\",\"log\":\"%s\"%s}", eventType, log, otherJson);
+	snprintf(json, 500, "{\"event_type\":\"%s\",\"log\":\"%s\"%s}", eventType, newLog, otherJson);
 	sendSocket(json);
 }
 
@@ -863,7 +878,6 @@ int pluginRoundStateChange(char* strIn)
 int pluginEveryLog(char* strIn)
 {
 	
-logPrintf(LOG_LEVEL_INFO, "plugin", "===start EVERY==== ::%s::   ::%d::", strIn, matchEventMaxIndex);
 
 if (matchEventMaxIndex == -1) {
 		return;
@@ -872,7 +886,6 @@ if (matchEventMaxIndex == -1) {
 	for (i = 0; i <= matchEventMaxIndex; i++) {
 		if (strlen(pluginConfig.matchEventString[i]) > 0) {
 			
-logPrintf(LOG_LEVEL_INFO, "plugin", "EVERY==== ::%s::   ::%s::", strIn, pluginConfig.matchEventString[i]);
 if (NULL != strstr(strIn, pluginConfig.matchEventString[i])) {
 				sendEvent("everyLog", strIn, "");
 				break;
