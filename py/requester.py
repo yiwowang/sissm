@@ -1,5 +1,5 @@
- #!/usr/bin/env python
- # -*- coding: utf-8 -*
+# !/usr/bin/env python
+# -*- coding: utf-8 -*
 
 
 class Requester:
@@ -9,15 +9,18 @@ class Requester:
         self.socketWorker = socketWorker
 
     def apiGameModePropertySet(self, name, value):
-       return self.requestApi("apiGameModePropertySet", {name: value})
+        return self.requestApi("apiGameModePropertySet", [name, value])
+
+    def apiGameModePropertyGet(self, name):
+        return self.requestApi("apiGameModePropertyGet", [name])
 
     def requestApi(self, requestName, requestParam):
         data = {}
         data["requestName"] = requestName
         data["requestType"] = "request"
         if requestParam is not None:
-            for key in requestParam.keys():
-                data["requestParams"] = key + "|" + requestParam[key]
+            data["requestParams"] = "|".join(requestParam)
+
         return self.socketWorker.send(data)
 
     def requestRconCmd(self, rconCmd):

@@ -190,9 +190,9 @@ int startThread() {
 		printf("CreateThread failed\n");
 		return 1;
 	}
-	sleep(10);
+	/*sleep(10);
 	sendEvent("clientAdd", "log from sissm", "");
-	WaitForSingleObject(thread, INFINITE);
+	WaitForSingleObject(thread, INFINITE);*/
 
 #else
 
@@ -203,8 +203,8 @@ int startThread() {
 		printf("pthread_create failed\n");
 		return 1;
 	}
-	sleep(10);
-	sendEvent("clientAdd", "log from sissm", "");
+	//sleep(10);
+	//sendEvent("clientAdd", "log from sissm", "");
 
 	//	if (pthread_join(thread, NULL) != 0)
 	//	{
@@ -788,28 +788,9 @@ int pluginSigtermCB(char* strIn)
 //
 int pluginWinLose(char* strIn)
 {
-	int isTeam0, humanSide;
-	char outStr[256];
-
-	humanSide = rosterGetCoopSide();
-	isTeam0 = (NULL != strstr(strIn, "Team 0"));
-
-	switch (humanSide) {
-	case 0:
-		if (!isTeam0) strlcpy(outStr, "Co-op Humans Win", 256);
-		break;
-	case 1:
-		if (isTeam0) strlcpy(outStr, "Co-opHumans Lose", 256);
-		break;
-	default:
-		strlcpy(outStr, "PvP WinLose", 256);
-		break;
-	}
-
-	//apiSay( "plugin: %s", outStr );
 	logPrintf(LOG_LEVEL_INFO, "plugin", outStr);
 	char otherJson[100];
-	snprintf(otherJson, 100, ", \"win\":\"%d\"", humanSide);
+	snprintf(otherJson, 100, ", \"humanSide\":\"%d\"", rosterGetCoopSide());
 
 	sendEvent("winLose", strIn, otherJson);
 	return 0;

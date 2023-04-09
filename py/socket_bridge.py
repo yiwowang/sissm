@@ -10,9 +10,9 @@ from time import ctime
 import traceback
 from concurrent.futures import ThreadPoolExecutor
 from event import *
-import sys  
-reload(sys)  
-sys.setdefaultencoding('utf8') 
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 
 
 
@@ -49,8 +49,7 @@ class SocketWorker:
 
     def dispatchEvent(self, jsonObject):
         try:
-            print("dispatchEvent")
-            eventDispatcher.dispatch(jsonObject["log"], jsonObject)
+            eventDispatcher.dispatch(jsonObject)
         except Exception as e:
             print("Error: " + str(e))
             traceback.print_exc()
