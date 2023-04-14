@@ -146,26 +146,26 @@ void sendSocket(char* data) {
 	}
 }
 
-char *trimStr(char *str)
+char* trimStr(char* str)
 {
-        char *p = str;
-        char *p1;
-        if(p)
-        {
-                p1 = p + strlen(str) - 1;
-                while(*p && isspace(*p)) p++;
-                while(p1 > p && isspace(*p1)) *p1-- = '\0';
-        }
-        return p;
+	char* p = str;
+	char* p1;
+	if (p)
+	{
+		p1 = p + strlen(str) - 1;
+		while (*p && isspace(*p)) p++;
+		while (p1 > p && isspace(*p1)) *p1-- = '\0';
+	}
+	return p;
 }
 
 void sendEvent(char* eventType, char* log, char* otherJson) {
 
 	if (otherJson == NULL) {
 		otherJson = "";
-	
-}
-char * newLog=trimStr(log);
+
+	}
+	char* newLog = trimStr(log);
 	int logLen = strlen(newLog);
 	int otherJsonLen = strlen(otherJson);
 	int len = 50 + logLen + otherJsonLen;
@@ -242,13 +242,9 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 	if (strcmp(requestName, "apiGameModePropertyGet") == 0) {
 		targetParamsNum = 1;
 		if (paramsNum == targetParamsNum) {
-printf("======apiGameModePropertyGet param=%s\n",paramsArray[0]);		
-	
-char* value= apiGameModePropertyGet(paramsArray[0]);
-			strcpy(resultData, value);
-
-
-	}
+			char* result = apiGameModePropertyGet(paramsArray[0]);
+			strcpy(resultData, result);
+		}
 	}
 	if (strcmp(requestName, "apiSay") == 0) {
 		targetParamsNum = 1;
@@ -430,9 +426,9 @@ void replyMsg(char* receiveMsg) {
 	size_t paramsNum = 0;
 	char* paramsArray[10] = { 0 };
 	if (requestParams != NULL && strlen(requestParams) > 0) {
-	split(requestParams, "|", paramsArray, &paramsNum);
-printf("requestParams=%s  paramsArray[0]=%s\n",requestParams,paramsArray[0]);	
-}
+		split(requestParams, "|", paramsArray, &paramsNum);
+		printf("requestParams=%s  paramsArray[0]=%s\n", requestParams, paramsArray[0]);
+	}
 	strclr(resultData);
 	strclr(resultMsg);
 	int errCode = exeCmd(requestName, paramsNum, paramsArray, resultData, resultMsg);
@@ -444,8 +440,6 @@ printf("requestParams=%s  paramsArray[0]=%s\n",requestParams,paramsArray[0]);
 	char responseJson[API_R_BUFSIZE + 200];
 	strlcpy(responseJson, szJSON, API_R_BUFSIZE + 200);
 
-
-	sleep(3);
 	sendSocket(responseJson);
 
 	free(szJSON);
@@ -869,16 +863,16 @@ int pluginRoundStateChange(char* strIn)
 }
 int pluginEveryLog(char* strIn)
 {
-	
 
-if (matchEventMaxIndex == -1) {
+
+	if (matchEventMaxIndex == -1) {
 		return;
 	}
 	int i;
 	for (i = 0; i <= matchEventMaxIndex; i++) {
 		if (strlen(pluginConfig.matchEventString[i]) > 0) {
-			
-if (NULL != strstr(strIn, pluginConfig.matchEventString[i])) {
+
+			if (NULL != strstr(strIn, pluginConfig.matchEventString[i])) {
 				sendEvent("everyLog", strIn, "");
 				break;
 			}
