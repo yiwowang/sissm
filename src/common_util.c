@@ -71,6 +71,7 @@ void split(const char* src, const char* pattern, char** outvec, size_t* outsize)
 		unsigned int size = begin - next;
 		*outvec = malloc(sizeof(char) * size);
 		memcpy(*outvec, next, size);
+		(*outvec)[size] = '\0';
 		outvec++;
 		(*outsize) += 1;
 		split(begin + pat_len, pattern, outvec, outsize);
@@ -79,6 +80,7 @@ void split(const char* src, const char* pattern, char** outvec, size_t* outsize)
 		unsigned int size = &src[strlen(src) - 1] - next + 1;
 		*outvec = malloc(sizeof(char) * size);
 		memcpy(*outvec, next, size);
+		(*outvec)[size] = '\0';
 		(*outsize) += 1;
 	}
 }
