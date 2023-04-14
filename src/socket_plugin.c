@@ -242,8 +242,13 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 	if (strcmp(requestName, "apiGameModePropertyGet") == 0) {
 		targetParamsNum = 1;
 		if (paramsNum == targetParamsNum) {
-			return apiGameModePropertyGet(paramsArray[0]);
-		}
+printf("======apiGameModePropertyGet param=%s\n",paramsArray[0]);		
+	
+char* value= apiGameModePropertyGet(paramsArray[0]);
+			strcpy(resultData, value);
+
+
+	}
 	}
 	if (strcmp(requestName, "apiSay") == 0) {
 		targetParamsNum = 1;
@@ -425,8 +430,9 @@ void replyMsg(char* receiveMsg) {
 	size_t paramsNum = 0;
 	char* paramsArray[10] = { 0 };
 	if (requestParams != NULL && strlen(requestParams) > 0) {
-		split(requestParams, "|", paramsArray, &paramsNum);
-	}
+	split(requestParams, "|", paramsArray, &paramsNum);
+printf("requestParams=%s  paramsArray[0]=%s\n",requestParams,paramsArray[0]);	
+}
 	strclr(resultData);
 	strclr(resultMsg);
 	int errCode = exeCmd(requestName, paramsNum, paramsArray, resultData, resultMsg);
@@ -788,7 +794,6 @@ int pluginSigtermCB(char* strIn)
 //
 int pluginWinLose(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", outStr);
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"humanSide\":\"%d\"", rosterGetCoopSide());
 

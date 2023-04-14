@@ -13,8 +13,8 @@ requester = None
 class TestPlugin(EventCallback):
     def roundStart(self, log, data):
         print("TestPlugin roundStart 接收" + str(data))
-        requester.apiGameModePropertySet("MinimumEnemies", "1")
-        print("TestPlugin roundStart MinimumEnemies=1设置完毕")
+       # requester.apiGameModePropertySet("MinimumEnemies", "4")
+        #print("TestPlugin roundStart MinimumEnemies=1设置完毕")
         v = requester.apiGameModePropertyGet("MinimumEnemies")
         print("TestPlugin roundStart 获取MinimumEnemies值为" + str(v))
 
