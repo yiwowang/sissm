@@ -10,10 +10,10 @@ from time import ctime
 import traceback
 from concurrent.futures import ThreadPoolExecutor
 from event import *
+
 # import sys
 # reload(sys)
 # sys.setdefaultencoding('utf8')
-
 
 
 HOST = '127.0.0.1'
@@ -51,7 +51,6 @@ class SocketWorker:
         try:
             eventDispatcher.dispatch(jsonObject)
         except Exception as e:
-            print("Error: " + str(e))
             traceback.print_exc()
 
     def sendTest(self):
@@ -59,41 +58,50 @@ class SocketWorker:
         print("收到返回:" + str(ret))
 
     def socketLoop(self):
+        retryCount = 0
         while self.loopStart:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             # 绑定服务器地址和端口
-            s.bind(ADDR)
-            # 启动服务监听
-            s.listen(MAX_LISTEN)
-            print('等待用户接入。。。。。。。。。。。。')
-            # 等待客户端连接请求,获取connSock
-            conn, addr = s.accept()
-            self.socketObj = conn
-
-            print('警告，远端客户:{} 接入系统！！！'.format(addr))
-            conn.setblocking(True)
-            while self.loopStart:
-                # 接收返回数据
-                outData = conn.recv(BUFFSIZE)
-                msg = outData.decode("UTF-8")
-                if "\n" in msg:
-                    arr = msg.split("\n")
-                    for msg in arr:
-                        if len(msg) == 0:
+            try:
+                s.connect((HOST, PORT))
+                print('等待用户接入。。。。。。。。。。。。')
+                self.socketObj = s
+                retryCount = 0
+                print('连接成功')
+                while self.loopStart:
+                    # 接收返回数据
+                    outData = s.recv(BUFFSIZE)
+                    try:
+                        msg = outData.decode("UTF-8")
+                        if "\n" not in msg:
                             continue
-                        print('返回数据信息：{!r}'.format(msg))
-                        try:
+                        arr = msg.split("\n")
+                        for msg in arr:
+                            if len(msg) == 0:
+                                continue
+                            print('返回数据信息：{!r}'.format(msg))
                             jsonObject = json.loads(msg, strict=False)
-                        except Exception as e:
-                            print("e:" + str(e))
-                            continue
-                        if "requestId" in jsonObject:
-                            sendKey = jsonObject["requestId"]
-                            value = self.resultMap[sendKey]
-                            condition = value["condition"]
-                            if condition.acquire():
-                                value["result"] = jsonObject
-                                condition.notify()
-                            condition.release()
-                        else:
-                            self.threadPool.submit(self.dispatchEvent, jsonObject)
+                            if "requestId" in jsonObject:
+                                # 客户端请求的响应结果
+                                sendKey = jsonObject["requestId"]
+                                value = self.resultMap.get(sendKey)
+                                if value is None:
+                                    continue
+                                condition = value.get("condition")
+                                if condition is None:
+                                    continue
+                                if condition.acquire():
+                                    value["result"] = jsonObject
+                                    condition.notify()
+                                condition.release()
+                            else:
+                                # 服务端主动发送的事件
+                                self.threadPool.submit(self.dispatchEvent, jsonObject)
+                    except Exception as e:
+                        traceback.print_exc()
+                        continue
+            except Exception as e:
+                traceback.print_exc()
+                retryCount += 1
+                print("正在重试第" + str(retryCount) + "次")
+                time.sleep(5)

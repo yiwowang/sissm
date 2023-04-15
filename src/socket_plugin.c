@@ -54,7 +54,9 @@ static struct {
 } pluginConfig;
 
 int matchEventMaxIndex = -1;
-
+#define PORT 8000
+#define MAX_BUFFER_SIZE 1024
+int socklen_t;
 //  ==============================================================================================
 //  pluginInitConfig
 //
@@ -62,12 +64,14 @@ int matchEventMaxIndex = -1;
 //
 int pluginInitConfig(void)
 {
+	
 	cfsPtr cP;
 
 	cP = cfsCreate(sissmGetConfigPath());
 
 	// read "plugin.pluginstate" variable from the .cfg file
 	pluginConfig.pluginState = (int)cfsFetchNum(cP, "socket_plugin.pluginState", 0.0);  // disabled by default
+	logPrintf(LOG_LEVEL_INFO, "plugin", "pluginConfig.pluginState=%d", pluginConfig.pluginState);
 	int i;
 	for (i = 0; i < EVENT_COUNT; i++) {
 		char key[50];
@@ -102,7 +106,8 @@ int pluginInitConfig(void)
 #endif
 
 
-SOCKET sockfd;
+SOCKET new_socket;
+SOCKET server_fd;
 int aliveSockect = 0;
 int socketConnected = 0;
 int needReConnect = 0;
@@ -111,17 +116,16 @@ char resultMsg[50];
 
 #ifdef _WIN32
 DWORD WINAPI thread_func(LPVOID lpParam) {
-	printf("window new thread ok\n");
-	startScoket();
+	logPrintf(LOG_LEVEL_INFO, "plugin", "windows new socket thread ok");
+	startSocket();
 	return 0;
 }
 #else
 #include <pthread.h>
 void* thread_func(void* arg)
 {
-	printf("linux new thread ok\n");
-	// Linux 平台下的线程函数
-	startScoket();
+	logPrintf(LOG_LEVEL_INFO, "plugin", "linux new socket thread ok");
+	startSocket();
 }
 
 #endif
@@ -129,20 +133,20 @@ void* thread_func(void* arg)
 
 void sendSocket(char* data) {
 	if (socketConnected == 0) {
-		printf("socket no connected.send failed\n");
+		logPrintf(LOG_LEVEL_INFO, "plugin", "send fail,reason:socketConnected=0");
 		return;
 
 	}
 	if (strlen(data) == 0) {
-		printf("send faild:data is empty\n");
+		logPrintf(LOG_LEVEL_INFO, "plugin", "send fail,reason:data is empty");
 		return;
 	}
 	char newData[200];
 	strcat(data, "\n");
-	printf("send data=%s\n", data);
-	if (send(sockfd, data, strlen(data), 0) < 0) {
+	logPrintf(LOG_LEVEL_INFO, "plugin", "send data=%s", data);
+	if (send(new_socket, data, strlen(data), 0) < 0) {
 		needReConnect = 1;
-		printf("send faild:%s\n", data);
+		logPrintf(LOG_LEVEL_INFO, "plugin", "send faild=%s", data);
 	}
 }
 
@@ -187,12 +191,11 @@ int startThread() {
 
 	if (thread == NULL)
 	{
-		printf("CreateThread failed\n");
+		logPrintf(LOG_LEVEL_INFO, "plugin", "CreateThread failed");
 		return 1;
 	}
-	/*sleep(10);
-	sendEvent("clientAdd", "log from sissm", "");
-	WaitForSingleObject(thread, INFINITE);*/
+	//sendEvent("clientAdd", "log from sissm", "");
+	//WaitForSingleObject(thread, INFINITE);
 
 #else
 
@@ -200,7 +203,7 @@ int startThread() {
 
 	if (pthread_create(&thread, NULL, thread_func, NULL) != 0)
 	{
-		printf("pthread_create failed\n");
+		logPrintf(LOG_LEVEL_INFO, "plugin", "CreateThread failed");
 		return 1;
 	}
 	//sleep(10);
@@ -406,7 +409,7 @@ void replyMsg(char* receiveMsg) {
 	if (strlen(receiveMsg) < 8) {
 		return;
 	}
-	printf("reveive json %s len=%d\n", receiveMsg, strlen(receiveMsg));
+	logPrintf(LOG_LEVEL_INFO, "plugin", "reveive json %s len=%d", receiveMsg, strlen(receiveMsg));
 	//解析json1
 	//通过cJSON_Parse解析接收到的字符串，再通过cJSON_GetObjectItem获取指定键的值，最后释放该JSON结点的内存
 	cJSON* root;
@@ -427,7 +430,11 @@ void replyMsg(char* receiveMsg) {
 	char* paramsArray[10] = { 0 };
 	if (requestParams != NULL && strlen(requestParams) > 0) {
 		split(requestParams, "|", paramsArray, &paramsNum);
-		printf("requestParams=%s  paramsArray[0]=%s\n", requestParams, paramsArray[0]);
+		logPrintf(LOG_LEVEL_INFO, "plugin", "replyMsg requestParams=%s", requestParams);
+		int i;
+		for (i = 0; i < paramsNum;i++) {
+			logPrintf(LOG_LEVEL_INFO, "plugin", "replyMsg paramsArray[%s]=", paramsArray[i]);
+		}
 	}
 	strclr(resultData);
 	strclr(resultMsg);
@@ -447,74 +454,79 @@ void replyMsg(char* receiveMsg) {
 	cJSON_Delete(response);
 }
 
-void closeSocket1() {
-	printf("close socket\n");
+void closeSocket1(int fd) {
+	logPrintf(LOG_LEVEL_INFO, "plugin", "close socket");
 #ifdef _WIN32
-	closesocket(sockfd);
+	closesocket(fd);
+	closesocket(fd);
 #else
-	close(sockfd);
+	close(fd);
+	close(fd);
 #endif
 }
-int startScoket()
-{
-#ifndef _WIN32
-	sigset_t setSig;
-	sigemptyset(&setSig);
-	sigaddset(&setSig, SIGPIPE);
-	sigprocmask(SIG_BLOCK, &setSig, NULL);
-#endif
 
-	struct sockaddr_in server;
+int startSocket() {
+
+	struct sockaddr_in address;
+	int addrlen = sizeof(address);
+	char buffer[MAX_BUFFER_SIZE] = { 0 };
+
+	// 设置socket地址
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(PORT);
+	aliveSockect = 1;
 	char message[100], server_reply[2000];
 
-#ifdef _WIN32
-	WSADATA wsa;
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-	{
-		printf("Failed. Error Code : %d", WSAGetLastError());
-		return 1;
+	// 创建socket
+	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+		sleep(3);
 	}
-#endif
-	server.sin_addr.s_addr = inet_addr("127.0.0.1");
-	server.sin_family = AF_INET;
-	server.sin_port = htons(8000);
-	aliveSockect = 1;
+
+	// 绑定socket
+	if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+		logPrintf(LOG_LEVEL_INFO, "plugin", "bind failed");
+	}
+
+	// 监听socket
+	if (listen(server_fd, 3) < 0) {
+		logPrintf(LOG_LEVEL_INFO, "plugin", "listen failed");
+	}
 
 	while (aliveSockect) {
-		printf("while 1 start\n");
-		closeSocket1();
-		sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		logPrintf(LOG_LEVEL_INFO, "plugin", "while loop start");
+		closeSocket1(new_socket);
 
-		if (sockfd == INVALID_SOCKET)
+		logPrintf(LOG_LEVEL_INFO, "plugin", "Waiting for incoming connections...");
+		// 接受客户端连接
+		if ((new_socket = accept(server_fd, &address, &addrlen)) < 0) {
+			logPrintf(LOG_LEVEL_INFO, "plugin", "accept failed");
+			sleep(3);
+			continue;
+		}
+
+		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected from % s: % d", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+		if (new_socket == INVALID_SOCKET)
 		{
-			printf("Could not create socket");
+			logPrintf(LOG_LEVEL_INFO, "plugin", "accept socket error");
 			sleep(5);
 			continue;
 		}
 		else
 		{
-			printf("Socket created\n");
-			if (connect(sockfd, (struct sockaddr*)&server, sizeof(server)) < 0)
-			{
-				perror("Connect failed. Error");
-				sleep(5);
-				continue;
-			}
 			socketConnected = 1;
 			needReConnect = 0;
-			printf("Connected\n");
-
+			logPrintf(LOG_LEVEL_INFO, "plugin", "Connected");
 			while (aliveSockect)
 			{
-				if (recv(sockfd, server_reply, 2000, 0) < 0)
+				if (recv(new_socket, server_reply, 2000, 0) < 0)
 				{
-					printf("recv failed\n");
+					logPrintf(LOG_LEVEL_INFO, "plugin", "recv failed");
 					socketConnected = 0;
 					break;
 				}
 
 				replyMsg(server_reply);
-
 
 				if (needReConnect == 1) {
 					socketConnected = 0;
@@ -524,15 +536,14 @@ int startScoket()
 
 		}
 
-
 	}
 
-	closeSocket();
+	closeSocket1(new_socket);
+	closeSocket1(server_fd);
 #ifdef _WIN32
 	WSACleanup();
 #endif
 	return 0;
-
 }
 
 
