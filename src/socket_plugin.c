@@ -388,16 +388,87 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 			strcpy(resultData, result);
 		}
 	}
-
-	if (strcmp(requestName, "apiIsSupportedGameMode") == 0) {
+	if (strcmp(requestName, "apiMutList") == 0) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
-			char* result = apiMapList();
+			char* result = apiMutList();
+			strcpy(resultData, result);
+		}
+	}
+	
+	if (strcmp(requestName, "apiIsSupportedGameMode") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* candidateMode = paramsArray[0];
+			char* result = apiIsSupportedGameMode(candidateMode);
+			strcpy(resultData, result);
+		}
+	}
+
+	if (strcmp(requestName, "apiIsAdmin") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* connectID = paramsArray[0];
+			int result = apiIsAdmin(connectID);
 			snprintf(resultData, 10, "%d", result);
 		}
 	}
-	//TODO »÷É±ËÀÍöµÈ
 
+	if (strcmp(requestName, "apiNameToCharacter") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* playerName = paramsArray[0];
+			char* result = apiNameToCharacter(playerName);
+			strcpy(resultData, result);
+		}
+	}
+
+	if (strcmp(requestName, "apiCharacterToName") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* characterID = paramsArray[0];
+			char* result = apiCharacterToName(characterID);
+			strcpy(resultData, result);
+		}
+	}
+	
+	if (strcmp(requestName, "apiIsPlayerAliveByName") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* playerName = paramsArray[0];
+			int result = apiIsPlayerAliveByName(playerName);
+			strcpy(resultData, result);
+		}
+	}
+
+	if (strcmp(requestName, "apiIsPlayerAliveByGUID") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* playerGUID = paramsArray[0];
+			int result = apiIsPlayerAliveByGUID(playerGUID);
+			snprintf(resultData, 10, "%d", result);
+		}
+	}
+
+	if (strcmp(requestName, "apiLookupObjectiveLetterFromCache") == 0) {
+		targetParamsNum = 1;
+		if (paramsNum == targetParamsNum) {
+			char* objectiveName = paramsArray[0];
+			char result = apiLookupObjectiveLetterFromCache(objectiveName);
+			char resultStr[1]={ result }
+			strcpy(resultData, resultStr);
+		}
+	}
+
+	if (strcmp(requestName, "apiLookupLastObjectiveLetterFromCache") == 0) {
+		targetParamsNum = 0;
+		if (paramsNum == targetParamsNum) {
+			char  result = apiLookupLastObjectiveLetterFromCache();
+			char resultStr[1] = { result }
+			strcpy(resultData, resultStr);
+		}
+	}
+	
 	if (paramsNum != targetParamsNum) {
 		snprintf(resultMsg, 50, "requestParams num error:expect:%d,your:%d", targetParamsNum, paramsNum);
 		return -1;
