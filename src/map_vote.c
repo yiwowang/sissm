@@ -147,8 +147,8 @@ void mapVotePrintMap()
 	logPrintf(LOG_LEVEL_INFO, "map_vote", "mapVoteInstallPlugin %s", outStr);
 	apiSay(outStr);
 	logPrintf(LOG_LEVEL_INFO, "map_vote", "test map %d %d %d", outStr[0], outStr[1], outStr[2]);
-	apiSay("[选择地图]请输入序号投票: 序号后可带上字母:s,i,d,n,例如:6in");
-	apiSay("[字母解释]:s=Security, i=Insurgents, d=Day, n=Night");
+	apiSay("[投票換圖]請輸入地圖序號: 序號後面可帶上字母:s,i,d,n,例如:6in");
+	apiSay("[字母解釋]:s=Security, i=Insurgents, d=Day, n=Night");
 }
 
 void startVote()
@@ -202,7 +202,7 @@ int mapVotePeriodicCB(char* strIn)
 	useSeconds++;
 	if (useSeconds == 15)
 	{
-		apiSay("距投票结束还有15秒钟,输入地图序号投票");
+		apiSay("距離投票結束還有15秒,可輸入地圖序號投票");
 		return 0;
 	}
 
@@ -237,20 +237,20 @@ int mapVotePeriodicCB(char* strIn)
 		// 参与玩家大于总玩家的1/3		}
 		int playersCount = apiPlayersGetCount();
 		if (playersCount <= mapVoteConfig.lessPlayerCountNeedAllVote && votePlayerCount < playersCount) {
-			apiSay("投票失败:原因是玩家少于%d人时需要全票(%d/%d)", mapVoteConfig.lessPlayerCountNeedAllVote, votePlayerCount, playersCount);
+			apiSay("投票失敗:原因是玩家少於%d人時需要全票(%d/%d)", mapVoteConfig.lessPlayerCountNeedAllVote, votePlayerCount, playersCount);
 			return 0;
 		}
 
 		if (votePlayerCount < playersCount / 2.0)
 		{
 
-			apiSay("投票失败:原因是参与投票的人数少于50%(%d/%d)", votePlayerCount, playersCount);
+			apiSay("投票失敗:原因是參與投票的人數少於50%(%d/%d)", votePlayerCount, playersCount);
 			return 0;
 		}
 
 		if (maxIndex < 0)
 		{
-			apiSay("投票失败:无人投票");
+			apiSay("投票失敗:無人投票");
 			return 0;
 		}
 
@@ -259,7 +259,7 @@ int mapVotePeriodicCB(char* strIn)
 		travelingMap->sec = voteResult[maxIndex].secNum > voteResult[maxIndex].insNum ? "Security" : "Insurgents";
 
 		logPrintf(LOG_LEVEL_INFO, "map_vote", "vote end; playersCount=%d  votePlayerCpunt=%d  maxIndex=%d,maxNum=%d day=%s,sec=%s map=%s", playersCount, votePlayerCount, maxIndex, maxNum, travelingMap->day, travelingMap->sec, mapTable[travelingMap->index].name1);
-		apiSay("投票成功:共%d个玩家参与, 投票最多地图:%s [%s] [%s](%d次) ", votePlayerCount, mapTable[travelingMap->index].name1, travelingMap->day, travelingMap->sec, maxNum);
+		apiSay("投票成功:共%d個玩家參與, 投票最多地圖:%s [%s] [%s](%d次) ", votePlayerCount, mapTable[travelingMap->index].name1, travelingMap->day, travelingMap->sec, maxNum);
 	}
 
 	if (travelingMap->index >= 0 && useSeconds == 34)
