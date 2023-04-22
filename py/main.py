@@ -12,20 +12,11 @@ requester = None
 
 
 class TestPlugin(EventCallback):
-    def roundEnd(self, log, data):
+   def roundStart(self, log, data):
         print("TestPlugin roundStart 接收" + str(data))
-        # requester.apiGameModePropertySet("MinimumEnemies", "4")
-        # print("TestPlugin roundStart MinimumEnemies=1设置完毕")
-        v = requester.apiGameModePropertyGet("MinimumEnemies")
-        print("TestPlugin 获取MinimumEnemies值为" + str(v))
 
-        v = requester.apiLookupLastObjectiveLetterFromCache()
-        print("TestPlugin apiLookupLastObjectiveLetterFromCache" + str(v))
 
-        requester.apiGameModePropertySet("bForceSoloWaves", "True")
-        requester.apiGameModePropertySet("SoloReinforcementTime", "60")
-        requester.apiGameModePropertySet("SoloWaveIncrementOnObjectiveCapture", "1")
-
+  
 
 if __name__ == "__main__":
     socketWorker = SocketWorker()

@@ -454,7 +454,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 		if (paramsNum == targetParamsNum) {
 			char* objectiveName = paramsArray[0];
 			char result = apiLookupObjectiveLetterFromCache(objectiveName);
-			char resultStr[1]={ result }
+			char resultStr[1]={ result };
 			strcpy(resultData, resultStr);
 		}
 	}
@@ -463,7 +463,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char  result = apiLookupLastObjectiveLetterFromCache();
-			char resultStr[1] = { result }
+			char resultStr[1] = { result };
 			strcpy(resultData, resultStr);
 		}
 	}
