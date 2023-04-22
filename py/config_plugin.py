@@ -1,3 +1,5 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*
 import json
 import traceback
 
@@ -20,22 +22,22 @@ class ConfigPlugin(EventCallback):
         if result is not None:
             resultData = str(result.get("resultData"))
             if resultData.isalnum():
-                self.globalsData["playerCount"] = int(result)
+                self.globalsData["playerCount"] = int(resultData)
 
     def loadConfig(self):
         try:
-            with open("./config.json", "r", encoding="utf-8") as f:
+            with open("./config.json", "r") as f:
                 self.config = json.load(f)
             print(self.config)
         except Exception as e:
-            print("当前目录没找到config.json文件")
+            traceback.print_exc()
+	    print("当前目录没找到config.json文件")
+    def init(self, requester):
+	self.loadConfig()
+        #data = {"event_type": "mapChange", "log": "abc123"}
+        #self.event(data)
 
-    def main(self):
-        self.loadConfig()
-        data = {"event_type": "mapChange", "log": "abc123"}
-        self.dispatchEvent(data)
-
-    def dispatchEvent(self, data):
+    def event(self, data):
         eventType = data.get("event_type")
         events = self.config.get("events")
         if events is None:
@@ -64,10 +66,6 @@ class ConfigPlugin(EventCallback):
 
     def executeCmds(self, cmds):
         for cmd in cmds:
-            if not isinstance(cmd, str):
-                print("cmd类型错误，必须是字符串:" + str(cmd))
-                continue
-
             if cmd.find("\"") == 0:
                 # 引号开头，说明是拼接的字符串
                 tempExecData = self.getGlobalData().copy()

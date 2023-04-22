@@ -8,8 +8,11 @@ from requester import Requester
 from socket_bridge import SocketWorker
 
 socketWorker = None
-requester = None
-
+class A:
+   obj="aaa"
+class B(A):
+  def getA(self):
+     return self.obj 
 
 class TestPlugin(EventCallback):
    def roundStart(self, log, data):
@@ -22,13 +25,14 @@ if __name__ == "__main__":
     socketWorker = SocketWorker()
     requester = Requester(socketWorker)
 
+    b=B()
+    print("xxx"+b.getA())
     testPlugin = TestPlugin()
     configPlugin = ConfigPlugin()
     eventDispatcher.register(testPlugin)
     eventDispatcher.register(configPlugin)
 
     eventDispatcher.init(requester)
-
     # msg = '{"event_type": "clientAdd", "log": "[2023.04.08-00.53.52:441][679]LogNet: Join succeeded: 测试账号","playerName": "测试账号", "playerGUID": "76561199275670546", "playerIP": "125.33.218.132"}'
     # jsonObject = json.loads(msg, strict=False)
     # eventDispatcher.dispatch(jsonObject)
