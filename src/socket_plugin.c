@@ -589,13 +589,15 @@ int startSocket() {
 			logPrintf(LOG_LEVEL_INFO, "plugin", "Connected");
 			while (aliveSockect)
 			{
-				if (recv(new_socket, server_reply, 2000, 0) < 0)
+				strclr(server_reply);
+				int len=recv(new_socket, server_reply, 2000, 0);
+				if (len < 0)
 				{
 					logPrintf(LOG_LEVEL_INFO, "plugin", "recv failed");
 					socketConnected = 0;
 					break;
 				}
-
+				server_reply[len]='\0';
 				replyMsg(server_reply);
 
 				if (needReConnect == 1) {

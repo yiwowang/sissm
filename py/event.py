@@ -7,7 +7,6 @@ class EventCallback:
 
     def init(self, requester):
         self.requester = requester
-	
     def clientAdd(self, log, data):
         pass
 

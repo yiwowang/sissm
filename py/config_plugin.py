@@ -33,6 +33,7 @@ class ConfigPlugin(EventCallback):
             traceback.print_exc()
 	    print("当前目录没找到config.json文件")
     def init(self, requester):
+	EventCallback.init(self,requester)
 	self.loadConfig()
         #data = {"event_type": "mapChange", "log": "abc123"}
         #self.event(data)

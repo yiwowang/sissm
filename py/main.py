@@ -8,11 +8,6 @@ from requester import Requester
 from socket_bridge import SocketWorker
 
 socketWorker = None
-class A:
-   obj="aaa"
-class B(A):
-  def getA(self):
-     return self.obj 
 
 class TestPlugin(EventCallback):
    def roundStart(self, log, data):
@@ -25,8 +20,6 @@ if __name__ == "__main__":
     socketWorker = SocketWorker()
     requester = Requester(socketWorker)
 
-    b=B()
-    print("xxx"+b.getA())
     testPlugin = TestPlugin()
     configPlugin = ConfigPlugin()
     eventDispatcher.register(testPlugin)
