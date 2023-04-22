@@ -1,15 +1,68 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*
 import json
+import os
 import traceback
 
-from event import EventCallback
+from lib.event_dispatcher import EventCallback
 
 
 # 根据配置来执行命令的插件
-class ConfigPlugin(EventCallback):
+class NoCodePlugin(EventCallback):
     config = None
-    globalsData = {"playerCount": -1}
+    globalsData = {"playerCount": -1,
+                   "AIDeadCountForGame": 0,
+                   "AIDeadCountForCurrRound": 0,
+                   "AIDeadCountForCurrPoint": 0,
+                   "PlayerDeadCountForGame": 0,
+                   "PlayerDeadCountForCurrRound": 0,
+                   "PlayerDeadCountForCurrPoint": 0,
+                   "roundIndex": 0,
+                   }
+
+    def init(self, requester, configReader, logger):
+        EventCallback.init(self, requester, configReader, logger)
+        self.loadConfig()
+
+    def gameStart(self, log, data):
+        self.globalsData["AIDeadCountForGame"] = 0
+        self.globalsData["PlayerDeadCountForGame"] = 0
+
+    def gameEnd(self, log, data):
+        pass
+
+    def roundStart(self, log, data):
+        self.globalsData["AIDeadCountForCurrRound"] = 0
+        self.globalsData["PlayerDeadCountForCurrRound"] = 0
+
+    def roundStateChange(self, log, data):
+        if data is None:
+            return
+        if data.get("isStart"):
+            self.globalsData["roundIndex"] = data.get("roundIndex")
+
+    def takeObject(self, log, data):
+        self.globalsData["AIDeadCountForCurrPoint"] = 0
+        self.globalsData["PlayerDeadCountForCurrPoint"] = 0
+
+    def killed(self, log, data):
+        if data is None:
+            return
+        died = data.get("died")
+        if died is None or len(died) == 0:
+            return
+        uid = died[0].get("playerGUID")
+        if uid is None or len(uid) < 15:
+            self.globalsData["AIDeadCountForGame"] += 1
+            self.globalsData["AIDeadCountForCurrRound"] += 1
+            self.globalsData["AIDeadCountForCurrPoint"] += 1
+        else:
+            self.globalsData["PlayerDeadCountForGame"] += 1
+            self.globalsData["PlayerDeadCountForCurrRound"] += 1
+            self.globalsData["PlayerDeadCountForCurrPoint"] += 1
+
+    def roundEnd(self, log, data):
+        pass
 
     def clientSynthDel(self, log, data):
         self.syncPlayerCount()
@@ -26,24 +79,17 @@ class ConfigPlugin(EventCallback):
                     self.globalsData["playerCount"] = int(resultData)
         except Exception as e:
             traceback.print_exc()
-            print("syncPlayerCount error result="+str(result))
-    def loadConfig(self):
-        try:
-            with open("./config.json", "r") as f:
-                self.config = json.load(f)
-            print(self.config)
-        except Exception as e:
-            traceback.print_exc()
-            print("当前目录没找到config.json文件")
+            print("syncPlayerCount error result=" + str(result))
 
-    def init(self, requester):
-        EventCallback.init(self, requester)
-        self.loadConfig()
+    def loadConfig(self):
+        self.config = self.configReader.read("no_code_config.json")
 
     # data = {"event_type": "mapChange", "log": "abc123"}
     # self.event(data)
 
     def event(self, data):
+        if data is None or self.config is None:
+            return
         eventType = data.get("event_type")
         events = self.config.get("events")
         if events is None:
@@ -66,7 +112,8 @@ class ConfigPlugin(EventCallback):
         except Exception as e:
             traceback.print_exc()
             print("事件" + eventType + "后面的值" + str(params) + "有误，你需要重新写条件")
-        print("eval eventType=" + eventType + "; params=(" + str(params) + "); result=" + str(result))
+        self.logger.log(
+            "eval eventType=" + eventType + "; params=(" + str(params) + "); result=" + str(result))
         if result is True and cmds is not None:
             self.executeCmds(cmds)
 

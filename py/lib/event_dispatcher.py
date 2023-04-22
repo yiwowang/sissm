@@ -1,159 +1,87 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*
+from lib.config_reader import ConfigReader
+from lib.event_callback import EventCallback
+from lib.logger import Logger
+
 
 # todo 基于sissm，后面有必要再自己track
-class EventCallback:
-    requester = None
-
-    def init(self, requester):
-        self.requester = requester
-    def clientAdd(self, log, data):
-        pass
-
-    def clientDel(self, log, data):
-        pass
-
-    def restart(self):
-        # TODO
-        pass
-
-    def mapChange(self, log, data):
-        # TODO
-        pass
-
-    def gameStart(self, log, data):
-        pass
-
-    def gameEnd(self, log, data):
-        # TODO
-        pass
-
-    def roundStart(self, log, data):
-        pass
-
-    def roundStateChange(self, log, data):
-        pass
-
-    def takeObject(self, log, data):
-        pass
-
-    def killed(self, log, data):
-        pass
-
-    def roundEnd(self, log, data):
-        # TODO
-        pass
-
-    def captured(self, log, data):
-        pass
-
-    def shutdown(self, log, data):
-        # TODO
-        pass
-
-    def clientSynthDel(self, log, data):
-        pass
-
-    def clientSynthAdd(self, log, data):
-        pass
-
-    def chat(self, log, data):
-        pass
-
-    def sigterm(self, log, data):
-        # TODO
-        pass
-
-    def winLose(self, log, data):
-        pass
-
-    def travel(self, log, data):
-        # TODO
-        pass
-
-    def sessionLog(self, log, data):
-        # TODO
-        pass
-
-    def objectSynth(self, log, data):
-        pass
-
-    def everyLog(self, log, data):
-        # TODO
-        pass
-
-    def event(self, data):
-        # TODO
-        pass
-
 
 class EventDispatcher:
     callbackList = []
     requester = None
+    configReader = None
     playerMap = {}
-
-    def init(self, requester):
-        self.requester = requester
-        if self.callbackList is not None:
-            for callback in self.callbackList:
-                callback.init(requester)
+    eachCallback = None
+    logger = None
 
     def register(self, callback):
         self.callbackList.append(callback)
 
+    def init(self, requester, configReader, logger):
+        self.requester = requester
+        self.eachCallback = EventCallback()
+        self.configReader = configReader
+        self.logger = logger
+
+        if self.callbackList is not None:
+            for callback in self.callbackList:
+                callback.init(requester, self.configReader, self.logger)
+            self.eachCallback.setCallbackList(self.callbackList)
+
     def dispatch(self, jsonObject):
+        cb = self.eachCallback
         log = jsonObject["log"]
-        for cb in self.callbackList:
-            eventType = jsonObject["event_type"]
-            cb.event(jsonObject)
-            if eventType == "clientAdd":
-                cb.clientAdd(log, self.parseClientAdd(log, jsonObject))
-            elif eventType == "clientDel":
-                cb.clientDel(log, self.parseClientDel(log, jsonObject))
-            elif eventType == "restart":
-                cb.restart(log, self.parseRestart(log, jsonObject))
-            elif eventType == "mapChange":
-                cb.mapChange(log, self.parseMapChange(log, jsonObject))
-            elif eventType == "gameStart":
-                cb.gameStart(log, self.parseGameStart(log, jsonObject))
-            elif eventType == "gameEnd":
-                cb.gameEnd(log, self.parseGameEnd(log, jsonObject))
-            elif eventType == "roundStart":
-                cb.roundStart(log, self.parseRoundStart(log, jsonObject))
-            elif eventType == "roundEnd":
-                cb.roundEnd(log, self.parseRoundEnd(log, jsonObject))
-            elif eventType == "roundStateChange":
-                cb.roundStateChange(log, self.parseRoundStateChange(log, jsonObject))
-            elif eventType == "takeObject":
-                cb.takeObject(log, self.parseTakeObject(log, jsonObject))
-            elif eventType == "killed":
-                cb.killed(log, self.parseKilled(log, jsonObject))
-            elif eventType == "captured":
-                cb.captured(log, self.parseCaptured(log, jsonObject))
-            elif eventType == "shutdown":
-                cb.shutdown(log, self.parseShutdown(log, jsonObject))
-            elif eventType == "clientSynthDel":
-                cb.clientSynthDel(log, self.parseClientSynthDel(log, jsonObject))
-            elif eventType == "clientSynthAdd":
-                cb.clientSynthAdd(log, self.parseClientSynthAdd(log, jsonObject))
-            elif eventType == "chat":
-                cb.chat(log, self.parseChat(log, jsonObject))
-            elif eventType == "sigterm":
-                cb.sigterm(log, self.parseSigterm(log, jsonObject))
-            elif eventType == "winLose":
-                cb.winLose(log, self.parseWinLose(log, jsonObject))
-            elif eventType == "travel":
-                cb.travel(log, self.parseTravel(log, jsonObject))
-            elif eventType == "sessionLog":
-                cb.sessionLog(log, self.parseSessionLog(log, jsonObject))
-            elif eventType == "objectSynth":
-                cb.objectSynth(log, self.parseObjectSynth(log, jsonObject))
-            elif eventType == "everyLog":
-                cb.everyLog(log, self.parseEveryLog(log, jsonObject))
+        eventType = jsonObject["event_type"]
+        if eventType == "clientAdd":
+            cb.clientAdd(log, self.parseClientAdd(log, jsonObject))
+        elif eventType == "clientDel":
+            cb.clientDel(log, self.parseClientDel(log, jsonObject))
+        elif eventType == "restart":
+            cb.restart(log, self.parseRestart(log, jsonObject))
+        elif eventType == "mapChange":
+            cb.mapChange(log, self.parseMapChange(log, jsonObject))
+        elif eventType == "gameStart":
+            cb.gameStart(log, self.parseGameStart(log, jsonObject))
+        elif eventType == "gameEnd":
+            cb.gameEnd(log, self.parseGameEnd(log, jsonObject))
+        elif eventType == "roundStart":
+            cb.roundStart(log, self.parseRoundStart(log, jsonObject))
+        elif eventType == "roundEnd":
+            cb.roundEnd(log, self.parseRoundEnd(log, jsonObject))
+        elif eventType == "roundStateChange":
+            cb.roundStateChange(log, self.parseRoundStateChange(log, jsonObject))
+        elif eventType == "takeObject":
+            cb.takeObject(log, self.parseTakeObject(log, jsonObject))
+        elif eventType == "killed":
+            cb.killed(log, self.parseKilled(log, jsonObject))
+        elif eventType == "captured":
+            cb.captured(log, self.parseCaptured(log, jsonObject))
+        elif eventType == "shutdown":
+            cb.shutdown(log, self.parseShutdown(log, jsonObject))
+        elif eventType == "clientSynthDel":
+            cb.clientSynthDel(log, self.parseClientSynthDel(log, jsonObject))
+        elif eventType == "clientSynthAdd":
+            cb.clientSynthAdd(log, self.parseClientSynthAdd(log, jsonObject))
+        elif eventType == "chat":
+            cb.chat(log, self.parseChat(log, jsonObject))
+        elif eventType == "sigterm":
+            cb.sigterm(log, self.parseSigterm(log, jsonObject))
+        elif eventType == "winLose":
+            cb.winLose(log, self.parseWinLose(log, jsonObject))
+        elif eventType == "travel":
+            cb.travel(log, self.parseTravel(log, jsonObject))
+        elif eventType == "sessionLog":
+            cb.sessionLog(log, self.parseSessionLog(log, jsonObject))
+        elif eventType == "objectSynth":
+            cb.objectSynth(log, self.parseObjectSynth(log, jsonObject))
+        elif eventType == "everyLog":
+            cb.everyLog(log, self.parseEveryLog(log, jsonObject))
+        cb.event(jsonObject)
 
     def processResult(self, log, data, result):
         data["parsed"] = result
-        print("[event]:origin:" + str(data) + "======result:" + str(result))
+        self.logger.log("[event]:origin:" + str(data) + "======result:" + str(result))
 
     def _getMid(self, strData, key1, key2):
         if strData is None or key1 is None or key2 is None:
@@ -225,7 +153,11 @@ class EventDispatcher:
         result = None
         roundIndex = self._getMid(log, "Round", "started")
         if roundIndex is not None:
-            result = {"roundIndex": roundIndex}
+            result = {"roundIndex": int(str(roundIndex)), "isStart": True}
+        else:
+            roundIndex = self._getMid(log, "Round", "Over")
+            if roundIndex is not None:
+                result = {"roundIndex": int(str(roundIndex)), "isStart": False}
         self.processResult(log, data, result)
         return result
 

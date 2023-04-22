@@ -6,10 +6,9 @@ import socket
 import json
 import threading
 import time
-from time import ctime
 import traceback
 from concurrent.futures import ThreadPoolExecutor
-from event import *
+from lib.event_dispatcher import *
 
 # import sys
 # reload(sys)

@@ -50,6 +50,7 @@ static struct {
 	int  pluginState;                      // always have this in .cfg file:  0=disabled 1=enabled
 
 	char matchEventString[EVENT_COUNT][100];
+	int enableLog;
 
 } pluginConfig;
 
@@ -63,14 +64,16 @@ int matchEventMaxIndex = -1;
 //
 int pluginInitConfig(void)
 {
-	
+
 	cfsPtr cP;
 
 	cP = cfsCreate(sissmGetConfigPath());
 
 	// read "plugin.pluginstate" variable from the .cfg file
 	pluginConfig.pluginState = (int)cfsFetchNum(cP, "socket_plugin.pluginState", 0.0);  // disabled by default
+	pluginConfig.enableLog = (int)cfsFetchNum(cP, "socket_plugin.enableLog", 0.0);  // disabled by default
 	logPrintf(LOG_LEVEL_INFO, "plugin", "pluginConfig.pluginState=%d", pluginConfig.pluginState);
+	logPrintf(LOG_LEVEL_INFO, "plugin", "pluginConfig.enableLog=%d", pluginConfig.enableLog);
 	int i;
 	for (i = 0; i < EVENT_COUNT; i++) {
 		char key[50];
@@ -142,7 +145,9 @@ void sendSocket(char* data) {
 	}
 	char newData[200];
 	strcat(data, "\n");
-	logPrintf(LOG_LEVEL_INFO, "plugin", "send data=%s", data);
+	if (pluginConfig.enableLog == 1) {
+		logPrintf(LOG_LEVEL_INFO, "plugin", "send data=%s", data);
+	}
 	if (send(new_socket, data, strlen(data), 0) < 0) {
 		needReConnect = 1;
 		logPrintf(LOG_LEVEL_INFO, "plugin", "send faild=%s", data);
@@ -394,7 +399,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 			strcpy(resultData, result);
 		}
 	}
-	
+
 	if (strcmp(requestName, "apiIsSupportedGameMode") == 0) {
 		targetParamsNum = 1;
 		if (paramsNum == targetParamsNum) {
@@ -430,7 +435,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 			strcpy(resultData, result);
 		}
 	}
-	
+
 	if (strcmp(requestName, "apiIsPlayerAliveByName") == 0) {
 		targetParamsNum = 1;
 		if (paramsNum == targetParamsNum) {
@@ -454,7 +459,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 		if (paramsNum == targetParamsNum) {
 			char* objectiveName = paramsArray[0];
 			char result = apiLookupObjectiveLetterFromCache(objectiveName);
-			char resultStr[1]={ result };
+			char resultStr[1] = { result };
 			strcpy(resultData, resultStr);
 		}
 	}
@@ -467,7 +472,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 			strcpy(resultData, resultStr);
 		}
 	}
-	
+
 	if (paramsNum != targetParamsNum) {
 		snprintf(resultMsg, 50, "requestParams num error:expect:%d,your:%d", targetParamsNum, paramsNum);
 		return -1;
@@ -479,7 +484,9 @@ void replyMsg(char* receiveMsg) {
 	if (strlen(receiveMsg) < 8) {
 		return;
 	}
-	logPrintf(LOG_LEVEL_INFO, "plugin", "reveive json %s len=%d", receiveMsg, strlen(receiveMsg));
+	if (pluginConfig.enableLog == 1) {
+		logPrintf(LOG_LEVEL_INFO, "plugin", "reveive json %s len=%d", receiveMsg, strlen(receiveMsg));
+	}
 	//解析json1
 	//通过cJSON_Parse解析接收到的字符串，再通过cJSON_GetObjectItem获取指定键的值，最后释放该JSON结点的内存
 	cJSON* root;
@@ -500,10 +507,12 @@ void replyMsg(char* receiveMsg) {
 	char* paramsArray[10] = { 0 };
 	if (requestParams != NULL && strlen(requestParams) > 0) {
 		split(requestParams, "|", paramsArray, &paramsNum);
-		logPrintf(LOG_LEVEL_INFO, "plugin", "replyMsg requestParams=%s", requestParams);
-		int i;
-		for (i = 0; i < paramsNum;i++) {
-			logPrintf(LOG_LEVEL_INFO, "plugin", "replyMsg paramsArray[%s]=", paramsArray[i]);
+		if (pluginConfig.enableLog == 1) {
+			logPrintf(LOG_LEVEL_INFO, "plugin", "replyMsg requestParams=%s", requestParams);
+			int i;
+			for (i = 0; i < paramsNum; i++) {
+				logPrintf(LOG_LEVEL_INFO, "plugin", "replyMsg paramsArray[%s]=", paramsArray[i]);
+			}
 		}
 	}
 	strclr(resultData);
@@ -575,7 +584,7 @@ int startSocket() {
 			continue;
 		}
 
-		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected from");
+		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected");
 		if (new_socket == INVALID_SOCKET)
 		{
 			logPrintf(LOG_LEVEL_INFO, "plugin", "accept socket error");
@@ -663,7 +672,6 @@ int pluginClientDelCB(char* strIn)
 //
 int pluginInitCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "pluginInitCB ::%s::", strIn);
 	sendEvent("init", strIn, NULL);
 	return 0;
 }
@@ -676,7 +684,6 @@ int pluginInitCB(char* strIn)
 //
 int pluginRestartCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Restart Event ::%s::", strIn);
 	sendEvent("restart", strIn, NULL);
 	return 0;
 }
@@ -688,7 +695,6 @@ int pluginRestartCB(char* strIn)
 //
 int pluginMapChangeCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Map Change Event ::%s::", strIn);
 	sendEvent("mapChange", strIn, NULL);
 	return 0;
 }
@@ -742,8 +748,6 @@ int pluginRoundStartCB(char* strIn)
 //
 int pluginRoundEndCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Round End Event ::%s::", strIn);
-	//apiSay( "plugin: End of Round" );
 	sendEvent("roundEnd", strIn, NULL);
 	return 0;
 }
@@ -847,7 +851,6 @@ int pluginClientSynthAddCB(char* strIn)
 //
 int pluginChatCB(char* strIn)
 {
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Client chat ::%s::", strIn);
 	sendEvent("chat", strIn, NULL);
 	return 0;
 }
@@ -900,9 +903,6 @@ int pluginSessionLog(char* strIn)
 
 	sessionID = rosterGetSessionID();
 
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Session ID ::%s::", sessionID);
-	//apiSay( "plugin: Session ID %s", sessionID );
-
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"sessionID\":\"%s\"", sessionID);
 
@@ -921,7 +921,6 @@ int pluginObjectSynth(char* strIn)
 	obj = rosterGetObjective();
 	typ = rosterGetObjectiveType();
 
-	logPrintf(LOG_LEVEL_INFO, "plugin", "Roster Objective is ::%s::, Type is ::%s::", obj, typ);
 	char otherJson[100];
 	snprintf(otherJson, 100, ", \"obj\":\"%s\", \"typ\":\"%s\"", obj, typ);
 
