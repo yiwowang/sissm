@@ -235,7 +235,7 @@ class EventDispatcher:
         playerName = self._getLeft(playerStr, "[")
         playerUid = self._getMid(playerStr, "[", "]")
         playerTeam = None
-        if "," in playerUid:
+        if playerUid is not None and "," in playerUid:
             playerTeam = self._getRight(playerUid, ",")
             playerUid = self._getLeft(playerUid, ",")
 

@@ -4,8 +4,6 @@
       "anyEvent": "log.find(\"kill\")>0",
       "roundStart": "playerCount>-2",
       "cmds": [
-        "gamemodeproperty MinimumEnemies 4",
-        "\"say test--MinimumEnemies=1 playerCount=\"+str(playerCount)"
       ]
     }
   ]

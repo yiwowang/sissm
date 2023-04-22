@@ -19,11 +19,14 @@ class ConfigPlugin(EventCallback):
 
     def syncPlayerCount(self):
         result = self.requester.apiPlayersGetCount()
-        if result is not None:
-            resultData = str(result.get("resultData"))
-            if resultData.isalnum():
-                self.globalsData["playerCount"] = int(resultData)
-
+        try:
+            if result is not None:
+                resultData = str(result.get("resultData"))
+                if resultData.isalnum():
+                    self.globalsData["playerCount"] = int(resultData)
+        except Exception as e:
+            traceback.print_exc()
+            print("syncPlayerCount error result="+str(result))
     def loadConfig(self):
         try:
             with open("./config.json", "r") as f:
@@ -31,12 +34,14 @@ class ConfigPlugin(EventCallback):
             print(self.config)
         except Exception as e:
             traceback.print_exc()
-	    print("当前目录没找到config.json文件")
+            print("当前目录没找到config.json文件")
+
     def init(self, requester):
-	EventCallback.init(self,requester)
-	self.loadConfig()
-        #data = {"event_type": "mapChange", "log": "abc123"}
-        #self.event(data)
+        EventCallback.init(self, requester)
+        self.loadConfig()
+
+    # data = {"event_type": "mapChange", "log": "abc123"}
+    # self.event(data)
 
     def event(self, data):
         eventType = data.get("event_type")

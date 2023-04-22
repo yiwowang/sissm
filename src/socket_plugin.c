@@ -56,6 +56,7 @@ static struct {
 int matchEventMaxIndex = -1;
 #define PORT 8000
 #define MAX_BUFFER_SIZE 1024
+int socklen_t;
 //  ==============================================================================================
 //  pluginInitConfig
 //
@@ -575,7 +576,7 @@ int startSocket() {
 			continue;
 		}
 
-		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected from");
+		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected from % s: % d", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 		if (new_socket == INVALID_SOCKET)
 		{
 			logPrintf(LOG_LEVEL_INFO, "plugin", "accept socket error");
@@ -590,14 +591,13 @@ int startSocket() {
 			while (aliveSockect)
 			{
 				strclr(server_reply);
-				int len=recv(new_socket, server_reply, 2000, 0);
-				if (len < 0)
+				if (recv(new_socket, server_reply, 2000, 0) < 0)
 				{
 					logPrintf(LOG_LEVEL_INFO, "plugin", "recv failed");
 					socketConnected = 0;
 					break;
 				}
-				server_reply[len]='\0';
+
 				replyMsg(server_reply);
 
 				if (needReConnect == 1) {
@@ -831,8 +831,8 @@ int pluginClientSynthAddCB(char* strIn)
 
 	rosterParsePlayerSynthConn(strIn, 256, playerName, playerGUID, playerIP);
 
-	char otherJson[100];
-	snprintf(otherJson, 100, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
+	char otherJson[200];
+	snprintf(otherJson, 200, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
 
 	sendEvent("clientSynthAdd", strIn, otherJson);
 
