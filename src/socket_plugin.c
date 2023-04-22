@@ -56,7 +56,6 @@ static struct {
 int matchEventMaxIndex = -1;
 #define PORT 8000
 #define MAX_BUFFER_SIZE 1024
-int socklen_t;
 //  ==============================================================================================
 //  pluginInitConfig
 //
@@ -576,7 +575,7 @@ int startSocket() {
 			continue;
 		}
 
-		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected from % s: % d", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+		logPrintf(LOG_LEVEL_INFO, "plugin", "Client connected from");
 		if (new_socket == INVALID_SOCKET)
 		{
 			logPrintf(LOG_LEVEL_INFO, "plugin", "accept socket error");
@@ -591,12 +590,14 @@ int startSocket() {
 			while (aliveSockect)
 			{
 				strclr(server_reply);
-				if (recv(new_socket, server_reply, 2000, 0) < 0)
+				int len = recv(new_socket, server_reply, 2000, 0);
+				if (len < 0)
 				{
 					logPrintf(LOG_LEVEL_INFO, "plugin", "recv failed");
 					socketConnected = 0;
 					break;
 				}
+				server_reply[len] = '\0';
 
 				replyMsg(server_reply);
 
