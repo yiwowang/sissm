@@ -1,0 +1,12 @@
+{
+  "events": [
+    {
+      "anyEvent": "log.find(\"kill\")>0",
+      "roundStart": "playerCount>-2",
+      "cmds": [
+        "gamemodeproperty MinimumEnemies 1",
+        "\"say test--MinimumEnemies=1 playerCount=\"+str(playerCount)"
+      ]
+    }
+  ]
+}

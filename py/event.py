@@ -83,6 +83,10 @@ class EventCallback:
         # TODO
         pass
 
+    def event(self, data):
+        # TODO
+        pass
+
 
 class EventDispatcher:
     callbackList = []
@@ -102,6 +106,7 @@ class EventDispatcher:
         log = jsonObject["log"]
         for cb in self.callbackList:
             eventType = jsonObject["event_type"]
+            cb.event(jsonObject)
             if eventType == "clientAdd":
                 cb.clientAdd(log, self.parseClientAdd(log, jsonObject))
             elif eventType == "clientDel":
@@ -148,6 +153,7 @@ class EventDispatcher:
                 cb.everyLog(log, self.parseEveryLog(log, jsonObject))
 
     def processResult(self, log, data, result):
+        data["parsed"] = result
         print("[event]:origin:" + str(data) + "======result:" + str(result))
 
     def _getMid(self, strData, key1, key2):

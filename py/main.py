@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*
 import json
 
+from config_plugin import ConfigPlugin
 from event import *
 from requester import Requester
 from socket_bridge import SocketWorker
@@ -13,7 +14,7 @@ requester = None
 class TestPlugin(EventCallback):
     def roundEnd(self, log, data):
         print("TestPlugin roundStart 接收" + str(data))
-       # requester.apiGameModePropertySet("MinimumEnemies", "4")
+        # requester.apiGameModePropertySet("MinimumEnemies", "4")
         # print("TestPlugin roundStart MinimumEnemies=1设置完毕")
         v = requester.apiGameModePropertyGet("MinimumEnemies")
         print("TestPlugin 获取MinimumEnemies值为" + str(v))
@@ -30,8 +31,11 @@ if __name__ == "__main__":
     socketWorker = SocketWorker()
     requester = Requester(socketWorker)
 
-    plugin = TestPlugin()
-    eventDispatcher.register(plugin)
+    testPlugin = TestPlugin()
+    configPlugin = ConfigPlugin()
+    eventDispatcher.register(testPlugin)
+    eventDispatcher.register(configPlugin)
+
     eventDispatcher.init(requester)
 
     # msg = '{"event_type": "clientAdd", "log": "[2023.04.08-00.53.52:441][679]LogNet: Join succeeded: 测试账号","playerName": "测试账号", "playerGUID": "76561199275670546", "playerIP": "125.33.218.132"}'
