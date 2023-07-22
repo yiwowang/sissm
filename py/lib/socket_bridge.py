@@ -32,6 +32,7 @@ class SocketWorker:
     loopStart = True
 
     def send(self, data):
+        print("发送：" + str(data))
         result = None
         if self.socketObj is not None:
             condition = threading.Condition()
@@ -40,7 +41,6 @@ class SocketWorker:
                 data["requestId"] = key
                 self.resultMap[key] = {"condition": condition, "result": ""}
                 self.socketObj.send((json.dumps(data)).encode("UTF-8"))
-                print("发送：" + str(data))
                 condition.wait(timeout=10)
                 result = self.resultMap.pop(key)["result"]
             condition.release()
