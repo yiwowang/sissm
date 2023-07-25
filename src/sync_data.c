@@ -439,7 +439,11 @@ int syncDataRoundEnd(int round, int win, char* endReason)
 	else {
 		logPrintf(LOG_LEVEL_INFO, "syncData", "syncDataRoundEndCB outputPath not exists:%s", syncDataConfig.outputPath);
 	}
-
+	if (isLocalDebug() == 1) {
+		logPrintf(LOG_LEVEL_INFO, "syncData", "isLocalDebug=1 request canceled");
+		roundReset();
+		return 0;
+	}
 	if (strlen(syncDataConfig.httpUrl) > 0) {
 		logPrintf(LOG_LEVEL_INFO, "syncData", "httpRequest sending...");
 		char responseBody[10 * 1024];

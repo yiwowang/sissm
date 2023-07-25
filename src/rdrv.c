@@ -408,6 +408,10 @@ static int _rdrvCommand( rdrvObj *rPtr, int msgType, char *rconCmd, char *rconRe
 
 int rdrvCommand( rdrvObj *rPtr, int msgType, char *rconCmd, char *rconResp, int *bytesRead )
 {
+    if (isLocalDebug() == 1) {
+        logPrintf(LOG_LEVEL_INFO, "syncData", "isLocalDebug=1 rdrvCommand canceled rconCmd:%s", rconCmd);
+        return 0;
+    }
     int         bytesRead2, errCode;
     static char rconRespCont[BUFSIZE_R];                // for receiving continuation buffer
     static char *rconCmdBlank = "";                               // for sending null string  

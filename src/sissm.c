@@ -73,7 +73,7 @@
 #include "pidynbots.h"
 #include "pitacnomic.h"
 #include "pistats.h"
-
+#include "common_util.h"
 
 //  ==============================================================================================
 //  Data definition  
@@ -397,6 +397,8 @@ int sissmInitPlugins( void )
     suicideInstallPlugin();
     syncDataInstallPlugin();
     pluginInstallPlugin();
+
+    testDispatchLogList();
     return errCode;
 }
 

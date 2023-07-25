@@ -67,19 +67,33 @@ class SocketWorker:
                 self.socketObj = s
                 retryCount = 0
                 print('连接成功')
+                lastMsg = None
                 while self.loopStart:
                     # 接收返回数据
                     outData = s.recv(BUFFSIZE)
                     try:
-                        msg = outData.decode("UTF-8")
-                        if "\n" not in msg:
+                        msgs = outData.decode("UTF-8")
+                        if "\n" not in msgs:
+                            lastMsg = msgs
+                            print("^json 没接收完 记录为lastMsg：" + lastMsg)
                             continue
-                        arr = msg.split("\n")
-                        for msg in arr:
+                        if lastMsg is not None:
+                            msgs = lastMsg + msgs
+                            lastMsg = None
+                        arr = msgs.split("\n")
+                        for i in range(0, len(arr)):
+                            msg = arr[i]
                             if len(msg) == 0:
                                 continue
                             print('返回数据信息：{!r}'.format(msg))
-                            jsonObject = json.loads(msg, strict=False)
+                            try:
+                                jsonObject = json.loads(msg, strict=False)
+                            except Exception as e:
+                                lastMsg = msg
+                                if i == 0:
+                                    print("^json 解析错误:第1条消息不完整：" + msg)
+                                    continue
+                                print("^json 异常 记录为lastMsg：" + msg)
                             if "requestId" in jsonObject:
                                 # 客户端请求的响应结果
                                 sendKey = jsonObject["requestId"]

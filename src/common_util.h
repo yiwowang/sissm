@@ -9,7 +9,8 @@ struct KillInfo {
 	int playerIndex;
 };
 
-extern int isDebug();
+extern int isLocalDebug();
+extern void testDispatchLogList();
 extern int isValidUid(char* uid);
 extern void getTimeStr(long t, char* formatYMDHMS, char* output, int outputSize);
 extern int exists(const char* path);

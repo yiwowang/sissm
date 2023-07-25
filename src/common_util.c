@@ -13,6 +13,7 @@
 #include "roster.h"
 #include "api.h"
 #include "sissm.h"
+#include "events.h"
 
 #include <ctype.h>
 #include <http.h>
@@ -27,6 +28,14 @@
 #include "time.h"
 
 #include "common_util.h"
+int isLocalDebug() {
+	return 0;
+}
+
+void testDispatchLogList() {
+//	eventsDispatch("[2022.11.22-15.46.46:975][862]LogGameState: Match State Changed from PreRound to RoundActive");
+//	eventsDispatch("[2022.11.22 - 15.35.44:201][899]LogNet : Join succeeded : YEYE");
+}
 
 int isValidUid(char* uid) {
 	return strlen(uid) > 10;
@@ -35,7 +44,7 @@ void getTimeStr(long t, char* formatYMDHMS, char* output, int outputSize) {
 	time_t tt = t > 0 ? (time_t)t : time(NULL);
 
 	struct tm* timeP;
-	timeP = localtime(&tt);    // ×ª»»
+	timeP = localtime(&tt);    // ×ªï¿½ï¿½
 	snprintf(output, outputSize, formatYMDHMS, 1900 + timeP->tm_year, 1 + timeP->tm_mon, timeP->tm_mday, timeP->tm_hour, timeP->tm_min, timeP->tm_sec);
 }
 
@@ -110,7 +119,7 @@ void getWordLeft(char* input, char* start, char* output)
 	strlcpy(output, input, w - input + 1);
 }
 
-// output ´óÐ¡Ò»¶¨×ã‰ò´ó£¬×îºÃÊÇ300
+// output ï¿½ï¿½Ð¡Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½300
 void getWordRightRange(char* input, char* startOffset, char* start, char* end, char* output) {
 	strclr(output);
 	if (input == NULL) {
@@ -202,9 +211,9 @@ int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 	killInfo->playerIndex = -1;
 	char str1[500];
 	getWordRight(strIn, "Display: ", str1);
-	//ÓÃÀ´½ÓÊÕ·µ»ØÊý¾ÝµÄÊý×é¡£ÕâÀïµÄÊý×éÔªËØÖ»ÒªÉèÖÃµÄ±È·Ö¸îºóµÄ×Ó×Ö·û´®¸öÊý´ó¾ÍºÃÁË¡£
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½é¡£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Ö»Òªï¿½ï¿½ï¿½ÃµÄ±È·Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ë¡ï¿½
 	char* arr1[10] = { 0 };
-	//·Ö¸îºó×Ó×Ö·û´®µÄ¸öÊý
+	//ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 	size_t num1 = 0;
 	split(str1, " killed ", arr1, &num1);
 	if (num1 == 2) {
