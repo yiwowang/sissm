@@ -73,6 +73,9 @@ class SocketWorker:
                     outData = s.recv(BUFFSIZE)
                     try:
                         msgs = outData.decode("UTF-8")
+			if msgs is None or len(msgs)==0:
+			    s.close()
+		            break
                         if "\n" not in msgs:
                             lastMsg = msgs
 			    time.sleep(1)                            
@@ -117,5 +120,10 @@ class SocketWorker:
             except Exception as e:
                 traceback.print_exc()
                 retryCount += 1
+		if retryCount>=60:
+		   print("重连超过限制,不在重连")
+		   break
                 print("正在重试第" + str(retryCount) + "次")
-                time.sleep(5)
+                s.close()
+		time.sleep(5)
+		

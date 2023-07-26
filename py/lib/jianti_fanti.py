@@ -322,10 +322,10 @@ class Translate():
         wordsSearch._others = toWords
         return wordsSearch
 #
-# if __name__ == "__main__":
+#if __name__ == "__main__":
 #
 #     print("-----------------------------------  Translate  -----------------------------------" )
-#     translate = Translate()
+#     	translate = Translate()
 #
 #     print("Translate ToSimplifiedChinese is run.")
 #     tw = translate.ToSimplifiedChinese("壹佰贰拾叁億肆仟伍佰陆拾柒萬捌仟玖佰零壹元壹角贰分")
@@ -333,7 +333,8 @@ class Translate():
 #         print("Translate ToSimplifiedChinese is error.............................")
 #
 #     print("Translate ToTraditionalChinese is run.")
-#     tw = translate.ToTraditionalChinese("我爱中国")
+#	tw = translate.ToTraditionalChinese("我爱中国")
+#	print("xxaa "+tw)
 #     if (tw != "我愛中國") :
 #         print("Translate ToTraditionalChinese is error.............................")
 #

@@ -1,20 +1,12 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*
 import json
-from lib.jianti_fanti import Translate
-
 import sys
- 
 reload(sys)
 sys.setdefaultencoding('utf8')
 import requests as requests
-
 from lib.event_callback import EventCallback
-
-
-translate = Translate()
-tw = translate.ToTraditionalChinese("我爱中国")
-print("aa "+tw)
+from lib.jianti_fanti import Translate
 class JoinMsgPlugin(EventCallback):
     requester = None
     configReader = None
@@ -28,15 +20,20 @@ class JoinMsgPlugin(EventCallback):
         self.configReader = configReader
         self.logger = logger
 	self.serverId= configReader.getCommonConfig().get("serverId")
-	#data={"playerGUID":"76561198324874244","playerName":"GangGang"}
+	self.translate = Translate()
+	#print(self.translate.ToTraditionalChinese("测试账号你好中国"))	
+	#ppp="测试账号"	
+	#data={"playerGUID":"76561198324874244","playerName":ppp}
 	#self.clientSynthAdd(None,data)
     def clientSynthAdd(self, log, data):
         print("JoinMsgPlugin clientSynthAdd 接收" + str(data))
         playerGUID = data.get("playerGUID")
-        playerName = data.get("playerName")
-        if playerGUID is None:
+        playerName = data.get("playerName").encode('utf-8')
+	print(self.translate.ToTraditionalChinese(playerName))
+	playerNameFanTi = self.translate.ToTraditionalChinese(playerName)
+	if playerGUID is None:
             return
-	url='http://' + self.host + '/insurgency_web/player_join_msg.php?playerGUID=' + playerGUID + '&playerName=' + playerName+'&serverId='+str(self.serverId)
+	url='http://' + self.host + '/insurgency_web/player_join_msg.php?playerGUID=' + playerGUID + '&playerName=' + playerName+'&playerNameFanTi='+playerNameFanTi+'&serverId='+str(self.serverId)
         r = requests.get(url)
         dataStr = str(r.text)
        	print("请求:"+url+"\ndata:"+dataStr)

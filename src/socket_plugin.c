@@ -577,24 +577,27 @@ int startSocket() {
 	aliveSockect = 1;
 	char message[100], server_reply[2000];
 
-	// 创建socket
-	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
-		sleep(3);
-	}
-
-	// 绑定socket
-	if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
-		logPrintf(LOG_LEVEL_INFO, "plugin", "bind failed");
-	}
-
-	// 监听socket
-	if (listen(server_fd, 3) < 0) {
-		logPrintf(LOG_LEVEL_INFO, "plugin", "listen failed");
-	}
 
 	while (aliveSockect) {
 		logPrintf(LOG_LEVEL_INFO, "plugin", "while loop start");
 		closeSocket1(new_socket);
+
+ if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+                sleep(3);
+}
+ 
+int opt = 1;
+int  err = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
+
+if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+                logPrintf(LOG_LEVEL_INFO, "plugin", "bind failed");
+continue;
+        }
+ if (listen(server_fd, 3) < 0) {
+                logPrintf(LOG_LEVEL_INFO, "plugin", "listen failed");
+continue;
+}
 
 		logPrintf(LOG_LEVEL_INFO, "plugin", "Waiting for incoming connections...");
 		// 接受客户端连接
