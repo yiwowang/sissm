@@ -16,7 +16,7 @@ from lib.event_dispatcher import *
 
 
 HOST = '127.0.0.1'
-PORT = 8000
+PORT = 8006
 ADDR = (HOST, PORT)
 ENCODING = 'utf-8'
 BUFFSIZE = 1024
@@ -75,8 +75,9 @@ class SocketWorker:
                         msgs = outData.decode("UTF-8")
                         if "\n" not in msgs:
                             lastMsg = msgs
-                            print("^json 没接收完 记录为lastMsg：" + lastMsg)
-                            continue
+			    time.sleep(1)                            
+			    continue
+			    
                         if lastMsg is not None:
                             msgs = lastMsg + msgs
                             lastMsg = None

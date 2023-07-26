@@ -40,7 +40,7 @@
 #include "sissm.h"
 #include "common_util.h"
 #include "socket_plugin.h"
-
+// C¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿strclr¿¿¿¿¿¿¿¿¿¿¿return ¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
 //  ==============================================================================================
 //  Data definition 
 //
@@ -55,7 +55,7 @@ static struct {
 } pluginConfig;
 
 int matchEventMaxIndex = -1;
-#define PORT 8000
+#define PORT 8006
 #define MAX_BUFFER_SIZE 1024
 //  ==============================================================================================
 //  pluginInitConfig
@@ -226,16 +226,20 @@ int startThread() {
 
 
 
-char* getJsonObjectString(cJSON* root, char* name) {
+void getJsonObjectString(cJSON* root, char* name,char * resultData,int len) {
 	cJSON* obj = cJSON_GetObjectItem(root, name);
 	if (obj == NULL) {
 		return "";
 	}
-	return obj->valuestring;
+	
+//return obj->valuestring;
+strlcpy(resultData, obj->valuestring,len);
+
 }
 
 int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultData, char* resultMsg) {
-	if (requestName == NULL) {
+
+if (requestName == NULL) {
 		strlcpy(resultMsg, "requestName is empty", 50);
 		return -1;
 	}
@@ -491,18 +495,24 @@ void replyMsg(char* receiveMsg) {
 	//Í¨¹ýcJSON_Parse½âÎö½ÓÊÕµ½µÄ×Ö·û´®£¬ÔÙÍ¨¹ýcJSON_GetObjectItem»ñÈ¡Ö¸¶¨¼üµÄÖµ£¬×îºóÊÍ·Å¸ÃJSON½áµãµÄÄÚ´æ
 	cJSON* root;
 	root = cJSON_Parse(receiveMsg);
-	char* requestType = getJsonObjectString(root, "requestType");
-	char* requestName = getJsonObjectString(root, "requestName");
-	char* requestParams = getJsonObjectString(root, "requestParams");
-	char* requestId = getJsonObjectString(root, "requestId");
+	char* requestType[50];
+strclr(requestType);	
+getJsonObjectString(root, "requestType",requestType,50);
+	char* requestName[200];
+strclr(requestName);	
+getJsonObjectString(root, "requestName",requestName,200);
+	char* requestParams[500];
+strclr(requestParams);	
+getJsonObjectString(root, "requestParams",requestParams,500);
+	char* requestId[30];
+strclr(requestId);	
+getJsonObjectString(root, "requestId",requestId,30);
 
-
-	cJSON* response;
+cJSON* response;
 	response = cJSON_CreateObject();
 	cJSON_AddStringToObject(response, "requestType", "response");
 	cJSON_AddStringToObject(response, "requestName", requestName);
 	cJSON_AddStringToObject(response, "requestId", requestId);
-
 	size_t paramsNum = 0;
 	char* paramsArray[10] = { 0 };
 	if (requestParams != NULL && strlen(requestParams) > 0) {
@@ -515,12 +525,22 @@ void replyMsg(char* receiveMsg) {
 			}
 		}
 	}
-	strclr(resultData);
+	
+strclr(resultData);
 	strclr(resultMsg);
 	int errCode = exeCmd(requestName, paramsNum, paramsArray, resultData, resultMsg);
-	cJSON_AddNumberToObject(response, "resultCode", errCode);
-	cJSON_AddStringToObject(response, "resultMsg", resultMsg);
-	cJSON_AddStringToObject(response, "resultData", resultData);
+cJSON_AddNumberToObject(response, "resultCode", errCode);
+
+
+char * finalMsg[50];
+strclr(finalMsg);
+strlcpy(finalMsg,resultMsg,50);
+	
+char * finalData[1000];
+strclr(finalData);
+strlcpy(finalData,resultData,1000);
+cJSON_AddStringToObject(response, "resultMsg", finalMsg);
+cJSON_AddStringToObject(response, "resultData", finalData);
 
 	char* szJSON = cJSON_PrintUnformatted(response);
 	char responseJson[API_R_BUFSIZE + 200];
@@ -528,9 +548,9 @@ void replyMsg(char* receiveMsg) {
 
 	sendSocket(responseJson);
 
-	free(szJSON);
-	cJSON_Delete(root);
-	cJSON_Delete(response);
+	//free(szJSON);
+	//cJSON_Delete(root);
+	//cJSON_Delete(response);
 }
 
 void closeSocket1(int fd) {
@@ -619,7 +639,7 @@ int startSocket() {
 		}
 
 	}
-
+printf("exit socket thread\n");
 	closeSocket1(new_socket);
 	closeSocket1(server_fd);
 #ifdef _WIN32

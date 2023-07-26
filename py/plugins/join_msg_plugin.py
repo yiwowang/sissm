@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*
 import json
 from lib.jianti_fanti import Translate
+
+import sys
+ 
+reload(sys)
+sys.setdefaultencoding('utf8')
 import requests as requests
 
 from lib.event_callback import EventCallback
@@ -15,24 +20,27 @@ class JoinMsgPlugin(EventCallback):
     configReader = None
     logger = None
     callbacks = []
-    host = "127.0.0.1"
-
+    #host = "127.0.0.1"
+    host="82.156.36.121"
     def init(self, requester, configReader, logger):
         self.requester = requester
         self.configReader = configReader
         self.logger = logger
-
+	data={"playerGUID":"76561198324874244","playerName":"GangGang"}
+	self.clientSynthAdd(None,data)
     def clientSynthAdd(self, log, data):
         print("JoinMsgPlugin clientSynthAdd 接收" + str(data))
         playerGUID = data.get("playerGUID")
         playerName = data.get("playerName")
         if playerGUID is None:
             return
-        r = requests.get('http://' + self.host + '/insurgency/player_join_msg.php',
-                         "playerGUID=" + playerGUID + "&playerName=" + playerName)
+	url='http://' + self.host + '/insurgency_web/player_join_msg.php?playerGUID=' + playerGUID + '&playerName=' + playerName
+        r = requests.get(url)
         dataStr = str(r.text)
-        data = json.loads(dataStr)
+       	print("请求:"+url+"\ndata:"+dataStr)
+	data = json.loads(dataStr)
         if data["code"] == 0 and len(data["data"]) > 0:
+	    msg=str(data["data"])
             self.requester.apiSay(str(data["data"]))
         else:
             print(dataStr)
