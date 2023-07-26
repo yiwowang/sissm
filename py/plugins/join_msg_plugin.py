@@ -22,19 +22,21 @@ class JoinMsgPlugin(EventCallback):
     callbacks = []
     #host = "127.0.0.1"
     host="82.156.36.121"
+    serverId=0
     def init(self, requester, configReader, logger):
         self.requester = requester
         self.configReader = configReader
         self.logger = logger
-	data={"playerGUID":"76561198324874244","playerName":"GangGang"}
-	self.clientSynthAdd(None,data)
+	self.serverId= configReader.getCommonConfig().get("serverId")
+	#data={"playerGUID":"76561198324874244","playerName":"GangGang"}
+	#self.clientSynthAdd(None,data)
     def clientSynthAdd(self, log, data):
         print("JoinMsgPlugin clientSynthAdd 接收" + str(data))
         playerGUID = data.get("playerGUID")
         playerName = data.get("playerName")
         if playerGUID is None:
             return
-	url='http://' + self.host + '/insurgency_web/player_join_msg.php?playerGUID=' + playerGUID + '&playerName=' + playerName
+	url='http://' + self.host + '/insurgency_web/player_join_msg.php?playerGUID=' + playerGUID + '&playerName=' + playerName+'&serverId='+str(self.serverId)
         r = requests.get(url)
         dataStr = str(r.text)
        	print("请求:"+url+"\ndata:"+dataStr)
