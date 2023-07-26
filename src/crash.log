@@ -1,0 +1,183 @@
+2023-07-26 00:31:38::plugin::send data={"requestType":"response","requestName":"apiPlayersGetCount","requestId":"1690302698.1798814","resultCode":0,"resultMsg":"","resultData":"1"}
+
+2023-07-26 00:31:38::plugin::reveive json {"requestType": "request", "requestParams": "[\u6d4b\u8bd5\u8d26\u53f7] \u7684\u5355\u5c40\u6700\u9ad8\u5206\u662f:280", "requestName": "apiSay", "requestId": "1690302698.2780137"} len=180
+2023-07-26 00:31:38::plugin::replyMsg requestParams=[≤‚ ‘’À∫≈] µƒµ•æ÷◊Ó∏ﬂ∑÷ «:280
+2023-07-26 00:31:38::plugin::replyMsg paramsArray[[≤‚ ‘’À∫≈] µƒµ•æ÷◊Ó∏ﬂ∑÷ «:280]=
+2023-07-26 00:31:38::rdrv::Continuation RCON packet 00 00 0a containing ::::
+2023-07-26 00:31:38::pigreetings::Add Client ::≤‚ ‘’À∫≈::76561199275670546::125.33.219.225::
+2023-07-26 00:31:38::plugin::send data={"event_type":"clientAdd","log":"[2023.07.25-16.31.37:270][301]LogNet: Join succeeded: ≤‚ ‘’À∫≈", "playerName":"≤‚ ‘’À∫≈","playerGUID":"76561199275670546","playerIP":"125.33.219.225"}
+
+2023-07-26 00:31:40::rdrv::Warning: RCON comms lost - re-opening with new channel
+*** Error in `./sissm': malloc(): memory corruption: 0x00007fbda8000ea0 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x82b36)[0x7fbdac917b36]
+/lib64/libc.so.6(__libc_malloc+0x4c)[0x7fbdac91a78c]
+/lib64/libc.so.6(__resolv_context_get+0x45)[0x7fbdac9a56f5]
+/lib64/libc.so.6(gethostbyname+0x1a)[0x7fbdac9ae47a]
+./sissm(rdrvConnect+0x8e)[0x420141]
+./sissm[0x4205cc]
+./sissm(rdrvCommand+0x9e)[0x4206a1]
+./sissm(apiSay+0x174)[0x415f0c]
+./sissm(exeCmd+0x14a)[0x4283bd]
+./sissm(replyMsg+0x21e)[0x428fb3]
+./sissm(startSocket+0x272)[0x429304]
+./sissm(thread_func+0x2f)[0x427f69]
+/lib64/libpthread.so.0(+0x7ea5)[0x7fbdacc6aea5]
+/lib64/libc.so.6(clone+0x6d)[0x7fbdac993b0d]
+======= Memory map: ========
+00400000-0043a000 r-xp 00000000 fd:01 788995                             /home/steam/sissm/sissm
+00639000-0063a000 r--p 00039000 fd:01 788995                             /home/steam/sissm/sissm
+0063a000-0063c000 rw-p 0003a000 fd:01 788995                             /home/steam/sissm/sissm
+0063c000-00923000 rw-p 00000000 00:00 0
+012f1000-01312000 rw-p 00000000 00:00 0                                  [heap]
+7fbda0000000-7fbda0021000 rw-p 00000000 00:00 0
+7fbda0021000-7fbda4000000 ---p 00000000 00:00 0
+7fbda7dea000-7fbda7dff000 r-xp 00000000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fbda7dff000-7fbda7ffe000 ---p 00015000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fbda7ffe000-7fbda7fff000 r--p 00014000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fbda7fff000-7fbda8000000 rw-p 00015000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fbda8000000-7fbda8021000 rw-p 00000000 00:00 0
+7fbda8021000-7fbdac000000 ---p 00000000 00:00 0
+7fbdac094000-7fbdac095000 ---p 00000000 00:00 0
+7fbdac095000-7fbdac895000 rw-p 00000000 00:00 0
+7fbdac895000-7fbdaca59000 r-xp 00000000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7fbdaca59000-7fbdacc58000 ---p 001c4000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7fbdacc58000-7fbdacc5c000 r--p 001c3000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7fbdacc5c000-7fbdacc5e000 rw-p 001c7000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7fbdacc5e000-7fbdacc63000 rw-p 00000000 00:00 0
+7fbdacc63000-7fbdacc7a000 r-xp 00000000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7fbdacc7a000-7fbdace79000 ---p 00017000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7fbdace79000-7fbdace7a000 r--p 00016000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7fbdace7a000-7fbdace7b000 rw-p 00017000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7fbdace7b000-7fbdace7f000 rw-p 00000000 00:00 0
+7fbdace7f000-7fbdacea1000 r-xp 00000000 fd:01 5009                       /usr/lib64/ld-2.17.so
+7fbdad092000-7fbdad095000 rw-p 00000000 00:00 0
+7fbdad09b000-7fbdad0a0000 rw-p 00000000 00:00 0
+7fbdad0a0000-7fbdad0a1000 r--p 00021000 fd:01 5009                       /usr/lib64/ld-2.17.so
+7fbdad0a1000-7fbdad0a2000 rw-p 00022000 fd:01 5009                       /usr/lib64/ld-2.17.so
+7fbdad0a2000-7fbdad0a3000 rw-p 00000000 00:00 0
+7ffd16276000-7ffd16297000 rw-p 00000000 00:00 0                          [stack]
+7ffd16391000-7ffd16393000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+./sissm(sissmSegfaultSigaction+0x33) [0x42a730]
+/lib64/libpthread.so.0(+0xf630) [0x7fbdacc72630]
+/lib64/libc.so.6(gsignal+0x37) [0x7fbdac8cb387]
+/lib64/libc.so.6(abort+0x148) [0x7fbdac8cca78]
+/lib64/libc.so.6(+0x78f67) [0x7fbdac90df67]
+/lib64/libc.so.6(+0x82b36) [0x7fbdac917b36]
+/lib64/libc.so.6(__libc_malloc+0x4c) [0x7fbdac91a78c]
+/lib64/libc.so.6(__resolv_context_get+0x45) [0x7fbdac9a56f5]
+/lib64/libc.so.6(gethostbyname+0x1a) [0x7fbdac9ae47a]
+./sissm(rdrvConnect+0x8e) [0x420141]
+./sissm() [0x4205cc]
+./sissm(rdrvCommand+0x9e) [0x4206a1]
+./sissm(apiSay+0x174) [0x415f0c]
+./sissm(exeCmd+0x14a) [0x4283bd]
+./sissm(replyMsg+0x21e) [0x428fb3]
+./sissm(startSocket+0x272) [0x429304]
+./sissm(thread_func+0x2f) [0x427f69]
+/lib64/libpthread.so.0(+0x7ea5) [0x7fbdacc6aea5]
+/lib64/libc.so.6(clone+0x6d) [0x7fbdac993b0d]
+[steam@VM-16-3-centos sissm]$
+
+
+===================
+
+
+∆Ù∂Ø±¿¿£
+
+
+2023-07-26 00:41:32::plugin::reveive json {"requestType": "request", "requestParams": "[\u6d4b\u8bd5\u8d26\u53f7] \u7684\u5355\u5c40\u6700\u9ad8\u5206\u662f:280", "requestName": "apiSay", "requestId": "1690303292.5649394"} len=180
+2023-07-26 00:41:32::plugin::replyMsg requestParams=[≤‚ ‘’À∫≈] µƒµ•æ÷◊Ó∏ﬂ∑÷ «:280
+2023-07-26 00:41:32::plugin::replyMsg paramsArray[[≤‚ ‘’À∫≈] µƒµ•æ÷◊Ó∏ﬂ∑÷ «:280]=
+*** Error in `./sissm': malloc(): memory corruption: 0x00007f8794000ea0 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x82b36)[0x7f8798fd6b36]
+/lib64/libc.so.6(__libc_malloc+0x4c)[0x7f8798fd978c]
+./sissm[0x41a098]
+./sissm(cJSON_CreateString+0x16)[0x41daa7]
+./sissm(cJSON_AddStringToObject+0x20)[0x41d2a6]
+./sissm(replyMsg+0x24d)[0x428fe2]
+./sissm(startSocket+0x272)[0x429304]
+./sissm(thread_func+0x2f)[0x427f69]
+/lib64/libpthread.so.0(+0x7ea5)[0x7f8799329ea5]
+/lib64/libc.so.6(clone+0x6d)[0x7f8799052b0d]
+======= Memory map: ========
+00400000-0043a000 r-xp 00000000 fd:01 788995                             /home/steam/sissm/sissm
+00639000-0063a000 r--p 00039000 fd:01 788995                             /home/steam/sissm/sissm
+0063a000-0063c000 rw-p 0003a000 fd:01 788995                             /home/steam/sissm/sissm
+0063c000-00923000 rw-p 00000000 00:00 0
+01bdf000-01c00000 rw-p 00000000 00:00 0                                  [heap]
+7f878c000000-7f878c021000 rw-p 00000000 00:00 0
+7f878c021000-7f8790000000 ---p 00000000 00:00 0
+7f8794000000-7f8794021000 rw-p 00000000 00:00 0
+7f8794021000-7f8798000000 ---p 00000000 00:00 0
+7f879853d000-7f8798552000 r-xp 00000000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7f8798552000-7f8798751000 ---p 00015000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7f8798751000-7f8798752000 r--p 00014000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7f8798752000-7f8798753000 rw-p 00015000 fd:01 3501                       /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7f8798753000-7f8798754000 ---p 00000000 00:00 0
+7f8798754000-7f8798f54000 rw-p 00000000 00:00 0
+7f8798f54000-7f8799118000 r-xp 00000000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7f8799118000-7f8799317000 ---p 001c4000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7f8799317000-7f879931b000 r--p 001c3000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7f879931b000-7f879931d000 rw-p 001c7000 fd:01 3908                       /usr/lib64/libc-2.17.so
+7f879931d000-7f8799322000 rw-p 00000000 00:00 0
+7f8799322000-7f8799339000 r-xp 00000000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7f8799339000-7f8799538000 ---p 00017000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7f8799538000-7f8799539000 r--p 00016000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7f8799539000-7f879953a000 rw-p 00017000 fd:01 3934                       /usr/lib64/libpthread-2.17.so
+7f879953a000-7f879953e000 rw-p 00000000 00:00 0
+7f879953e000-7f8799560000 r-xp 00000000 fd:01 5009                       /usr/lib64/ld-2.17.so
+7f8799751000-7f8799754000 rw-p 00000000 00:00 0
+7f879975a000-7f879975f000 rw-p 00000000 00:00 0
+7f879975f000-7f8799760000 r--p 00021000 fd:01 5009                       /usr/lib64/ld-2.17.so
+7f8799760000-7f8799761000 rw-p 00022000 fd:01 5009                       /usr/lib64/ld-2.17.so
+7f8799761000-7f8799762000 rw-p 00000000 00:00 0
+7ffc47068000-7ffc47089000 rw-p 00000000 00:00 0                          [stack]
+7ffc470b9000-7ffc470bb000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+./sissm(sissmSegfaultSigaction+0x33) [0x42a730]
+/lib64/libpthread.so.0(+0xf630) [0x7f8799331630]
+/lib64/libc.so.6(gsignal+0x37) [0x7f8798f8a387]
+/lib64/libc.so.6(abort+0x148) [0x7f8798f8ba78]
+/lib64/libc.so.6(+0x78f67) [0x7f8798fccf67]
+/lib64/libc.so.6(+0x82b36) [0x7f8798fd6b36]
+/lib64/libc.so.6(__libc_malloc+0x4c) [0x7f8798fd978c]
+./sissm() [0x41a098]
+./sissm(cJSON_CreateString+0x16) [0x41daa7]
+./sissm(cJSON_AddStringToObject+0x20) [0x41d2a6]
+./sissm(replyMsg+0x24d) [0x428fe2]
+./sissm(startSocket+0x272) [0x429304]
+./sissm(thread_func+0x2f) [0x427f69]
+/lib64/libpthread.so.0(+0x7ea5) [0x7f8799329ea5]
+/lib64/libc.so.6(clone+0x6d) [0x7f8799052b0d]
+
+
+
+2023-07-26 20:59:20::plugin::reveive json {"requestType": "request", "requestName": "apiPlayersGetCount", "requestId": "1690376360.5959956"} len=98
+2023-07-26 20:59:20::plugin::haha abort!
+
+
+
+
+[steam@VM-16-3-centos ~]$ tmux a -t sissm
+2023-07-26 21:09:01::plugin::replyMsg paramsArray[[≤‚ ‘’À∫≈] µƒµ•æ÷◊Ó∏ﬂ∑÷ «:280]=
+2023-07-26 21:09:01::plugin::send data={"requestType":"response","requestName":"nameok","requestId":"Idok","resultCode":-1,"resultMsg":"requestParams num error:expect:0,your:1","resultData":""}
+
+2023-07-26 21:09:02::api::BPChar BP_Character_Player_C_2147465113 bound to '≤‚ ‘’À∫≈'
+2023-07-26 21:09:11::pigreetings::SynDel Client ::≤‚ ‘’À∫≈:: GUID ::76561199275670546:: IP ::125.033.219.225::
+2023-07-26 21:09:11::pigreetings::≤‚ ‘’À∫≈ disconnected [0]
+2023-07-26 21:09:11::plugin::send data={"event_type":"clientSynthDel","log":"~SYNTHDEL~ 76561199275670546 125.033.219.225 ≤‚ ‘’À∫≈", "playerName":"≤‚ ‘’À∫≈","playerGUID":"76561199275670546","playerIP":"125.033.219.225"}
+
+2023-07-26 21:09:11::plugin::reveive json {"requestType": "request", "requestName": "apiPlayersGetCount", "requestId": "1690376951.4523844"} len=98
+2023-07-26 21:09:11::plugin::haha abort!
+2023-07-26 21:09:11::plugin::send data={"requestType":"response","requestName":"nameok","requestId":"Idok","resultCode":0,"resultMsg":"","resultData":""}
+
+2023-07-26 21:09:12::plugin::send data={"event_type":"clientDel","log":"[2023.07.26-13.09.10:970][402]LogNet: UChannel::Close: Sending CloseBunch. ChIndex == 0. Name: [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 125.33.219.225:10796, Name: IpConnection_2147465460, Driver: GameNetDriver IpNetDriver_2147482542, IsServer: YES, PC: INSPlayerController_2147465456, Owner: INSPlayerController_2147465456, UniqueId: SteamNWI:76561199275670546"}
+
+2023-07-26 21:09:12::api::BPChar 'BP_Character_Player_C_2147465113' unbound from '≤‚ ‘’À∫≈'
+
+
+
+

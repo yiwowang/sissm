@@ -1,12 +1,15 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*
 import json
-
+from lib.jianti_fanti import Translate
 import requests as requests
 
 from lib.event_callback import EventCallback
 
 
+translate = Translate()
+tw = translate.ToTraditionalChinese("我爱中国")
+print("aa "+tw)
 class JoinMsgPlugin(EventCallback):
     requester = None
     configReader = None
