@@ -582,16 +582,21 @@ int startSocket() {
 		logPrintf(LOG_LEVEL_INFO, "plugin", "while loop start");
 		closeSocket1(new_socket);
 
- if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+ if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
                 sleep(3);
+continue;
 }
- 
+ // allow reconnet at now, release port
 int opt = 1;
 int  err = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
+if(err<0){
+sleep(3);
+continue;
+}
 
 if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
                 logPrintf(LOG_LEVEL_INFO, "plugin", "bind failed");
+sleep(3);
 continue;
         }
  if (listen(server_fd, 3) < 0) {
@@ -664,8 +669,8 @@ int pluginClientAddCB(char* strIn)
 	char playerName[256], playerGUID[256], playerIP[256];
 
 	rosterParsePlayerConn(strIn, 256, playerName, playerGUID, playerIP);
-	char otherJson[100];
-	snprintf(otherJson, 100, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
+	char otherJson[200];
+	snprintf(otherJson, 200, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
 
 	sendEvent("clientAdd", strIn, otherJson);
 	return 0;
@@ -837,8 +842,8 @@ int pluginClientSynthDelCB(char* strIn)
 	static char playerName[256], playerGUID[256], playerIP[256];
 
 	rosterParsePlayerSynthDisConn(strIn, 256, playerName, playerGUID, playerIP);
-	char otherJson[100];
-	snprintf(otherJson, 100, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
+	char otherJson[200];
+	snprintf(otherJson, 200, ", \"playerName\":\"%s\",\"playerGUID\":\"%s\",\"playerIP\":\"%s\"", playerName, playerGUID, playerIP);
 
 	sendEvent("clientSynthDel", strIn, otherJson);
 	return 0;
@@ -898,8 +903,8 @@ int pluginSigtermCB(char* strIn)
 //
 int pluginWinLose(char* strIn)
 {
-	char otherJson[100];
-	snprintf(otherJson, 100, ", \"humanSide\":\"%d\"", rosterGetCoopSide());
+	char otherJson[200];
+	snprintf(otherJson, 200, ", \"humanSide\":\"%d\"", rosterGetCoopSide());
 
 	sendEvent("winLose", strIn, otherJson);
 	return 0;

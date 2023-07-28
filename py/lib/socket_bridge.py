@@ -22,8 +22,8 @@ ENCODING = 'utf-8'
 BUFFSIZE = 1024
 MAX_LISTEN = 5
 socketObj = None
-
-
+debug=False
+retryDelayArray=[1,3,6,10,20,40,60,2*60,4*60,8*60,16*60,32*60]
 class SocketWorker:
     callbackList = []
     resultMap = {}
@@ -67,7 +67,6 @@ class SocketWorker:
                 self.socketObj = s
                 retryCount = 0
                 print('连接成功')
-                lastMsg = None
                 while self.loopStart:
                     # 接收返回数据
                     outData = s.recv(BUFFSIZE)
@@ -77,27 +76,21 @@ class SocketWorker:
 			    s.close()
 		            break
                         if "\n" not in msgs:
-                            lastMsg = msgs
 			    time.sleep(1)                            
 			    continue
 			    
-                        if lastMsg is not None:
-                            msgs = lastMsg + msgs
-                            lastMsg = None
                         arr = msgs.split("\n")
                         for i in range(0, len(arr)):
                             msg = arr[i]
                             if len(msg) == 0:
                                 continue
-                            print('返回数据信息：{!r}'.format(msg))
+		            if debug:
+                            	print('返回数据信息:'+msg)
                             try:
                                 jsonObject = json.loads(msg, strict=False)
                             except Exception as e:
-                                lastMsg = msg
-                                if i == 0:
-                                    print("^json 解析错误:第1条消息不完整：" + msg)
-                                    continue
-                                print("^json 异常 记录为lastMsg：" + msg)
+                                print("^json 解析错误:消息不完整：" + msg)
+                                continue
                             if "requestId" in jsonObject:
                                 # 客户端请求的响应结果
                                 sendKey = jsonObject["requestId"]
@@ -119,11 +112,11 @@ class SocketWorker:
                         continue
             except Exception as e:
                 traceback.print_exc()
-                retryCount += 1
-		if retryCount>=60:
-		   print("重连超过限制,不在重连")
-		   break
+		retryCount += 1
                 print("正在重试第" + str(retryCount) + "次")
                 s.close()
-		time.sleep(5)
+		if retryCount<10:
+		    time.sleep(5)
+		else:
+		    time.sleep(60)
 		
