@@ -209,7 +209,7 @@ int strtoi(const char* str)
 int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 {
 	killInfo->playerIndex = -1;
-	char str1[500];
+	char str1[1000];
 	getWordRight(strIn, "Display: ", str1);
 	//�������շ������ݵ����顣���������Ԫ��ֻҪ���õıȷָ������ַ���������ͺ��ˡ�
 	char* arr1[10] = { 0 };
@@ -240,7 +240,7 @@ int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 		}
 
 
-		char* arr3[10] = { 0 };
+		char* arr3[20] = { 0 };
 		size_t num3 = 0;
 		split(arr1[1], " with ", arr3, &num3);
 		if (num3 == 2) {

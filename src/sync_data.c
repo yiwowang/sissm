@@ -50,16 +50,16 @@ static struct
 #define ROOM_PLAYER_MAX_COUNT 20
 
 struct KillWay {
-	char name[50];
+	char name[100];
 	int count;
 };
 
 struct PlayerData
 {
-	char name[50];// 玩家名字
+	char name[100];// 玩家名字
 	char uid[20];// 玩家steamId
 	int score;// 玩家得分
-	char ip[15];// ip
+	char ip[30];// ip
 	int killCount;// 杀敌数量
 	int deadCount;// 死亡数量
 	int assistCount;// 助攻数量
@@ -101,11 +101,11 @@ struct RoundData
 struct RoundData roundData;
 
 
-
+					
 struct ChatData {
 	char uid[20];
-	char name[50];// 不用存
-	char msg[100];
+	char name[100];// 不用存
+	char msg[200];
 	long time;
 };
 
