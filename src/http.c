@@ -171,7 +171,7 @@ int httpRequest(int timeout, int  method, char* hostname, char* pathAndParams, c
 	if (NULL != strstr(response, "200 OK")) {
 		char* json = strstr(response, "\r\n\r\n");
 		if (NULL != json) {
-			strcpy(responseBody, json + 4);
+			strlcpy(responseBody, json + 4);
 		}
 		else {
 			printf("error format %s\n", response);

@@ -40,7 +40,7 @@
 #include "sissm.h"
 #include "common_util.h"
 #include "socket_plugin.h"
-// C¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿strclr¿¿¿¿¿¿¿¿¿¿¿return ¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+// C¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿strclr¿¿¿¿¿¿¿¿¿¿¿return ¿¿¿¿¿¿¿¿¿¿¿¿¿¿?
 //  ==============================================================================================
 //  Data definition 
 //
@@ -107,14 +107,15 @@ int pluginInitConfig(void)
 #include "windows.h" 
 #endif
 
-
+#define RESULT_DATA_SIZE                    (2000)
+#define RESULT_MSG_SIZE                    (1000)
 SOCKET new_socket;
 SOCKET server_fd;
 int aliveSockect = 0;
 int socketConnected = 0;
 int needReConnect = 0;
-char resultData[1000];
-char resultMsg[50];
+char resultData[RESULT_DATA_SIZE];
+char resultMsg[RESULT_MSG_SIZE];
 
 #ifdef _WIN32
 DWORD WINAPI thread_func(LPVOID lpParam) {
@@ -233,14 +234,14 @@ void getJsonObjectString(cJSON* root, char* name,char * resultData,int len) {
 	}
 	
 //return obj->valuestring;
-strlcpy(resultData, obj->valuestring,len);
+strlcpy(resultData, obj->valuestring,len, RESULT_DATA_SIZE);
 
 }
 
 int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultData, char* resultMsg) {
 
 if (requestName == NULL) {
-		strlcpy(resultMsg, "requestName is empty", 50);
+		strlcpy(resultMsg, "requestName is empty", RESULT_MSG_SIZE);
 		return -1;
 	}
 	int targetParamsNum = 0;
@@ -254,7 +255,7 @@ if (requestName == NULL) {
 		targetParamsNum = 1;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiGameModePropertyGet(paramsArray[0]);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 	if (strcmp(requestName, "apiSay") == 0) {
@@ -309,7 +310,7 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			int infoDepth = strtoi(paramsArray[0]);
 			char* result = apiPlayersRoster(infoDepth, paramsArray[1]);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -317,7 +318,7 @@ if (requestName == NULL) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiGetServerName();
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -326,7 +327,7 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			int forceCacheRefresh = strtoi(paramsArray[0]);
 			char* result = apiGetServerNameRCON(forceCacheRefresh);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -334,7 +335,7 @@ if (requestName == NULL) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiGetServerMode();
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -342,7 +343,7 @@ if (requestName == NULL) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiGetMapName();
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -351,7 +352,7 @@ if (requestName == NULL) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiGetSessionID();
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 	if (strcmp(requestName, "apiGetLastRosterTime") == 0) {
@@ -393,14 +394,14 @@ if (requestName == NULL) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiMapList();
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 	if (strcmp(requestName, "apiMutList") == 0) {
 		targetParamsNum = 0;
 		if (paramsNum == targetParamsNum) {
 			char* result = apiMutList();
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -409,7 +410,7 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			char* candidateMode = paramsArray[0];
 			char* result = apiIsSupportedGameMode(candidateMode);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -427,7 +428,7 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			char* playerName = paramsArray[0];
 			char* result = apiNameToCharacter(playerName);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -436,7 +437,7 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			char* characterID = paramsArray[0];
 			char* result = apiCharacterToName(characterID);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -445,7 +446,7 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			char* playerName = paramsArray[0];
 			int result = apiIsPlayerAliveByName(playerName);
-			strcpy(resultData, result);
+			strlcpy(resultData, result, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -464,7 +465,7 @@ if (requestName == NULL) {
 			char* objectiveName = paramsArray[0];
 			char result = apiLookupObjectiveLetterFromCache(objectiveName);
 			char resultStr[1] = { result };
-			strcpy(resultData, resultStr);
+			strlcpy(resultData, resultStr, RESULT_DATA_SIZE);
 		}
 	}
 
@@ -473,12 +474,12 @@ if (requestName == NULL) {
 		if (paramsNum == targetParamsNum) {
 			char  result = apiLookupLastObjectiveLetterFromCache();
 			char resultStr[1] = { result };
-			strcpy(resultData, resultStr);
+			strlcpy(resultData, resultStr, RESULT_DATA_SIZE);
 		}
 	}
 
 	if (paramsNum != targetParamsNum) {
-		snprintf(resultMsg, 50, "requestParams num error:expect:%d,your:%d", targetParamsNum, paramsNum);
+		snprintf(resultMsg, RESULT_MSG_SIZE, "requestParams num error:expect:%d,your:%d", targetParamsNum, paramsNum);
 		return -1;
 	}
 	return 0;
@@ -532,9 +533,9 @@ strclr(resultData);
 cJSON_AddNumberToObject(response, "resultCode", errCode);
 
 
-char * finalMsg[50];
+char * finalMsg[RESULT_MSG_SIZE];
 strclr(finalMsg);
-strlcpy(finalMsg,resultMsg,50);
+strlcpy(finalMsg,resultMsg, RESULT_MSG_SIZE);
 	
 char * finalData[1000];
 strclr(finalData);
