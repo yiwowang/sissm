@@ -174,14 +174,14 @@ void sendEvent(char* eventType, char* log, char* otherJson) {
 		otherJson = "";
 
 	}
-	char* newLog = trimStr(log);
-	int logLen = strlen(newLog);
-	int otherJsonLen = strlen(otherJson);
-	int len = 50 + logLen + otherJsonLen;
-	char json[500];
+	//char* newLog = trimStr(log);
+	//int logLen = strlen(log);
+	//int otherJsonLen = strlen(otherJson);
+	//int len = 50 + logLen + otherJsonLen;
+	//char json[500];
 
-	snprintf(json, 500, "{\"event_type\":\"%s\",\"log\":\"%s\"%s}", eventType, newLog, otherJson);
-	sendSocket(json);
+	//snprintf(json, 500, "{\"event_type\":\"%s\",\"log\":\"%s\"%s}", eventType, log, otherJson);
+	//sendSocket(json);
 }
 
 
@@ -234,7 +234,7 @@ void getJsonObjectString(cJSON* root, char* name,char * resultData,int len) {
 	}
 	
 //return obj->valuestring;
-strlcpy(resultData, obj->valuestring,len, RESULT_DATA_SIZE);
+strlcpy(resultData, obj->valuestring,RESULT_DATA_SIZE);
 
 }
 
