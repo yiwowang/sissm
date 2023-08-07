@@ -208,6 +208,7 @@ int strtoi(const char* str)
 
 int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 {
+printf(strIn);
 	killInfo->playerIndex = -1;
 	char str1[1000];
 	getWordRight(strIn, "Display: ", str1);
