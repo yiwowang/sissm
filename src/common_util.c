@@ -239,7 +239,7 @@ printf(strIn);
 
 			}
 		}
-
+		//freeArray(arr2,num2);
 
 		char* arr3[20] = { 0 };
 		size_t num3 = 0;
@@ -267,8 +267,22 @@ printf(strIn);
 			printf("deadUid->%s\n", killInfo->deadUid);
 			printf("weaponName->%s\n", killInfo->weaponName);*/
 		}
+		//freeArray(arr3,num3);
 
 	}
 
+
+freeArray(arr1,num1);
 	return 0;
 }
+
+
+void freeArray(char ** arr,size_t num){
+
+for (int x=0;x<num;x++){
+//free(arr[x]);
+}
+
+
+}
+

@@ -114,8 +114,6 @@ SOCKET server_fd;
 int aliveSockect = 0;
 int socketConnected = 0;
 int needReConnect = 0;
-char resultData[RESULT_DATA_SIZE];
-char resultMsg[RESULT_MSG_SIZE];
 
 #ifdef _WIN32
 DWORD WINAPI thread_func(LPVOID lpParam) {
@@ -481,8 +479,10 @@ if (requestName == NULL) {
 	return 0;
 }
 
-void replyMsg(char* receiveMsg) {
-	if (strlen(receiveMsg) < 8) {
+void replyMsg(char* receiveMsg111) {
+char receiveMsg[2000];	
+strlcpy(receiveMsg,receiveMsg111,2000);
+if (strlen(receiveMsg) < 8) {
 		return;
 	}
 	if (pluginConfig.enableLog == 1) {
@@ -522,32 +522,27 @@ cJSON* response;
 			}
 		}
 	}
-	
+
+char resultData[RESULT_DATA_SIZE];
+char resultMsg[RESULT_MSG_SIZE];	
 strclr(resultData);
 	strclr(resultMsg);
 	int errCode = exeCmd(requestName, paramsNum, paramsArray, resultData, resultMsg);
 cJSON_AddNumberToObject(response, "resultCode", errCode);
 
-
-char * finalMsg[RESULT_MSG_SIZE];
-strclr(finalMsg);
-strlcpy(finalMsg,resultMsg, RESULT_MSG_SIZE);
 	
-char * finalData[1000];
-strclr(finalData);
-strlcpy(finalData,resultData,1000);
-cJSON_AddStringToObject(response, "resultMsg", finalMsg);
-cJSON_AddStringToObject(response, "resultData", finalData);
+cJSON_AddStringToObject(response, "resultMsg", resultMsg);
+cJSON_AddStringToObject(response, "resultData", resultData);
 
 	char* szJSON = cJSON_PrintUnformatted(response);
-	char responseJson[API_R_BUFSIZE + 200];
-	strlcpy(responseJson, szJSON, API_R_BUFSIZE + 200);
+	char responseJson[API_R_BUFSIZE + 500];
+	strlcpy(responseJson, szJSON, API_R_BUFSIZE + 500);
 
 	sendSocket(responseJson);
 
-	//free(szJSON);
-	//cJSON_Delete(root);
-	//cJSON_Delete(response);
+	free(szJSON);
+	cJSON_Delete(root);
+	cJSON_Delete(response);
 }
 
 void closeSocket1(int fd) {
