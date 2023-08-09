@@ -106,9 +106,12 @@ int pluginInitConfig(void)
 #define false (0)
 #include "windows.h" 
 #endif
-
+#define RECEIVE_DATA_SIZE                    (2000)
 #define RESULT_DATA_SIZE                    (2000)
-#define RESULT_MSG_SIZE                    (1000)
+#define RESULT_MSG_SIZE                    (500)
+char receiveData[RECEIVE_DATA_SIZE];
+char resultData[RESULT_DATA_SIZE];
+char resultMsg[RESULT_MSG_SIZE];
 SOCKET new_socket;
 SOCKET server_fd;
 int aliveSockect = 0;
@@ -151,19 +154,6 @@ void sendSocket(char* data) {
 		needReConnect = 1;
 		logPrintf(LOG_LEVEL_INFO, "plugin", "send faild=%s", data);
 	}
-}
-
-char* trimStr(char* str)
-{
-	char* p = str;
-	char* p1;
-	if (p)
-	{
-		p1 = p + strlen(str) - 1;
-		while (*p && isspace(*p)) p++;
-		while (p1 > p && isspace(*p1)) *p1-- = '\0';
-	}
-	return p;
 }
 
 void sendEvent(char* eventType, char* log, char* otherJson) {
@@ -479,9 +469,7 @@ int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultDat
 	return 0;
 }
 
-void replyMsg(char* receiveMsg111) {
-	char receiveMsg[2000];
-	strlcpy(receiveMsg, receiveMsg111, 2000);
+void replyMsg(char* receiveMsg) {
 	if (strlen(receiveMsg) < 8) {
 		return;
 	}
@@ -495,12 +483,12 @@ void replyMsg(char* receiveMsg111) {
 	char* requestType[50];
 	strclr(requestType);
 	getJsonObjectString(root, "requestType", requestType, 50);
-	char* requestName[200];
+	char* requestName[100];
 	strclr(requestName);
-	getJsonObjectString(root, "requestName", requestName, 200);
-	char* requestParams[500];
+	getJsonObjectString(root, "requestName", requestName, 100);
+	char* requestParams[200];
 	strclr(requestParams);
-	getJsonObjectString(root, "requestParams", requestParams, 500);
+	getJsonObjectString(root, "requestParams", requestParams, 200);
 	char* requestId[30];
 	strclr(requestId);
 	getJsonObjectString(root, "requestId", requestId, 30);
@@ -523,8 +511,7 @@ void replyMsg(char* receiveMsg111) {
 		}
 	}
 
-	char resultData[RESULT_DATA_SIZE];
-	char resultMsg[RESULT_MSG_SIZE];
+
 	strclr(resultData);
 	strclr(resultMsg);
 	int errCode = exeCmd(requestName, paramsNum, paramsArray, resultData, resultMsg);
@@ -535,11 +522,11 @@ void replyMsg(char* receiveMsg111) {
 	cJSON_AddStringToObject(response, "resultData", resultData);
 
 	char* szJSON = cJSON_PrintUnformatted(response);
-	char responseJson[API_R_BUFSIZE + 500];
-	strlcpy(responseJson, szJSON, API_R_BUFSIZE + 500);
+	char responseJson[API_R_BUFSIZE];
+	strlcpy(responseJson, szJSON, API_R_BUFSIZE);
 
 	sendSocket(responseJson);
-
+	freeArray(paramsArray, paramsNum);
 	free(szJSON);
 	cJSON_Delete(root);
 	cJSON_Delete(response);
@@ -567,8 +554,6 @@ int startSocket() {
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(PORT);
 	aliveSockect = 1;
-	char message[100], server_reply[2000];
-
 
 	while (aliveSockect) {
 		logPrintf(LOG_LEVEL_INFO, "plugin", "while loop start");
@@ -618,17 +603,17 @@ int startSocket() {
 			logPrintf(LOG_LEVEL_INFO, "plugin", "Connected");
 			while (aliveSockect)
 			{
-				strclr(server_reply);
-				int len = recv(new_socket, server_reply, 2000, 0);
+				strclr(receiveData);
+				int len = recv(new_socket, receiveData, RECEIVE_DATA_SIZE, 0);
 				if (len < 0)
 				{
 					logPrintf(LOG_LEVEL_INFO, "plugin", "recv failed");
 					socketConnected = 0;
 					break;
 				}
-				server_reply[len] = '\0';
+				receiveData[len] = '\0';
 
-				replyMsg(server_reply);
+				replyMsg(receiveData);
 
 				if (needReConnect == 1) {
 					socketConnected = 0;

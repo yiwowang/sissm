@@ -202,7 +202,7 @@ int mapVotePeriodicCB(char* strIn)
 	useSeconds++;
 	if (useSeconds == 15)
 	{
-		apiSay("距離投票結束還有15秒,可輸入地圖序號投票");
+		apiSay("距離投票結束還有15秒,可輸入地圖序號投票.");
 		return 0;
 	}
 

@@ -25,3 +25,4 @@ extern int strtoi(const char* str);
 
 
 extern int parseKillInfo(char* strIn, struct KillInfo* killInfo);
+extern void freeArray(char** arr, size_t num);

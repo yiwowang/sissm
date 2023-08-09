@@ -212,9 +212,7 @@ int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 	killInfo->playerIndex = -1;
 	char str1[1000];
 	getWordRight(strIn, "Display: ", str1);
-	//�������շ������ݵ����顣���������Ԫ��ֻҪ���õıȷָ������ַ���������ͺ��ˡ�
 	char* arr1[10] = { 0 };
-	//�ָ�����ַ����ĸ���
 	size_t num1 = 0;
 	split(str1, " killed ", arr1, &num1);
 	if (num1 == 2) {
@@ -239,7 +237,7 @@ int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 
 			}
 		}
-		//freeArray(arr2,num2);
+		freeArray(arr2,num2);
 
 		char* arr3[20] = { 0 };
 		size_t num3 = 0;
@@ -267,7 +265,7 @@ int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 			printf("deadUid->%s\n", killInfo->deadUid);
 			printf("weaponName->%s\n", killInfo->weaponName);*/
 		}
-		//freeArray(arr3,num3);
+		freeArray(arr3,num3);
 
 	}
 
@@ -278,11 +276,8 @@ int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 
 
 void freeArray(char** arr, size_t num) {
-
-	for (int x = 0; x < num; x++) {
-		//free(arr[x]);
+	for (int i = 0; i < num; i++) {
+		//free(arr[i]);
 	}
-
-
 }
 
