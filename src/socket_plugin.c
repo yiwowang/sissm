@@ -221,20 +221,20 @@ int startThread() {
 
 
 
-void getJsonObjectString(cJSON* root, char* name,char * resultData,int len) {
+void getJsonObjectString(cJSON* root, char* name, char* resultData, int len) {
 	cJSON* obj = cJSON_GetObjectItem(root, name);
 	if (obj == NULL) {
 		return "";
 	}
-	
-//return obj->valuestring;
-strlcpy(resultData, obj->valuestring,RESULT_DATA_SIZE);
+
+	//return obj->valuestring;
+	strlcpy(resultData, obj->valuestring, RESULT_DATA_SIZE);
 
 }
 
 int exeCmd(char* requestName, int paramsNum, char** paramsArray, char* resultData, char* resultMsg) {
 
-if (requestName == NULL) {
+	if (requestName == NULL) {
 		strlcpy(resultMsg, "requestName is empty", RESULT_MSG_SIZE);
 		return -1;
 	}
@@ -480,9 +480,9 @@ if (requestName == NULL) {
 }
 
 void replyMsg(char* receiveMsg111) {
-char receiveMsg[2000];	
-strlcpy(receiveMsg,receiveMsg111,2000);
-if (strlen(receiveMsg) < 8) {
+	char receiveMsg[2000];
+	strlcpy(receiveMsg, receiveMsg111, 2000);
+	if (strlen(receiveMsg) < 8) {
 		return;
 	}
 	if (pluginConfig.enableLog == 1) {
@@ -493,19 +493,19 @@ if (strlen(receiveMsg) < 8) {
 	cJSON* root;
 	root = cJSON_Parse(receiveMsg);
 	char* requestType[50];
-strclr(requestType);	
-getJsonObjectString(root, "requestType",requestType,50);
+	strclr(requestType);
+	getJsonObjectString(root, "requestType", requestType, 50);
 	char* requestName[200];
-strclr(requestName);	
-getJsonObjectString(root, "requestName",requestName,200);
+	strclr(requestName);
+	getJsonObjectString(root, "requestName", requestName, 200);
 	char* requestParams[500];
-strclr(requestParams);	
-getJsonObjectString(root, "requestParams",requestParams,500);
+	strclr(requestParams);
+	getJsonObjectString(root, "requestParams", requestParams, 500);
 	char* requestId[30];
-strclr(requestId);	
-getJsonObjectString(root, "requestId",requestId,30);
+	strclr(requestId);
+	getJsonObjectString(root, "requestId", requestId, 30);
 
-cJSON* response;
+	cJSON* response;
 	response = cJSON_CreateObject();
 	cJSON_AddStringToObject(response, "requestType", "response");
 	cJSON_AddStringToObject(response, "requestName", requestName);
@@ -523,16 +523,16 @@ cJSON* response;
 		}
 	}
 
-char resultData[RESULT_DATA_SIZE];
-char resultMsg[RESULT_MSG_SIZE];	
-strclr(resultData);
+	char resultData[RESULT_DATA_SIZE];
+	char resultMsg[RESULT_MSG_SIZE];
+	strclr(resultData);
 	strclr(resultMsg);
 	int errCode = exeCmd(requestName, paramsNum, paramsArray, resultData, resultMsg);
-cJSON_AddNumberToObject(response, "resultCode", errCode);
+	cJSON_AddNumberToObject(response, "resultCode", errCode);
 
-	
-cJSON_AddStringToObject(response, "resultMsg", resultMsg);
-cJSON_AddStringToObject(response, "resultData", resultData);
+
+	cJSON_AddStringToObject(response, "resultMsg", resultMsg);
+	cJSON_AddStringToObject(response, "resultData", resultData);
 
 	char* szJSON = cJSON_PrintUnformatted(response);
 	char responseJson[API_R_BUFSIZE + 500];
@@ -574,27 +574,27 @@ int startSocket() {
 		logPrintf(LOG_LEVEL_INFO, "plugin", "while loop start");
 		closeSocket1(new_socket);
 
- if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-                sleep(3);
-continue;
-}
- // allow reconnet at now, release port
-int opt = 1;
-int  err = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-if(err<0){
-sleep(3);
-continue;
-}
+		if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+			sleep(3);
+			continue;
+		}
+		// allow reconnet at now, release port
+		int opt = 1;
+		int  err = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+		if (err < 0) {
+			sleep(3);
+			continue;
+		}
 
-if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
-                logPrintf(LOG_LEVEL_INFO, "plugin", "bind failed");
-sleep(3);
-continue;
-        }
- if (listen(server_fd, 3) < 0) {
-                logPrintf(LOG_LEVEL_INFO, "plugin", "listen failed");
-continue;
-}
+		if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+			logPrintf(LOG_LEVEL_INFO, "plugin", "bind failed");
+			sleep(3);
+			continue;
+		}
+		if (listen(server_fd, 3) < 0) {
+			logPrintf(LOG_LEVEL_INFO, "plugin", "listen failed");
+			continue;
+		}
 
 		logPrintf(LOG_LEVEL_INFO, "plugin", "Waiting for incoming connections...");
 		// 接受客户端连接
@@ -639,7 +639,7 @@ continue;
 		}
 
 	}
-printf("exit socket thread\n");
+	printf("exit socket thread\n");
 	closeSocket1(new_socket);
 	closeSocket1(server_fd);
 #ifdef _WIN32

@@ -33,8 +33,8 @@ int isLocalDebug() {
 }
 
 void testDispatchLogList() {
-//	eventsDispatch("[2022.11.22-15.46.46:975][862]LogGameState: Match State Changed from PreRound to RoundActive");
-//	eventsDispatch("[2022.11.22 - 15.35.44:201][899]LogNet : Join succeeded : YEYE");
+	//	eventsDispatch("[2022.11.22-15.46.46:975][862]LogGameState: Match State Changed from PreRound to RoundActive");
+	//	eventsDispatch("[2022.11.22 - 15.35.44:201][899]LogNet : Join succeeded : YEYE");
 }
 
 int isValidUid(char* uid) {
@@ -50,13 +50,13 @@ void getTimeStr(long t, char* formatYMDHMS, char* output, int outputSize) {
 
 int exists(const char* path)
 {
-	if (strlen(path) <=0) {
+	if (strlen(path) <= 0) {
 		return 0;
 	}
 #ifdef _WIN32
 	return (_access(path, 0) == 0);
 #else
- return (access(path, 0) == 0);
+	return (access(path, 0) == 0);
 #endif
 }
 
@@ -78,7 +78,7 @@ void split(const char* src, const char* pattern, char** outvec, size_t* outsize)
 	const char* next = begin;
 	if ((begin = strstr((const char*)begin, pattern)) != 0x00) {
 		unsigned int size = begin - next;
-		*outvec = malloc(sizeof(char) * size+1);
+		*outvec = malloc(sizeof(char) * size + 1);
 		memcpy(*outvec, next, size);
 		(*outvec)[size] = '\0';
 		outvec++;
@@ -87,7 +87,7 @@ void split(const char* src, const char* pattern, char** outvec, size_t* outsize)
 	}
 	else {
 		unsigned int size = &src[strlen(src) - 1] - next + 1;
-		*outvec = malloc(sizeof(char) * size+1);
+		*outvec = malloc(sizeof(char) * size + 1);
 		memcpy(*outvec, next, size);
 		(*outvec)[size] = '\0';
 		(*outsize) += 1;
@@ -104,7 +104,7 @@ void getWordRight(char* input, char* start, char* output)
 	{
 		return;
 	}
-	strlcpy(output, w + strlen(start), input-w - strlen(start)+1);
+	strlcpy(output, w + strlen(start), input - w - strlen(start) + 1);
 }
 
 void getWordLeft(char* input, char* start, char* output)
@@ -125,7 +125,7 @@ void getWordRightRange(char* input, char* startOffset, char* start, char* end, c
 	if (input == NULL) {
 		return;
 	}
-	if (startOffset!=NULL&&strstr(input, startOffset) != NULL) {
+	if (startOffset != NULL && strstr(input, startOffset) != NULL) {
 		char temp[500];
 		getWordRight(input, startOffset, temp);
 		getWordRange(temp, start, end, output);
@@ -178,7 +178,7 @@ void trim(char* str, char* output, int size)
 // char * to int
 int strtoi(const char* str)
 {
-    int base = 10;
+	int base = 10;
 	int res = 0, t;
 	const char* p;
 	for (p = str; *p; p++)
@@ -208,7 +208,7 @@ int strtoi(const char* str)
 
 int parseKillInfo(char* strIn, struct KillInfo* killInfo)
 {
-printf(strIn);
+	printf(strIn);
 	killInfo->playerIndex = -1;
 	char str1[1000];
 	getWordRight(strIn, "Display: ", str1);
@@ -272,16 +272,16 @@ printf(strIn);
 	}
 
 
-freeArray(arr1,num1);
+	freeArray(arr1, num1);
 	return 0;
 }
 
 
-void freeArray(char ** arr,size_t num){
+void freeArray(char** arr, size_t num) {
 
-for (int x=0;x<num;x++){
-//free(arr[x]);
-}
+	for (int x = 0; x < num; x++) {
+		//free(arr[x]);
+	}
 
 
 }
